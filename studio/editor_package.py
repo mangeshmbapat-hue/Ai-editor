@@ -4,7 +4,7 @@
 The director writes a manifest, `editor.json`, at the mix step and runs:
 
     python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor
-        [--codec h264|prores] [--media-root PATH] [--force]
+        [--codec h264|prores] [--crf 16] [--media-root PATH] [--force]
 
 The package is built in `<out>.partial` and moved into place only when every step has passed:
 
@@ -409,7 +409,7 @@ def count_frames(path: Path) -> int:
     return int(out.strip().split(",")[0])
 
 
-def encode_picture(src: Path, dst: Path, fps: Fraction, codec: str, extra_vf: Optional[str]) -> None:
+def encode_picture(src: Path, dst: Path, fps: Fraction, codec: str, extra_vf: Optional[str], crf: int = 16) -> None:
     st = _stream(probe(src), "video", src)
     rate = f"{fps.numerator}/{fps.denominator}"
     vf = f"fps={rate}" + (f",{extra_vf}" if extra_vf else "")
@@ -422,7 +422,7 @@ def encode_picture(src: Path, dst: Path, fps: Fraction, codec: str, extra_vf: Op
     if codec == "prores":
         enc = ["-c:v", "prores_ks", "-profile:v", "3", "-vendor", "apl0", "-pix_fmt", "yuv422p10le"]
     else:  # no B-frames: no composition offset, so no NLE can shift the picture against the sound
-        enc = ["-c:v", "libx264", "-preset", "slow", "-crf", "16", "-bf", "0", "-g", str(timebase(fps)[0]),
+        enc = ["-c:v", "libx264", "-preset", "slow", "-crf", str(crf), "-bf", "0", "-g", str(timebase(fps)[0]),
                "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
     run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", src, "-map", "0:v:0", "-an", "-sn", "-dn",
          "-vf", vf, *enc, *color, "-r", rate, dst])
@@ -611,12 +611,14 @@ Docs checked {CHECKED}:
 
 
 def build_package(manifest_path, out_dir, codec: str = "h264", media_root: Optional[str] = None,
-                  force: bool = False, log: Callable[[str], None] = print) -> Path:
+                  force: bool = False, log: Callable[[str], None] = print, crf: int = 16) -> Path:
     for tool in ("ffmpeg", "ffprobe"):
         if not shutil.which(tool):
             raise PackageError(f"{tool} not found on PATH; the media steps need FFmpeg")
     if codec not in ("h264", "prores"):
         raise PackageError(f"codec must be h264 or prores, got {codec!r}")
+    if not 0 <= int(crf) <= 51:
+        raise PackageError(f"crf must be 0-51, got {crf!r}")
     mpath = Path(manifest_path).resolve()
     base = mpath.parent
     m = load_manifest(mpath)
@@ -645,7 +647,7 @@ def build_package(manifest_path, out_dir, codec: str = "h264", media_root: Optio
     shutil.rmtree(tmp, ignore_errors=True)
     try:
         _build_into(tmp, out, m, fps, title, slug, codec, media_root, src_pic, expected, shots, clips, lanes,
-                    markers, srt_src, log)
+                    markers, srt_src, log, crf)
     except BaseException:
         shutil.rmtree(tmp, ignore_errors=True)  # never leave a half-built package behind
         raise
@@ -662,12 +664,13 @@ def build_package(manifest_path, out_dir, codec: str = "h264", media_root: Optio
 
 def _build_into(tmp: Path, out: Path, m: dict, fps: Fraction, title: str, slug: str, codec: str,
                 media_root: Optional[str], src_pic: Path, expected: int, shots: list[Shot], clips: list[Clip],
-                lanes: list[str], markers, srt_src: Optional[Path], log: Callable[[str], None]) -> None:
+                lanes: list[str], markers, srt_src: Optional[Path], log: Callable[[str], None],
+                crf: int = 16) -> None:
     media = tmp / "media"
     media.mkdir(parents=True)
     pic = {"file": "V_picture" + (".mov" if codec == "prores" else ".mp4")}
     log(f"picture: {src_pic.name} -> media/{pic['file']} ({codec}, {expected} frames)")
-    encode_picture(src_pic, media / pic["file"], fps, codec, m.get("picture_filter"))
+    encode_picture(src_pic, media / pic["file"], fps, codec, m.get("picture_filter"), crf)
     pic["frames"] = count_frames(media / pic["file"])
     if pic["frames"] != expected:
         raise PackageError(f"the encoded picture has {pic['frames']} frames, the source {expected}; not packaging a "
@@ -708,10 +711,13 @@ def main(argv=None) -> int:
                    help="picture codec: h264 (small download, default) or prores (ProRes 422 HQ, large)")
     p.add_argument("--media-root", help="absolute path of media/ on the editing machine, e.g. D:\\Edits\\Ramayana\\media; "
                                         "default: this package's own media folder (the NLE asks to relink once)")
+    p.add_argument("--crf", type=int, default=16,
+                   help="H.264 quality (default 16). 18 is still visually lossless and about a third smaller: use it "
+                        "when the package has to fit a 400 MB upload")
     p.add_argument("--force", action="store_true", help="replace an existing package")
     a = p.parse_args(argv)
     try:
-        out = build_package(a.manifest, a.out, a.codec, a.media_root, a.force)
+        out = build_package(a.manifest, a.out, a.codec, a.media_root, a.force, crf=a.crf)
     except PackageError as e:
         print(f"editor_package: {e}", file=sys.stderr)
         return 2

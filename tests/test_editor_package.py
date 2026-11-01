@@ -156,7 +156,7 @@ class PackageMediaTest(unittest.TestCase):
                 "notes": ["Synthetic fixture for the tests."],
             }
             (film / "editor.json").write_text(json.dumps(manifest), encoding="utf-8")
-            out = EP.build_package(film / "editor.json", tmp / "editor", log=lambda s: None)
+            out = EP.build_package(film / "editor.json", tmp / "editor", log=lambda s: None, crf=18)
 
             media = out / "media"
             self.assertEqual({p.name for p in media.iterdir()},

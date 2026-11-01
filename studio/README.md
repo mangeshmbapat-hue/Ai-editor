@@ -53,6 +53,7 @@ Every finished film comes with `final/editor/`, a timeline the owner opens in **
 - A marker on every VO line (with its words) and on every sync point; `timeline.csv` lists every timecode; the subtitles come as `.srt`.
 - The director builds it with `python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor`. The manifest format is in the script's docstring, and there is a template in `studio/templates/editor.json`.
   - `--codec prores` gives ProRes 422 HQ instead of H.264.
+  - `--crf 18` (instead of the default 16) is still visually lossless and about a third smaller. Use it when the package must fit a 400 MB upload.
   - `--media-root <folder>` writes the owner's own media path, so nothing needs relinking.
 - Limits:
   - there are no handles beyond the shot edges
