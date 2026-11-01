@@ -542,10 +542,11 @@ def readme(title: str, xml_name: str, fps: Fraction, size: tuple[int, int], code
         return f"| A{i} | {lane} | " + (", ".join(names) if len(names) <= 6 else f"{len(names)} clips") + " |"
     rows = "\n".join(lane_row(i, lane) for i, lane in enumerate(lanes, 1))
     notes = "".join(f"- {n}\n" for n in (m.get("notes") or []))
-    relink = ("XML in files ko `" + media_root + "` mein dhundhegi, wahi folder rakho to relink nahi karna padega."
+    relink = ("XML files ko `" + media_root + "` mein dhundhegi: `media/` wahin rakho to relink nahi karna padega."
               if media_root else
-              "XML abhi is package ke apne path ki taraf point karti hai. Package kahin bhi rakho; NLE pehli baar media "
-              "offline dikhaye to neeche wale relink step se ek baar mein sab mil jayega.")
+              "XML mein us folder ka path hai jahan package bana tha, isliye pehli baar media offline dikhega. Neeche "
+              "Premiere ya Resolve ke step 2 se ek baar relink karo; saari files ek hi folder mein hain, sab ek saath "
+              "mil jayengi.")
     srt_line = f"  - `{srt}`: subtitles\n" if srt else ""
     docs = "\n".join(f"- [{t}]({u})" for t, u in DOCS)
     return f"""# {title}: editor package (NLE)
@@ -571,7 +572,10 @@ cut trim karna, shot aage-peeche karna, music/VO/SFX ka level, kisi line ya SFX 
 - Saare audio clips 0 dB pe hain. Sab saath bajen to wahi mix banta hai jo final film mein hai, final loudness step se
   pehle. Isliye timeline final film se thodi dheemi sunai degi; export pe loudness normalize karo (neeche).
 - Voice ki har line ek alag clip hai, uske shuru mein marker hai aur marker comment mein line ke shabd.
-- Sequence: {tb}{' NTSC' if ntsc else ''} timebase, timecode 00:00:00:00 se.
+- Sequence: {rate} fps (timebase {tb}{' NTSC' if ntsc else ''}), timecode 00:00:00:00 se.
+
+## Pehle ye
+Poora folder saath rakho: XML aur `media/` ek hi jagah. {relink}
 
 ## Premiere Pro
 1. File > Import > `{xml_name}`. Project panel mein ek bin aayega jisme sequence aur clips honge.
@@ -586,8 +590,6 @@ cut trim karna, shot aage-peeche karna, music/VO/SFX ka level, kisi line ya SFX 
    to off karo: media pehle se pool mein hai, Resolve naam se jod lega.
 3. Subtitles: SRT Media Pool mein import karke timeline pe drag karo.
 4. Export: Deliver > Audio > Normalize Audio, -14 LUFS, -1 dBTP (apne Resolve version mein option check kar lena).
-
-{relink}
 
 ## Seedhi baat: kya yahan nahi badlega
 - **Handles nahi hain.** Picture ek continuous file hai: kisi shot ka edge khichoge to agle ya pichle shot ke frames

@@ -1,5 +1,5 @@
 {
-  "_about": "Template for the editor package manifest read by studio/editor_package.py. Copy it into the film folder as editor.json and replace every value. Times are seconds on the film's timeline; paths are relative to editor.json. Shots must cover the picture back to back. Stems are post-fader and pre-master. picture_filter is the master's finishing pass (mux.sh grain 2 is noise=c0s=2:allf=t); use an empty string when the master had none.",
+  "_about": "Template for the editor package manifest read by studio/editor_package.py. Copy it into the film folder as editor.json and replace every value. Times are seconds on the film's timeline; paths are relative to editor.json. Shots must cover the picture back to back. Stems are post-fader and pre-master. picture_filter is the master's finishing pass (mux.sh grain 2 is noise=c0s=2:allf=t); use an empty string when the master had none. notes go into the package README for the owner, so write them in Hinglish.",
   "title": "<Film title>",
   "fps": 24,
   "picture": "out/video_textless.mp4",
