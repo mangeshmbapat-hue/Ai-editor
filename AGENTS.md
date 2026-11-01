@@ -2,6 +2,7 @@
 
 - This is the standalone production project. Do not import code, assets, credentials or data from unrelated workspaces.
 - Keep implemented features distinct from roadmap items. Never call templates verified model profiles or synthetic fixtures generated film assets.
+- Script gate: a new film without an owner-supplied screenplay starts with `skills/ai-writer`, written by a separate writer agent and critiqued by another. Show the script packet and wait for the owner's explicit approval before any voice, music, picture or render work. Approved words are locked; changes go back through the writer and need approval again.
 - Preserve original screenplay text. Source units, semantic beats, shots, inputs, takes and reviews are separate records.
 - Do not mark a shot accepted based on a prompt, successful upload or provider status. Require full-clip review evidence for all assigned beats and criteria.
 - Preserve canonical asset versions. Changes must invalidate dependent outputs; do not silently discard references to satisfy model limits.

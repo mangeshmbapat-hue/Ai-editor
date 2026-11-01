@@ -2,7 +2,7 @@
 
 A portable screenplay-to-video production foundation. Keep the screenplay, creative decisions, reference assets, shot plan and review evidence in your own project, then hand shots to different image/video tools.
 
-**Current release: runnable CLI + eight production skills + an orchestrator skill + SOP.** It is not yet an autonomous video generator or a graphical app. No provider accounts, model calls, paid generation, browser automation or verified vendor integrations are included.
+**Current release: runnable CLI + eight production skills + a script-writing skill with an approval gate + an orchestrator skill + SOP.** It is not yet an autonomous video generator or a graphical app. No provider accounts, model calls, paid generation, browser automation or verified vendor integrations are included.
 
 ## What works now
 

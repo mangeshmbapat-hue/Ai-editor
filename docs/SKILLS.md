@@ -1,9 +1,10 @@
 # Skill map
 
-Read [film-production](../skills/film-production/SKILL.md) to coordinate the whole workflow. It routes to these eight specialist skills:
+Read [film-production](../skills/film-production/SKILL.md) to coordinate the whole workflow. It routes to these specialist skills. Phase 0 runs only when the owner has not supplied a screenplay, and its approval gate must pass before any later phase starts:
 
 | Phase | Skill | Persistent output |
 |---|---|---|
+| 0 | [ai-writer](../skills/ai-writer/SKILL.md) | Approved script packet (`script/SCRIPT_vN.md`) and `dialogue-lock.md` |
 | 1 | [screenplay-breakdown](../skills/screenplay-breakdown/SKILL.md) | Source-linked beats and asset requirements |
 | 2 | [creative-direction](../skills/creative-direction/SKILL.md) | Treatment and labelled decisions |
 | 3 | [character-costume-design](../skills/character-costume-design/SKILL.md) | Canonical identity/look images and scene mapping |
