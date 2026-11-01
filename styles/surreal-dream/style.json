@@ -1,0 +1,26 @@
+{
+ "slug": "surreal-dream",
+ "num": "51",
+ "en": "Surreal Dreamscape",
+ "hi": "अतियथार्थ स्वप्नलोक",
+ "cn": "超现实梦境",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: on an endless evening plain, the objects of one ordinary morning (a kettle, a chair, a stack of letters) stand at impossible sizes, and their long shadows show what they will become.",
+ "line_hi": "प्रस्तावित डेमो: एक अंतहीन साँझ के मैदान पर एक साधारण सुबह की चीज़ें (केतली, कुर्सी, चिट्ठियों का ढेर) असंभव आकारों में खड़ी हैं, और उनकी लंबी परछाइयाँ दिखाती हैं कि वे आगे चलकर क्या बनेंगी।",
+ "line_cn": "拟议演示：在一片无尽的黄昏平原上，一个普通早晨的物件（水壶、椅子、一叠信）以不可能的尺度矗立，它们长长的影子显示出它们将会变成什么。",
+ "uses": [
+  "Poetry and essay films",
+  "Music videos",
+  "Mental-health explainers"
+ ],
+ "nearest": [
+  "impasto",
+  "lowpoly-island"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

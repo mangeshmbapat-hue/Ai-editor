@@ -1,0 +1,538 @@
+[
+ {
+  "slug": "madhubani",
+  "num": "01",
+  "en": "Madhubani",
+  "hi": "मधुबनी",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "warli",
+  "num": "02",
+  "en": "Warli",
+  "hi": "वारली",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "gond",
+  "num": "03",
+  "en": "Gond",
+  "hi": "गोंड",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "kalamkari",
+  "num": "04",
+  "en": "Kalamkari",
+  "hi": "कलमकारी",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "pattachitra",
+  "num": "05",
+  "en": "Pattachitra",
+  "hi": "पट्टचित्र",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "phad-scroll",
+  "num": "06",
+  "en": "Phad Scroll",
+  "hi": "फड़",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "kalighat",
+  "num": "07",
+  "en": "Kalighat Pat",
+  "hi": "कालीघाट पट",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "pichwai",
+  "num": "08",
+  "en": "Pichwai",
+  "hi": "पिछवाई",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "tanjore",
+  "num": "09",
+  "en": "Tanjore",
+  "hi": "तंजौर",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "mughal-miniature",
+  "num": "10",
+  "en": "Mughal Miniature",
+  "hi": "मुग़ल लघुचित्र",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "kerala-mural",
+  "num": "11",
+  "en": "Kerala Mural",
+  "hi": "केरल भित्तिचित्र",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "bollywood-poster",
+  "num": "12",
+  "en": "Bollywood Hand-painted Poster",
+  "hi": "हाथ से बना फ़िल्मी पोस्टर",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "truck-art",
+  "num": "13",
+  "en": "Indian Truck Art",
+  "hi": "ट्रक आर्ट",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "kolam-rangoli",
+  "num": "14",
+  "en": "Kolam / Rangoli",
+  "hi": "कोलम / रंगोली",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "mehndi",
+  "num": "15",
+  "en": "Mehndi",
+  "hi": "मेहंदी",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "kathputli",
+  "num": "16",
+  "en": "Kathputli Marionette",
+  "hi": "कठपुतली",
+  "category_en": "Indian Traditions",
+  "status": "draft"
+ },
+ {
+  "slug": "yarn-painting",
+  "num": "17",
+  "en": "Yarn Painting",
+  "hi": "धागा चित्र",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "mola-applique",
+  "num": "18",
+  "en": "Mola Appliqué",
+  "hi": "मोला कपड़ा कला",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "persian-miniature",
+  "num": "19",
+  "en": "Persian Miniature",
+  "hi": "फ़ारसी लघुचित्र",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "thangka",
+  "num": "20",
+  "en": "Thangka",
+  "hi": "थांगका",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "stitched-tapestry",
+  "num": "21",
+  "en": "Stitched Tapestry",
+  "hi": "कढ़ाई टेपेस्ट्री",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "black-figure-vase",
+  "num": "22",
+  "en": "Black-figure Vase",
+  "hi": "ग्रीक मृदभांड",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "egyptian-register",
+  "num": "23",
+  "en": "Egyptian Registers",
+  "hi": "मिस्री चित्र",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "codex-screenfold",
+  "num": "24",
+  "en": "Codex Screenfold",
+  "hi": "कोडेक्स",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "delft-tiles",
+  "num": "25",
+  "en": "Blue Tiles (Delft / Azulejo)",
+  "hi": "नीली टाइलें",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "batik",
+  "num": "26",
+  "en": "Batik",
+  "hi": "बाटिक",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "ebru-marbling",
+  "num": "27",
+  "en": "Ebru Marbling",
+  "hi": "एब्रू मार्बलिंग",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "tenango-embroidery",
+  "num": "28",
+  "en": "Tenango Embroidery",
+  "hi": "टेनांगो कढ़ाई",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "cross-stitch",
+  "num": "29",
+  "en": "Cross-stitch",
+  "hi": "क्रॉस-स्टिच",
+  "category_en": "World Folk",
+  "status": "draft"
+ },
+ {
+  "slug": "claymation",
+  "num": "30",
+  "en": "Claymation",
+  "hi": "क्लेमेशन",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "sand-animation",
+  "num": "31",
+  "en": "Sand Animation",
+  "hi": "रेत एनिमेशन",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "paint-on-glass",
+  "num": "32",
+  "en": "Paint-on-Glass",
+  "hi": "काँच पर पेंटिंग",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "pinscreen",
+  "num": "33",
+  "en": "Pinscreen",
+  "hi": "पिनस्क्रीन",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "rotoscope",
+  "num": "34",
+  "en": "Rotoscope",
+  "hi": "रोटोस्कोप",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "collage-cutout",
+  "num": "35",
+  "en": "Cut-paper Collage",
+  "hi": "कोलाज",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "felt-stopmotion",
+  "num": "36",
+  "en": "Felt Stop-motion",
+  "hi": "फ़ेल्ट स्टॉप-मोशन",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "knit-world",
+  "num": "37",
+  "en": "Knitted World",
+  "hi": "बुना हुआ संसार",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "origami",
+  "num": "38",
+  "en": "Origami",
+  "hi": "ओरिगामी",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "flipbook",
+  "num": "39",
+  "en": "Flipbook",
+  "hi": "फ़्लिपबुक",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "zoetrope",
+  "num": "40",
+  "en": "Zoetrope",
+  "hi": "ज़ोइट्रोप",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "manga-screentone",
+  "num": "41",
+  "en": "Manga Screentone",
+  "hi": "मांगा स्क्रीनटोन",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "kinetic-type",
+  "num": "42",
+  "en": "Kinetic Typography",
+  "hi": "काइनेटिक टाइपोग्राफी",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "cel-shaded-3d",
+  "num": "43",
+  "en": "Cel-shaded 3D",
+  "hi": "सेल-शेडेड 3D",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "wooden-toy",
+  "num": "44",
+  "en": "Wooden Toy",
+  "hi": "लकड़ी के खिलौने",
+  "category_en": "Animation Techniques",
+  "status": "draft"
+ },
+ {
+  "slug": "pointillism",
+  "num": "45",
+  "en": "Pointillism",
+  "hi": "बिंदुवाद",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "cubism",
+  "num": "46",
+  "en": "Cubism",
+  "hi": "घनवाद",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "futurism",
+  "num": "47",
+  "en": "Futurism",
+  "hi": "फ़्यूचरिज़्म",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "bauhaus",
+  "num": "48",
+  "en": "Bauhaus",
+  "hi": "बाउहाउस",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "de-stijl",
+  "num": "49",
+  "en": "De Stijl",
+  "hi": "दे स्टाइल",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "expressionist-set",
+  "num": "50",
+  "en": "Expressionist Set",
+  "hi": "एक्सप्रेशनिस्ट सेट",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "surreal-dream",
+  "num": "51",
+  "en": "Surreal Dreamscape",
+  "hi": "अतियथार्थ स्वप्नलोक",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "fauvism",
+  "num": "52",
+  "en": "Fauvism",
+  "hi": "फ़ॉविज़्म",
+  "category_en": "Art Movements",
+  "status": "draft"
+ },
+ {
+  "slug": "vaporwave",
+  "num": "53",
+  "en": "Vaporwave",
+  "hi": "वेपरवेव",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "synthwave",
+  "num": "54",
+  "en": "Synthwave",
+  "hi": "सिंथवेव",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "frutiger-aero",
+  "num": "55",
+  "en": "Frutiger Aero",
+  "hi": "फ़्रूटिगर एरो",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "y2k-chrome",
+  "num": "56",
+  "en": "Y2K Chrome",
+  "hi": "Y2K क्रोम",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "liquid-glass",
+  "num": "57",
+  "en": "Liquid Glass UI",
+  "hi": "लिक्विड ग्लास UI",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "datamosh",
+  "num": "58",
+  "en": "Datamosh",
+  "hi": "डेटामोश",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "oscilloscope",
+  "num": "59",
+  "en": "Oscilloscope Art",
+  "hi": "ऑसिलोस्कोप आर्ट",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "vector-arcade",
+  "num": "60",
+  "en": "Vector Arcade",
+  "hi": "वेक्टर आर्केड",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "thermal-vision",
+  "num": "61",
+  "en": "Thermal Vision",
+  "hi": "थर्मल विज़न",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "x-ray",
+  "num": "62",
+  "en": "X-ray",
+  "hi": "एक्स-रे",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "flow-field",
+  "num": "63",
+  "en": "Flow-field Generative",
+  "hi": "जनरेटिव फ़्लो फ़ील्ड",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "voxel",
+  "num": "64",
+  "en": "Voxel World",
+  "hi": "वॉक्सल संसार",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "kaleidoscope",
+  "num": "65",
+  "en": "Kaleidoscope",
+  "hi": "कैलिडोस्कोप",
+  "category_en": "Internet & Digital",
+  "status": "draft"
+ },
+ {
+  "slug": "film-noir",
+  "num": "66",
+  "en": "Film Noir",
+  "hi": "फ़िल्म नोयर",
+  "category_en": "Cinema Eras",
+  "status": "draft"
+ },
+ {
+  "slug": "grindhouse-70s",
+  "num": "67",
+  "en": "70s Grindhouse",
+  "hi": "70s ग्राइंडहाउस",
+  "category_en": "Cinema Eras",
+  "status": "draft"
+ }
+]

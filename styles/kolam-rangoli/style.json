@@ -1,0 +1,26 @@
+{
+ "slug": "kolam-rangoli",
+ "num": "14",
+ "en": "Kolam / Rangoli",
+ "hi": "कोलम / रंगोली",
+ "cn": "科拉姆 / 兰果利",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a lane of doorsteps at dawn, each kolam drawn in rice flour around its dot grid by an unseen hand, until the loops join into one line running down the whole street.",
+ "line_hi": "प्रस्तावित डेमो: भोर में एक गली की देहलीज़ें, जहाँ एक अनदेखा हाथ हर बिंदु-जाल के चारों ओर चावल के आटे से कोलम बनाता है, जब तक सारी रेखाएँ जुड़कर पूरी गली में एक ही रेखा न बन जाएँ।",
+ "line_cn": "拟定演示：黎明时分一条小巷的门槛，一只看不见的手用米粉绕着点阵画出科拉姆，直到所有回环连成贯穿整条街的一根线。",
+ "uses": [
+  "Mathematics & patterns",
+  "Festivals & daily rituals",
+  "Community stories"
+ ],
+ "nearest": [
+  "one-line",
+  "chalkboard"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "vaporwave",
+ "num": "53",
+ "en": "Vaporwave",
+ "hi": "वेपरवेव",
+ "cn": "蒸汽波",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: the last night of a closed shopping mall told by its lost-and-found desk, where each forgotten object opens in its own pastel window and turns slowly in the void.",
+ "line_hi": "प्रस्तावित डेमो: बंद हो चुके एक शॉपिंग मॉल की आख़िरी रात, उसकी खोया-पाया मेज़ की ज़बानी; हर भूली हुई चीज़ अपनी पेस्टल खिड़की में खुलती है और शून्य में धीरे-धीरे घूमती है।",
+ "line_cn": "拟议演示：一座已关闭的购物中心的最后一夜，由它的失物招领台讲述；每件被遗忘的物品都在自己的粉彩窗口中打开，在虚空里缓缓旋转。",
+ "uses": [
+  "Music videos",
+  "Nostalgia and internet-culture explainers",
+  "Fashion and lifestyle promos"
+ ],
+ "nearest": [
+  "memphis-diorama",
+  "backrooms",
+  "desktop-flythrough"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

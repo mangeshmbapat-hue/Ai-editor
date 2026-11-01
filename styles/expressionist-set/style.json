@@ -1,0 +1,27 @@
+{
+ "slug": "expressionist-set",
+ "num": "50",
+ "en": "Expressionist Set",
+ "hi": "एक्सप्रेशनिस्ट सेट",
+ "cn": "表现主义布景",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A lamplighter walks a crooked painted street where every shadow is painted on the walls, until one shadow starts to move without him.",
+ "line_hi": "प्रस्तावित डेमो: बत्ती जलाने वाला एक आदमी एक टेढ़ी-मेढ़ी रंगी हुई गली से गुज़रता है जहाँ हर परछाईं दीवारों पर पेंट की गई है, जब तक कि एक परछाईं उसके बिना चलने न लगे।",
+ "line_cn": "拟议演示：点灯人走过一条歪斜的彩绘街道，每一道影子都画在墙上，直到其中一道影子不等他就自己动了起来。",
+ "uses": [
+  "Mystery & horror",
+  "Theatre promos",
+  "Psychological stories"
+ ],
+ "nearest": [
+  "silent-film",
+  "woodcut",
+  "shadow-puppet"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,26 @@
+{
+ "slug": "frutiger-aero",
+ "num": "55",
+ "en": "Frutiger Aero",
+ "hi": "फ़्रूटिगर एरो",
+ "cn": "Frutiger Aero 光泽水感风",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a single raindrop travels from a cloud to a glossy green hillside spring, passing through bubbles that each hold a small clean-energy machine at work.",
+ "line_hi": "प्रस्तावित डेमो: बारिश की एक बूँद बादल से एक चमकदार हरी पहाड़ी के झरने तक जाती है, रास्ते में ऐसे बुलबुलों से गुज़रती है जिनमें से हर एक में कोई छोटी स्वच्छ-ऊर्जा मशीन काम कर रही है।",
+ "line_cn": "拟议演示：一滴雨从云端落向光亮的绿色山坡上的泉眼，途中穿过一个个气泡，每个气泡里都有一台正在工作的小型清洁能源机器。",
+ "uses": [
+  "Clean-tech and wellness brands",
+  "Science for kids",
+  "App onboarding"
+ ],
+ "nearest": [
+  "glass-product",
+  "lowpoly-island"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

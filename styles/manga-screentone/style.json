@@ -1,0 +1,27 @@
+{
+ "slug": "manga-screentone",
+ "num": "41",
+ "en": "Manga Screentone",
+ "hi": "मांगा स्क्रीनटोन",
+ "cn": "漫画网点",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A night-shift baker races the sunrise to finish one perfect loaf, told in panels that cut, tone and burst into speed lines.",
+ "line_hi": "प्रस्तावित डेमो: रात की पाली का एक बेकर सूरज उगने से पहले एक परफ़ेक्ट डबलरोटी पूरी करने की होड़ में है; कहानी पैनलों में कटती है, टोन से भरती है और स्पीड लाइनों में फूट पड़ती है।",
+ "line_cn": "拟议演示：一位夜班面包师要赶在日出前烤好一条完美的面包，故事在分格中切换、贴上网点、迸出速度线。",
+ "uses": [
+  "Sports & action",
+  "Youth campaigns",
+  "Serialised stories"
+ ],
+ "nearest": [
+  "halftone-dossier",
+  "cel-anime-80s",
+  "ink-wash"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

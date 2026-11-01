@@ -1,0 +1,27 @@
+{
+ "slug": "kalamkari",
+ "num": "04",
+ "en": "Kalamkari",
+ "hi": "कलमकारी",
+ "cn": "卡拉姆卡里布画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: how a river town's ferry works, told in pen-drawn cloth panels where each red area appears only after an invisible mordant is painted and the cloth is dipped in the dye bath.",
+ "line_hi": "प्रस्तावित डेमो: नदी किनारे के एक कस्बे की नाव-सेवा कैसे चलती है, कलम से बने कपड़े के पैनलों में, जहाँ हर लाल हिस्सा अदृश्य मॉर्डेंट लगाने और कपड़े को रंग के कुंड में डुबोने के बाद ही उभरता है।",
+ "line_cn": "拟定演示：讲述一座河镇的渡船如何运作，画在笔绘布画格中，每一块红色都要先涂上看不见的媒染剂、把布浸入染缸后才显现。",
+ "uses": [
+  "Process explainers",
+  "Heritage & crafts",
+  "Episodic narratives"
+ ],
+ "nearest": [
+  "ukiyoe",
+  "watercolor",
+  "risograph"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

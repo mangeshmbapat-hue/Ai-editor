@@ -1,0 +1,27 @@
+{
+ "slug": "stitched-tapestry",
+ "num": "21",
+ "en": "Stitched Tapestry",
+ "hi": "कढ़ाई टेपेस्ट्री",
+ "cn": "刺绣长卷",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a village builds a stone bridge along one long linen strip, each stage sewn in as the camera slides, while creatures in the borders argue about whether it will hold.",
+ "line_hi": "प्रस्तावित डेमो: एक लंबी लिनन पट्टी पर गाँव पत्थर का पुल बनाता है; कैमरा सरकता है तो हर चरण कढ़ाई में उभरता है, और किनारों पर बने जीव बहस करते हैं कि पुल टिकेगा या नहीं।",
+ "line_cn": "拟议演示：一个村庄在一条长长的亚麻布带上修建石桥，镜头横移时每个阶段被一针一线绣出来，而边框里的小动物们争论这座桥到底能不能撑住。",
+ "uses": [
+  "Chronicles & histories",
+  "Community and company stories",
+  "Journeys & supply chains"
+ ],
+ "nearest": [
+  "printed-long-take",
+  "watercolor",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

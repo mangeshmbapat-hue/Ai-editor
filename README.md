@@ -50,6 +50,10 @@ These are repository skills, not automatically installed plugins. Hosts that loa
 
 For image references, manual video import and review commands, follow the [walkthrough](docs/WALKTHROUGH.md). The [data contract](docs/CONTRACT.md) defines plan and review formats. The [SOP](docs/SOP.md) defines decision and completion rules.
 
+## Style library (drafts)
+
+[`styles/`](styles/README.md) holds 67 draft style prompts (Indian traditions, world folk arts, animation techniques, art movements, internet/digital looks, cinema eras) for films rendered in code, in the Lemo-Opuscar `STYLE.md` format. They are written prompts with **no demo film yet**; treat them as creative-direction references, not tested looks.
+
 ## Next implementation stages
 
 The next useful milestone is a tested image API adapter and video API adapter, backed by persisted jobs, credentials outside the repo, budget limits and provider-job reconciliation. Then add the dashboard, provider-specific prompt compilers and optional MCP access. [Architecture and roadmap](docs/ARCHITECTURE.md).

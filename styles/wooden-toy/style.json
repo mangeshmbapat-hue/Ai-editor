@@ -1,0 +1,27 @@
+{
+ "slug": "wooden-toy",
+ "num": "44",
+ "en": "Wooden Toy",
+ "hi": "लकड़ी के खिलौने",
+ "cn": "木制玩具",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A turned wooden ring is sliced like bread, and every slice is a different animal that rolls off to join a pull-along parade across the table.",
+ "line_hi": "प्रस्तावित डेमो: खराद पर बने लकड़ी के एक छल्ले को ब्रेड की तरह काटा जाता है, और हर टुकड़ा एक अलग जानवर निकलता है जो लुढ़ककर मेज़ के पार चलती खिलौनों की परेड में शामिल हो जाता है।",
+ "line_cn": "拟议演示：一只车床旋出的木环像面包一样被切开，每一片都是不同的动物，滚下来加入横穿桌面的拖拉玩具游行。",
+ "uses": [
+  "Kids & education",
+  "Craft & heritage brands",
+  "Festive greetings"
+ ],
+ "nearest": [
+  "brick-toy",
+  "paper-popup",
+  "tilt-shift"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "phad-scroll",
+ "num": "06",
+ "en": "Phad Scroll",
+ "hi": "फड़",
+ "cn": "法德卷轴画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a camel caravan's crossing of the desert, painted on one long cloth scroll in the dark, where only the part the storyteller's lamp touches lights up and moves.",
+ "line_hi": "प्रस्तावित डेमो: रेगिस्तान पार करता एक ऊँट कारवाँ, अँधेरे में एक लंबे कपड़े के फड़ पर, जहाँ सिर्फ़ वही हिस्सा जगमगाता और हिलता है जिसे कथावाचक का दीया छूता है।",
+ "line_cn": "拟定演示：一支骆驼商队穿越沙漠，画在黑暗中的一整幅长布卷上，只有说唱人的油灯照到的部分才亮起并动起来。",
+ "uses": [
+  "Journeys & epics",
+  "Oral storytelling",
+  "Timelines"
+ ],
+ "nearest": [
+  "shadow-puppet",
+  "ukiyoe",
+  "printed-long-take"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

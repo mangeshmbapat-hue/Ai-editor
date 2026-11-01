@@ -1,0 +1,27 @@
+{
+ "slug": "yarn-painting",
+ "num": "17",
+ "en": "Yarn Painting",
+ "hi": "धागा चित्र",
+ "cn": "毛线画",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: how a mountain spring becomes a valley's river, coiled strand by strand into one wax board, each shape outlined in a contrasting yarn and filled with echo lines.",
+ "line_hi": "प्रस्तावित डेमो: पहाड़ का एक सोता कैसे घाटी की नदी बनता है, मोम लगे एक बोर्ड पर धागा-धागा लपेटकर, हर आकृति विपरीत रंग के धागे से घिरी और समानांतर रेखाओं से भरी।",
+ "line_cn": "拟定演示：山间泉水如何成为山谷的河流，在一块蜡板上一根根盘出毛线，每个形状先用对比色毛线勾边，再用沿轮廓的回纹线填满。",
+ "uses": [
+  "Nature & ecology",
+  "Children's education",
+  "Craft & process"
+ ],
+ "nearest": [
+  "one-line",
+  "crayon-book",
+  "stained-glass"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

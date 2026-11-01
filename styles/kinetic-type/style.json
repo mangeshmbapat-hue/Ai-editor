@@ -1,0 +1,27 @@
+{
+ "slug": "kinetic-type",
+ "num": "42",
+ "en": "Kinetic Typography",
+ "hi": "काइनेटिक टाइपोग्राफी",
+ "cn": "动态文字排版",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: The shy word “hello” tries to join a loud, crowded sentence and only finds its place when the beat drops out.",
+ "line_hi": "प्रस्तावित डेमो: शर्मीला शब्द “हैलो” एक शोरगुल भरे, भीड़ वाले वाक्य में शामिल होने की कोशिश करता है और अपनी जगह तभी पाता है जब बीट थम जाती है।",
+ "line_cn": "拟议演示：害羞的单词“hello”想挤进一个吵闹拥挤的句子，直到节拍突然停下，它才找到自己的位置。",
+ "uses": [
+  "Poetry & lyric videos",
+  "Speeches & manifestos",
+  "Social explainers"
+ ],
+ "nearest": [
+  "swiss-motion",
+  "spy-titles",
+  "pictogram-motion"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

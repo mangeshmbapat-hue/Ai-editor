@@ -1,0 +1,26 @@
+{
+ "slug": "knit-world",
+ "num": "37",
+ "en": "Knitted World",
+ "hi": "बुना हुआ संसार",
+ "cn": "针织世界",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a knitted fishing village unravels into one long strand when a loose end snags on a boat, and the strand knits the village back up as a new shape.",
+ "line_hi": "प्रस्तावित डेमो: एक ढीला सिरा नाव में अटकते ही ऊन से बुना मछुआरों का गाँव एक लंबे धागे में उधड़ जाता है, और वही धागा गाँव को नए रूप में फिर बुन देता है।",
+ "line_cn": "建议演示：一根线头挂在船上，针织的渔村被拆成一根长线，这根线又把村子重新织成一个新的样子。",
+ "uses": [
+  "Children's story",
+  "Systems and connections explainer",
+  "Seasonal film"
+ ],
+ "nearest": [
+  "brick-toy",
+  "pixel-rpg"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

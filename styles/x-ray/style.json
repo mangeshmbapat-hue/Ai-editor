@@ -1,0 +1,27 @@
+{
+ "slug": "x-ray",
+ "num": "62",
+ "en": "X-ray",
+ "hi": "एक्स-रे",
+ "cn": "X光",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a wind-up tin toy is X-rayed on a lightbox and then watched live, revealing step by step the spring and gears that make it hop.",
+ "line_hi": "प्रस्तावित डेमो: चाबी वाले टिन के खिलौने का पहले लाइटबॉक्स पर एक्स-रे होता है और फिर लाइव, जिससे क़दम-दर-क़दम वह स्प्रिंग और गियर दिखते हैं जो उसे फुदकाते हैं।",
+ "line_cn": "拟议演示：一只上发条的铁皮玩具先在灯箱上拍X光片，再进行实时透视，一步步揭示让它蹦跳的发条和齿轮。",
+ "uses": [
+  "How things work",
+  "Product & engineering",
+  "Museum & conservation"
+ ],
+ "nearest": [
+  "archive-lighttable",
+  "teardown",
+  "microscope"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

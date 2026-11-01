@@ -1,0 +1,27 @@
+{
+ "slug": "egyptian-register",
+ "num": "23",
+ "en": "Egyptian Registers",
+ "hi": "मिस्री चित्र",
+ "cn": "埃及横带壁画",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one loaf of bread traced from field to table, register by register, every worker labelled with the quantity they handled.",
+ "line_hi": "प्रस्तावित डेमो: एक रोटी का सफ़र खेत से थाली तक, पट्टी-दर-पट्टी, और हर कामगार के पास लिखा हुआ कि उसने कितना अनाज सँभाला।",
+ "line_cn": "拟议演示：一个面包从田间到餐桌的旅程，一层横带接一层横带地展开，每位劳作者身旁都标注着他经手的数量。",
+ "uses": [
+  "Processes & supply chains",
+  "Heritage & museums",
+  "Social structures"
+ ],
+ "nearest": [
+  "pictogram-motion",
+  "papercut-red",
+  "shadow-puppet"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "madhubani",
+ "num": "01",
+ "en": "Madhubani",
+ "hi": "मधुबनी",
+ "cn": "马杜巴尼画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one monsoon day at a village pond, where every fish, lotus and bird is drawn in a double outline and then hatched and patterned until no bare ground is left.",
+ "line_hi": "प्रस्तावित डेमो: गाँव के एक तालाब पर मानसून का एक दिन, जहाँ हर मछली, कमल और पक्षी पहले दोहरी रेखा में बनता है और फिर रेखाओं व पैटर्न से भरता जाता है, जब तक कोई खाली ज़मीन न बचे।",
+ "line_cn": "拟定演示：村塘边的一个雨季日子，每条鱼、每朵莲花、每只鸟都先以双线勾出，再用排线和纹样填满，直到不留一处空白。",
+ "uses": [
+  "Folk tales & proverbs",
+  "Nature & ecology",
+  "Festivals & family occasions"
+ ],
+ "nearest": [
+  "papercut-red",
+  "woodcut",
+  "crayon-book"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

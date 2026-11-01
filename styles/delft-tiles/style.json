@@ -1,0 +1,27 @@
+{
+ "slug": "delft-tiles",
+ "num": "25",
+ "en": "Blue Tiles (Delft / Azulejo)",
+ "hi": "नीली टाइलें",
+ "cn": "代尔夫特与葡式蓝瓷砖",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a kitchen wall where each tile shows one hour of a canal-side day, until at dusk the tiles join into a single panel of the whole street.",
+ "line_hi": "प्रस्तावित डेमो: रसोई की एक दीवार जहाँ हर टाइल नहर किनारे के दिन का एक घंटा दिखाती है, और शाम ढलते सारी टाइलें मिलकर पूरी गली का एक बड़ा चित्र बन जाती हैं।",
+ "line_cn": "拟议演示：一面厨房瓷砖墙，每块瓷砖画着运河边一天中的一个小时，到黄昏时所有瓷砖拼合成整条街道的一幅大画。",
+ "uses": [
+  "City & harbour stories",
+  "Trades & crafts",
+  "Domestic life"
+ ],
+ "nearest": [
+  "ink-wash",
+  "stained-glass",
+  "watercolor"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

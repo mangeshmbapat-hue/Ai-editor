@@ -1,0 +1,26 @@
+{
+ "slug": "tenango-embroidery",
+ "num": "28",
+ "en": "Tenango Embroidery",
+ "hi": "टेनांगो कढ़ाई",
+ "cn": "特南戈刺绣",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a forest waking at dawn, stitched creature by creature on white cotton, each animal arriving in its own thread colour until no gap is left.",
+ "line_hi": "प्रस्तावित डेमो: भोर में जागता जंगल, सफ़ेद सूती कपड़े पर एक-एक जीव करके कढ़ा जाता है, हर जानवर अपने धागे के रंग में आता है, जब तक कोई ख़ाली जगह नहीं बचती।",
+ "line_cn": "拟议演示：黎明时苏醒的森林，在白棉布上一只接一只地绣出来，每只动物都带着自己的线色登场，直到布面再无空隙。",
+ "uses": [
+  "Nature & biodiversity",
+  "Community stories",
+  "Children's stories"
+ ],
+ "nearest": [
+  "papercut-red",
+  "pictogram-motion"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

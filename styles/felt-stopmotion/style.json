@@ -1,0 +1,26 @@
+{
+ "slug": "felt-stopmotion",
+ "num": "36",
+ "en": "Felt Stop-motion",
+ "hi": "फ़ेल्ट स्टॉप-मोशन",
+ "cn": "羊毛毡定格动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a felted sheep loses its fleece to the wind and follows the tufts down a felt hillside to find they have become clouds, snow and a scarf.",
+ "line_hi": "प्रस्तावित डेमो: फ़ेल्ट की एक भेड़ का ऊन हवा उड़ा ले जाती है; वह फ़ेल्ट की पहाड़ी से नीचे उन गुच्छों के पीछे जाती है और पाती है कि वे बादल, बर्फ़ और एक मफ़लर बन गए हैं।",
+ "line_cn": "建议演示：一只羊毛毡小羊的羊毛被风吹走，它沿着毛毡山坡追下去，发现那些毛团变成了云、雪和一条围巾。",
+ "uses": [
+  "Children's story",
+  "Gentle brand film",
+  "Nature fable"
+ ],
+ "nearest": [
+  "brick-toy",
+  "tilt-shift"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

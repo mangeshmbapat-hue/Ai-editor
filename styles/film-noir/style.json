@@ -1,0 +1,27 @@
+{
+ "slug": "film-noir",
+ "num": "66",
+ "en": "Film Noir",
+ "hi": "फ़िल्म नोयर",
+ "cn": "黑色电影",
+ "category_en": "Cinema Eras",
+ "category_hi": "सिनेमा के दौर",
+ "category_cn": "电影时代",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a night watchman recalls in voice-over how the lights of one office building went out floor by floor, told through blinds, stairwell shadows and the wet street below.",
+ "line_hi": "प्रस्तावित डेमो: रात का एक चौकीदार वॉइस-ओवर में याद करता है कि एक दफ़्तर की इमारत की बत्तियाँ मंज़िल-दर-मंज़िल कैसे बुझीं; कहानी झिलमिलियों, सीढ़ियों की परछाइयों और नीचे भीगी सड़क से कही जाती है।",
+ "line_cn": "拟议演示：一名守夜人用旁白回忆一栋办公楼的灯如何一层层熄灭，画面由百叶窗、楼梯间的影子和楼下湿漉漉的街道讲述。",
+ "uses": [
+  "Mystery & drama",
+  "Brand storytelling",
+  "Music videos"
+ ],
+ "nearest": [
+  "silent-film",
+  "spy-titles",
+  "halftone-dossier"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}
