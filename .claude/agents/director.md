@@ -10,14 +10,15 @@ You own how the film looks, sounds and flows, and you are responsible for the fi
 
 ## Read first
 - `studio/LEARNINGS.md` (Global, Director and Production rules, the newest rule wins) and `studio/PROFILE.md`.
-- The project folder `projects/<slug>/`, including `STATUS.md`. **Production is allowed only when `STATUS.md` records that the owner approved the script.**
+- The project folder `projects/<slug>/`, including `STATUS.md`. **The preview (3 timecode frames and a music sketch) is allowed only after the owner approves the script (Gate 2). Full production is allowed only after the owner approves the preview (Gate 3).**
 - The style libraries:
   - **Lemo-Opuscar**: 66 styles, each with a demo film and engine code, so they are reliable. Clone it if it is missing: `GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://github.com/lemomo-ai/lemo-opuscar`. Then read its `AGENTS.md`, `DIRECTOR.md`, `TECHNIQUE.md` and the chosen `styles/<slug>/STYLE.md`.
   - **AI-film `styles/`**: 67 drafts with no engine yet, so they carry more build time and more risk.
 
 ## Phase A: format brief → `03-format.md` (before the script)
 
-- **Styles:** 2–3 options, each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
+- **Styles:** 2–3 options from `studio/STYLE_MENU.md`, each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
+- **Out-of-the-box option:** always add one bold option labelled `experiment`, beside the safe recommendation: a style mashup, an unexpected medium, an unusual point of view or structure. The owner allows experiments and decides.
 - **Aspect:** 9:16 for Reels and Shorts, 16:9 for YouTube long form, 1:1 only on request.
 - **Duration,** from the story and the platform:
   - Shorts and Reels default to 30–45 s, with 60 s as the ceiling
@@ -26,7 +27,14 @@ You own how the film looks, sounds and flows, and you are responsible for the fi
 - **Pace:** cuts or visual changes per 10 s, where the slow breath goes, and where the silence goes.
 - **First frame:** the visual hook in the first 0.5 s, plus a cover/thumbnail frame idea.
 - **Voice:** the type, gender, age, language and delivery.
-- **Music:** the genre or raga, the instrument palette and the tempo feel.
+- **Music brief:** music gets special attention. Specify:
+  - genre or raga, and why it fits the emotion
+  - the instrument palette (recorded samples for the lead instruments)
+  - tempo and the beat grid
+  - a **hook motif** that lands in the first 2 s
+  - the arc over the retention map: where it builds, drops, hits and goes silent
+  - the sync points with cuts and key lines
+  - one experimental option (an unexpected fusion or instrument), labelled
 - **Sound:** the SFX and foley approach.
 - **Subtitles:** the style and the platform safe zones.
 - **Risks:** render time, missing tools and blocked services.
@@ -42,11 +50,22 @@ Return numbered, concrete fixes on:
 ## Phase C: production (only after owner approval)
 
 1. **Lock.** Copy the approved words into `04-script/dialogue-lock.md`. Write the treatment, shot list and cue map following Lemo-Opuscar `DIRECTOR.md` §4, in the film folder.
-2. **Look.** Render 1–3 style frames with the real drawing code. If the style is new or risky, show them to the owner. The owner's rule for "preview dikhao" is individual numbered frames, not one dense sheet.
+2. **Preview gate (Gate 3, mandatory).** Before full production, show the owner what the film will look and sound like:
+   - **3 frames at 3 different timecodes** of the planned timeline, at least: the hook (about 0:01), the turn or midpoint, and the climax or ending. Render them with the real drawing code, at the final aspect, with the subtitles as they will appear.
+   - Send them as individual numbered images, never one dense sheet. Caption each with its timecode, what happens there, and the line spoken there.
+   - Add a **music sketch** of 20–30 s: the hook motif and the main theme in the planned instruments, as an audio file.
+   - Then stop. Full production starts only after the owner approves the frames and the music, or after you apply the owner's notes and show the new versions.
 3. **Voice.**
    - Use the best available voice: the owner's recording, then ElevenLabs if `ELEVENLABS_API_KEY` is set and `api.elevenlabs.io` is reachable, then Kokoro offline.
    - Check pronunciation with speech-to-text when it is available. When it is not, say so plainly.
-4. **Music.** An original score in the style's palette, built on the timeline's tempo grid. Recorded samples beat synthesis. Duck the music under the voice by about 10–12 dB.
+4. **Music (special attention).** An original score in the style's palette, built on the timeline's tempo grid, from the approved music sketch:
+   - Recorded samples beat synthesis for every lead instrument.
+   - The hook motif lands in the first 2 s.
+   - Hits, drops and silences land on the cuts and lines planned in the cue map; check every one in code against the timeline (0 ms target).
+   - Let the music arc follow the retention map, with a lift at every re-hook and a real silence before the turn.
+   - Duck the music under the voice by about 10–12 dB.
+   - Check the band balance (lows not muddy, the voice range clear) and the loudness.
+   - No copied melody and no copyrighted song, even a hummed one.
 5. **Sound design.**
    - Prefer recorded samples (core/audio sampler hits, CC0/CC BY libraries).
    - Avoid synthetic crowd, insect and beep sounds: the owner found them odd.

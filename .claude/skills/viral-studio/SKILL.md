@@ -25,10 +25,12 @@ You are the orchestrator, the producer. The four specialists are subagents in `.
 | 5. Critique | director (flow, feasibility, timing) + social (hooks, shareability) | numbered fixes | each other |
 | 6. Revision | writer | `SCRIPT_v2.md` + change list | – |
 | **Gate 2: approve script + format** | owner | an explicit "approved" | **mandatory** (see `skills/ai-writer/SKILL.md`) |
-| 7. Production | director | the film: style frames → voice → music → SFX → picture → edit → mix → QC | – |
-| **Gate 3: final cut** | owner | approval or notes | mandatory before the publish kit is called final |
-| 8. Publishing kit | social | `07-publish-kit.md` | – |
-| 9. Learn | you | updates to `studio/LEARNINGS.md` | – |
+| 7. Preview | director | **3 frames at 3 timecodes** (hook ≈ 0:01, the turn or midpoint, the climax or ending), rendered with the real code at the final aspect, plus a 20–30 s **music sketch** | – |
+| **Gate 3: approve look + music** | owner | an explicit "approved" or notes | **mandatory**. Send the frames as individual numbered images, each captioned with its timecode, what happens and the line spoken; send the music sketch as audio |
+| 8. Production | director | the film: voice → music → SFX → picture → edit → mix → QC | – |
+| **Gate 4: final cut** | owner | approval or notes | mandatory before the publish kit is called final |
+| 9. Publishing kit | social | `07-publish-kit.md` | – |
+| 10. Learn | you | updates to `studio/LEARNINGS.md` | – |
 
 At Gate 2, show the owner one compact packet:
 - the topic and why now
@@ -40,6 +42,15 @@ At Gate 2, show the owner one compact packet:
 - the risks
 
 Then **stop**. Silence or a question about the packet is not approval. On notes, send them to the writer (and to the director if they touch the format), produce version N+1 with a change list, and show it again.
+
+## The owner's standing rules for every run
+- **Music gets special attention** at every stage:
+  - social notes the sound trends
+  - the researcher finds authentic instruments and forms
+  - the writer writes the music cues
+  - the director writes a music brief, makes a music sketch for Gate 3, and checks every sync point in the final score
+- **Out-of-the-box experiments are allowed.** Every format brief and script packet carries one bold option labelled `experiment` beside the safe recommendation; the owner decides.
+- **The nightly scan** (`studio/NIGHTLY.md`) runs automatically every night and suggests 10 topics with a style for each. When the owner replies with a pick ("/viral-studio #N"), start at stage 2 with that topic.
 
 ## How to run each agent
 - Use the Agent tool with `subagent_type` set to the agent's name. If a session does not list the project agents yet, use `general-purpose` with the prompt "Read `.claude/agents/<name>.md` and act as that agent".

@@ -25,9 +25,13 @@ owner's ask ─► social: trend board + 3 pitches ─► [Gate 1: pick, or "khu
                          │
             [Gate 2: owner approves script + format]   ◄── nothing is produced before this
                          │
-   director: style frames → voice → music → SFX → picture → edit → mix → QC → final/
+   director: 3 frames at 3 timecodes + a 20–30 s music sketch
                          │
-            [Gate 3: owner approves the final cut] ─► social: publishing kit
+            [Gate 3: owner approves look + music]       ◄── full production only after this
+                         │
+   director: voice → music → SFX → picture → edit → mix → QC → final/
+                         │
+            [Gate 4: owner approves the final cut] ─► social: publishing kit
                          │
             studio-learn: owner feedback → studio/LEARNINGS.md
 ```
@@ -41,7 +45,10 @@ owner's ask ─► social: trend board + 3 pitches ─► [Gate 1: pick, or "khu
 - Feedback of any kind ("ye hook weak hai", "aisa SFX mat lagana") is recorded by `/studio-learn` in `studio/LEARNINGS.md`, and every agent reads it before it works.
 
 ## Rules that never bend
-- No production before the owner approves the script (Gate 2).
+- No production before the owner approves the script (Gate 2), and none before the owner approves 3 timecode frames and the music sketch (Gate 3).
+- Music gets special attention at every stage.
+- Out-of-the-box experiments are allowed: every brief and script carries one bold option labelled `experiment`.
+- Every night about 10:40 PM IST a scheduled task suggests 10 trending topics with a style for each (`studio/NIGHTLY.md`).
 - No posting, scheduling or messaging on any platform. The owner publishes.
 - No invented facts, trend numbers or sources.
 - At most 3 agents run in parallel.

@@ -49,7 +49,7 @@ class StudioTest(unittest.TestCase):
                 self.assertEqual(fields.get("name"), name)
                 self.assertGreater(len(fields.get("description", "")), 80)
         flow = (SKILLS / "viral-studio" / "SKILL.md").read_text(encoding="utf-8")
-        for agent in ["social", "researcher", "writer", "director", "studio-learn", "Gate 2"]:
+        for agent in ["social", "researcher", "writer", "director", "studio-learn", "Gate 2", "Gate 3", "3 frames at 3 timecodes", "music sketch", "experiment", "studio/NIGHTLY.md"]:
             self.assertIn(agent, flow)
 
     def test_learning_ledger(self):
@@ -73,6 +73,23 @@ class StudioTest(unittest.TestCase):
         status = (STUDIO / "templates" / "STATUS.md").read_text(encoding="utf-8")
         self.assertIn("Gate 2", status)
         self.assertIn("blocked until Gate 2", status)
+        self.assertIn("blocked until Gate 3", status)
+        self.assertIn("3 timecode frames", status)
+
+    def test_nightly_scan_and_style_menu(self):
+        nightly = (STUDIO / "NIGHTLY.md").read_text(encoding="utf-8")
+        for needle in ["10 topics", "STYLE_MENU.md", "experiment", "Never post"]:
+            self.assertIn(needle, nightly)
+        menu = (STUDIO / "STYLE_MENU.md").read_text(encoding="utf-8")
+        rows = [l for l in menu.splitlines() if l.startswith("| ") and "`" in l]
+        self.assertGreaterEqual(len(rows), 133)
+        for slug in [p.parent.name for p in (REPO / "styles").glob("*/style.json")]:
+            self.assertIn(f"`{slug}`", menu)
+
+    def test_director_preview_gate_and_music(self):
+        director = (AGENTS / "director.md").read_text(encoding="utf-8")
+        for needle in ["3 frames at 3 different timecodes", "music sketch", "Music (special attention)", "experiment"]:
+            self.assertIn(needle, director)
         self.assertTrue((STUDIO / "templates" / "00-brief.md").exists())
 
 

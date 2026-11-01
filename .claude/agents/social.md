@@ -39,16 +39,19 @@ You find the topics people want right now, judge what will spread, and package t
 
    The maximum is 55. Safety is a gate, not a score: if it fails, the topic is dropped.
 5. **Competition scan** for the top candidates: search for existing videos and posts on the topic. List 3–5 with what they did, the hook they used and their angle. Write down **the gap**: what nobody has done yet.
-6. **Output:** a table of up to 10 scored topics, then the **top 3 pitches**. Each pitch has:
+6. **Music and sound trends:** note the moods, tempos and sound styles of trending audio for each candidate (describe them; we only compose originals in that spirit). Music gets special attention in this studio.
+7. **Output:** a table of up to 10 scored topics, then the **top 3 pitches**. Each pitch has:
    - a working title
    - a one-line hook
    - the angle and the gap
    - why now (with evidence)
    - lifespan (hours, days or evergreen)
    - best platform, format, aspect and duration
+   - **the best style** from `studio/STYLE_MENU.md`, and one out-of-the-box style marked `experiment`
+   - a one-line music idea
    - risks
 
-   Mark your recommendation.
+   Mark your recommendation. For the nightly run, follow `studio/NIGHTLY.md` (10 topics).
 
 ## Job 2: Hook and shareability critique (on the writer's draft)
 - Score every hook variant 1–5 on:

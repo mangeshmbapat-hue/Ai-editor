@@ -10,11 +10,14 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · Record every piece of owner feedback in this file and apply it from then on (the `studio-learn` skill). Source: "jo jo chije batata jau usko update krte jao" (studio)
 - 2026-11-01 · owner · Talk to the owner in Hinglish. Execute clear tasks without asking permission for routine choices; ask only when the answer changes the result. The script and final-cut gates are the owner's rules, not optional questions. Source: owner preferences (all)
 - 2026-11-01 · owner · For a big batch (many styles, many videos), show the list or plan first, then build. Source: "phle list niklao" (style library)
+- 2026-11-01 · owner · Before making a video, show the owner how it will look: **3 frames at 3 different timecodes** (the hook, the turn or midpoint, the climax or ending), rendered with the real code, plus a music sketch. Full production starts only after the owner approves them (Gate 3). Source: "video banane se phele vo kaisi hogi to uske liye mujhe 3 alag alg time code k frames dikahana" (studio)
+- 2026-11-01 · owner · Out-of-the-box experiments are allowed. Every format brief and script packet carries one bold option labelled `experiment` beside the safe recommendation. Source: "out of the box experiment allowed h" (studio)
 - 2026-11-01 · observed · Run at most 3 agents in parallel. Why: seven parallel agents exhausted the owner's 5-hour usage limit. (style library)
 - 2026-11-01 · observed · Start a fresh session for each new film or big batch: everything the studio needs is committed in the repo. Why: this long session hit the owner's 5-hour usage limit a second time while only two agents were running, because every step re-reads the whole conversation. (studio)
 - 2026-11-01 · observed · In the cloud environment, `api.elevenlabs.io`, Hugging Face (Whisper models), Microsoft edge-tts and en.wikipedia.org (WebFetch) are blocked unless the owner allows them in the environment's network settings. WebSearch works. (all)
 
 ## Social
+- 2026-11-01 · owner · Every night (a scheduled task, about 10:40 PM IST) find 10 topics with viral potential, suggest the best style for each from `studio/STYLE_MENU.md` (plus one experiment), and send them to the owner, following `studio/NIGHTLY.md`. Source: "roj raat 11 bje automatically 10 topics dundne or mujhe suggest krne h or unpr konsa style acha rhega vo bhi. virality match krte hue" (studio)
 - 2026-11-01 · owner · Never publish, schedule, comment, DM or edit a profile. Drafts only. Source: owner's AI Socials rules (all)
 - 2026-11-01 · owner · Caption voice: Hinglish by default on Instagram and Facebook; no em dashes; avoid AI clichés ("game-changer", "unlock", "delve", "seamless", "let's dive in", "it's not just X, it's Y"). Source: owner's voice anchor (all)
 
@@ -30,6 +33,7 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · The owner liked the Tholu Bommalata (Indian leather shadow puppet) look for the Ramayana preview. Source: "badiya h ye to" (ramayana)
 
 ## Production
+- 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)
 - 2026-11-01 · owner · BGM, voice, SFX and foley must be top quality. Source: "make sure ki ... bgm or voice sfx foiley vo top quality ka ho" (ramayana)
 - 2026-11-01 · owner · Synthetic sound effects felt odd (noise-based crowd, synthesised bells, beeping crickets). Prefer recorded samples; avoid synthetic crowd, insects and beeps. Source: "isme sound effect thode odd h" (azaadi-1947)
 - 2026-11-01 · owner · Use ElevenLabs for voice and SFX when it is reachable. The key lives only in the environment variable `ELEVENLABS_API_KEY`, never in chat or files. Source: "isko use krke sound or voice over banaya kro" (all)
