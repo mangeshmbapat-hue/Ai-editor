@@ -31,6 +31,7 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · The director handles the whole creative and art direction and keeps the video in flow, from edit to final product. Source: "ek director agent jo puri video ka creative art direction dekhe ... edit se lekr final product" (studio)
 - 2026-11-01 · owner · For "preview dikhao", show individual numbered frames, not one dense contact sheet. Source: owner's director overrides (all)
 - 2026-11-01 · owner · The owner liked the Tholu Bommalata (Indian leather shadow puppet) look for the Ramayana preview. Source: "badiya h ye to" (ramayana)
+- 2026-11-01 · owner · Deliver every finished film with an NLE editor package as well: a timeline the owner can open in Premiere Pro or DaVinci Resolve, cut at the shot boundaries, with separate stems (each VO line, the music stems, SFX, ambience) and the subtitles, so the owner can make small corrections in their own editor. Why: the owner wants to fix small things without waiting for a re-render. Source: "dekho ek option rkho NLE base editor k liye taki thodi bhut correction kr sku" (all)
 
 ## Production
 - 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)
