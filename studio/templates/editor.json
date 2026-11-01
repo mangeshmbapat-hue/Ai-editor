@@ -1,0 +1,21 @@
+{
+  "_about": "Template for the editor package manifest read by studio/editor_package.py. Copy it into the film folder as editor.json and replace every value. Times are seconds on the film's timeline; paths are relative to editor.json. Shots must cover the picture back to back. Stems are post-fader and pre-master. picture_filter is the master's finishing pass (mux.sh grain 2 is noise=c0s=2:allf=t); use an empty string when the master had none.",
+  "title": "<Film title>",
+  "fps": 24,
+  "picture": "out/video_textless.mp4",
+  "picture_textless": true,
+  "picture_filter": "noise=c0s=2:allf=t",
+  "subtitles": "<film>.srt",
+  "shots": [
+    {"name": "hook", "start": 0, "end": 3.5},
+    {"name": "<next shot>", "start": 3.5, "end": 9}
+  ],
+  "audio": [
+    {"track": "VO", "name": "L1", "file": "stems/VO_L1.wav", "start": 0.4, "text": "<the line's locked words>"},
+    {"track": "MUS melody", "file": "stems/MUS_melody.wav", "start": 0},
+    {"track": "SFX foley", "file": "stems/SFX_foley.wav", "start": 0},
+    {"track": "Ambience", "file": "stems/AMB_beds.wav", "start": 0}
+  ],
+  "markers": [{"t": 3.5, "name": "<sync point>", "comment": "<what hits here>"}],
+  "notes": ["<what the owner should know before editing, e.g. the grain is baked into the picture>"]
+}

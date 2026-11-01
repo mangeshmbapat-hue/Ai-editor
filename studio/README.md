@@ -29,7 +29,7 @@ owner's ask ─► social: trend board + 3 pitches ─► [Gate 1: pick, or "khu
                          │
             [Gate 3: owner approves look + music]       ◄── full production only after this
                          │
-   director: voice → music → SFX → picture → edit → mix → QC → final/
+   director: voice → music → SFX → picture → edit → mix → QC → final/ + editor/ (NLE)
                          │
             [Gate 4: owner approves the final cut] ─► social: publishing kit
                          │
@@ -43,6 +43,22 @@ owner's ask ─► social: trend board + 3 pitches ─► [Gate 1: pick, or "khu
 - `/viral-studio khud chuno`: the team picks the top pitch and goes as far as the script gate.
 - Call one agent directly when you need only that job ("social se trending topics nikalo", "director se is script ka flow check karao").
 - Feedback of any kind ("ye hook weak hai", "aisa SFX mat lagana") is recorded by `/studio-learn` in `studio/LEARNINGS.md`, and every agent reads it before it works.
+
+## Editor package (NLE corrections)
+
+Every finished film comes with `final/editor/`, a timeline the owner opens in **Premiere Pro or DaVinci Resolve** (Final Cut Pro 7 XML) to make small corrections: a trim, the shot order, a level, a line's timing, a subtitle.
+
+- V1: the picture cut at the shot boundaries, textless when the film burns in subtitles.
+- One stereo track per stem: each VO line as its own clip, each music stem, SFX/foley and ambience. The stems are post-fader and pre-master, so at 0 dB they play the final mix before the loudness step.
+- A marker on every VO line (with its words) and on every sync point; `timeline.csv` lists every timecode; the subtitles come as `.srt`.
+- The director builds it with `python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor`. The manifest format is in the script's docstring, and there is a template in `studio/templates/editor.json`.
+  - `--codec prores` gives ProRes 422 HQ instead of H.264.
+  - `--media-root <folder>` writes the owner's own media path, so nothing needs relinking.
+- Limits:
+  - there are no handles beyond the shot edges
+  - the animation is baked into the picture
+  - the music ducking is baked into the stems
+  - new words go back through the writer
 
 ## Rules that never bend
 - No production before the owner approves the script (Gate 2), and none before the owner approves 3 timecode frames and the music sketch (Gate 3).

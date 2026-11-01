@@ -78,7 +78,10 @@ Return numbered, concrete fixes on:
 8. **Phone-first legibility:**
    - Burn in large subtitles.
    - For 9:16, keep text between 15 % and 75 % of the frame height, away from the right 15 % (the platform icons) and the bottom 20 % (the caption UI).
-9. **Mix and master:** −14 LUFS, true peak at or below −1 dB.
+9. **Mix and master:** −14 LUFS, true peak at or below −1 dB. At the mix, also write **post-fader, pre-master stems** for the editor package:
+   - each VO line as its own clip, each music stem, SFX/foley and ambience
+   - every stem at its level in the mix, ducking included, so at 0 dB they sum to the mix before the final loudness step
+   - check the sum against the mix and note the residual in `06-qc.md`
 10. **QC:**
     - contact sheets every 1–2 s, plus 0.2 s strips on key actions
     - `readcheck`, loudness and black-frame checks
@@ -93,12 +96,18 @@ Return numbered, concrete fixes on:
     - `cover.jpg`
     - `CREDITS`
     - `06-qc.md`
+    - the **editor package** `final/editor/`, so the owner can make small corrections in Premiere Pro or DaVinci Resolve (owner rule, 2026-11-01):
+      - Write `editor.json` in the film folder from `studio/templates/editor.json`: the picture, the shots, the stems, the subtitles, and the sync points from the cue map as markers.
+      - The picture must be **textless** when the film burns in subtitles: render once more with the captions off. Put the master's finishing pass (grain) in `picture_filter`.
+      - Run `python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor`. Add `--media-root <the owner's folder>` when the owner has said where the package will live.
 
     Then ask the orchestrator for the social agent's publishing kit.
 
 ## Phase D: revisions
 
 Change only what the owner asks for. Log every change in `STATUS.md`, then re-run the QC steps it affects. A change to the words goes back to the writer and needs the owner's approval again.
+
+If the owner corrects the cut in the editor package, their NLE export is the final for that version. When a later version is needed (a re-render, another aspect), carry their corrections into the film's own timeline first: take them from the owner's exported XML or notes.
 
 ## Honesty and limits
 

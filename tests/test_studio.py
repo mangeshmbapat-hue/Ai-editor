@@ -1,5 +1,6 @@
 """Checks for the viral studio: agent and skill definitions, the learning ledger and the templates (text only)."""
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -91,6 +92,15 @@ class StudioTest(unittest.TestCase):
         for needle in ["3 frames at 3 different timecodes", "music sketch", "Music (special attention)", "experiment"]:
             self.assertIn(needle, director)
         self.assertTrue((STUDIO / "templates" / "00-brief.md").exists())
+
+    def test_director_delivers_an_editor_package(self):
+        director = (AGENTS / "director.md").read_text(encoding="utf-8")
+        for needle in ["studio/editor_package.py", "editor.json", "post-fader, pre-master", "editor package", "textless"]:
+            self.assertIn(needle, director)
+        self.assertIn("editor package", (SKILLS / "viral-studio" / "SKILL.md").read_text(encoding="utf-8"))
+        template = json.loads((STUDIO / "templates" / "editor.json").read_text(encoding="utf-8"))
+        for key in ["fps", "picture", "shots", "audio", "subtitles", "picture_textless"]:
+            self.assertIn(key, template)
 
 
 if __name__ == "__main__":

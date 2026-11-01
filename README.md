@@ -63,7 +63,7 @@ For image references, manual video import and review commands, follow the [walkt
 - **writer** writes hook-driven scripts
 - **director** decides the style, format and duration, then makes the film
 
-The owner approves the script before any production starts, and agents never post anything. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
+The owner approves the script before any production starts, and agents never post anything. Every finished film also ships an editor package (`final/editor/`, built by `studio/editor_package.py`) that opens in Premiere Pro or DaVinci Resolve for small corrections. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
 
 ## Next implementation stages
 
