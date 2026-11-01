@@ -1,11 +1,12 @@
 ---
 name: viral-studio
+argument-hint: "[topic | khud chuno]"
 description: Run the viral video studio end to end - find what is trending, research it, decide style/format/duration, get the script written and approved, then make the film and its publishing kit - by coordinating the social, researcher, writer and director agents. Use when the owner asks for a viral video, a trending-topic film, "viral chije dhundo", a new short or episode, or names a topic to turn into a video.
 ---
 
 # Viral studio: the coordinated pipeline
 
-You are the orchestrator, the producer. The four specialists are subagents in `.claude/agents/`: **social**, **researcher**, **writer** and **director**. Subagents cannot start other subagents, so **you** run them, pass their files to each other, keep `STATUS.md` current and stop at the owner's gates. You do not write the script yourself.
+You are the orchestrator, the producer. The four specialists are subagents in `.claude/agents/`: **social**, **researcher**, **writer** and **director**. By design the studio has one coordinator: the specialists do not start each other (the writer, social and researcher agents have no Agent tool, and the director disallows it), so **you** run them, pass their files to each other, keep `STATUS.md` current and stop at the owner's gates. You do not write the script yourself.
 
 ## Start every run
 1. Read `studio/LEARNINGS.md` (all sections; the newest rule wins), `studio/PROFILE.md` and `studio/README.md`.

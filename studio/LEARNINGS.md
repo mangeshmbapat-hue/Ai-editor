@@ -11,6 +11,7 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · Talk to the owner in Hinglish. Execute clear tasks without asking permission for routine choices; ask only when the answer changes the result. The script and final-cut gates are the owner's rules, not optional questions. Source: owner preferences (all)
 - 2026-11-01 · owner · For a big batch (many styles, many videos), show the list or plan first, then build. Source: "phle list niklao" (style library)
 - 2026-11-01 · observed · Run at most 3 agents in parallel. Why: seven parallel agents exhausted the owner's 5-hour usage limit. (style library)
+- 2026-11-01 · observed · Start a fresh session for each new film or big batch: everything the studio needs is committed in the repo. Why: this long session hit the owner's 5-hour usage limit a second time while only two agents were running, because every step re-reads the whole conversation. (studio)
 - 2026-11-01 · observed · In the cloud environment, `api.elevenlabs.io`, Hugging Face (Whisper models), Microsoft edge-tts and en.wikipedia.org (WebFetch) are blocked unless the owner allows them in the environment's network settings. WebSearch works. (all)
 
 ## Social
