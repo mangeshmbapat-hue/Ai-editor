@@ -35,7 +35,7 @@ Your job is to make the video **unique and detailed**. A generic video retells w
    - the stakes
 5. **Detail bank for the director:**
    - visual details: colours, materials, clothing, hair, ornaments, architecture, objects, tools, light, weather, time of day, landscape
-   - sound details: instruments, ambience, period sounds, how words were said
+   - sound and **music** details (music gets special attention in this studio): the instruments, ragas or folk forms of the place and period; traditional songs and whether their lyrics or tunes are public domain; ambience, period sounds, how words were said
    - Label each detail **sourced** or **inferred**.
    - Add an **anachronism list** of things that would be wrong for the period or place.
 6. **Myth vs record:**

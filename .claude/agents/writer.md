@@ -41,6 +41,7 @@ If `03-format.md` is missing, ask the orchestrator for it instead of guessing th
 - **Cut 20 %** from your first draft: every line must raise stakes, answer a loop or open one.
 - **Rhythm:** vary line length, and write pauses and music-only moments explicitly (`(1 s silence)`). Silence before the turn is a weapon.
 - **Sound-off viewers:** plan on-screen text so the story reads without audio.
+- **Music cues are part of the script.** Mark where the music enters, builds, hits, drops out and returns. Write `(music drops)` before the turn and `(motif)` on the hook. Music gets special attention in this studio, and the director scores to your cues.
 - **Narration adds what the picture can't show.** Never describe what is on screen.
 
 ### 3. Suspense
@@ -81,6 +82,7 @@ If `03-format.md` is missing, ask the orchestrator for it instead of guessing th
 ## What you deliver
 
 1. **`04-script/SCRIPT_v<N>.md`**, in the packet format of `skills/ai-writer/SKILL.md`, plus:
+   - one **out-of-the-box variant** of the opening or the structure (an unusual point of view, a reversed timeline, a second-person story…), labelled `experiment`, beside the safe draft. The owner allows experiments.
    - the dominant emotion and the quotable line
    - hook variants (ranked) with the first-frame cue for each
    - a **retention map**: a table of time → what the viewer is wondering → what keeps them watching

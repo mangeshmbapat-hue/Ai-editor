@@ -10,10 +10,12 @@
 | 5 Critique | director + social | 05-critique.md | todo | | |
 | 6 Revision | writer | 04-script/SCRIPT_vN.md | todo | | |
 | **Gate 2: script + format approval** | owner | 04-script/dialogue-lock.md | **not approved** | | the owner's exact words + date when approved |
-| 7 Production | director | film folder, 06-qc.md | blocked until Gate 2 | | |
-| Gate 3: final cut | owner | final/ | todo | | |
-| 8 Publishing kit | social | 07-publish-kit.md | todo | | |
-| 9 Learn | orchestrator | studio/LEARNINGS.md | todo | | |
+| 7 Preview: 3 timecode frames + music sketch | director | preview/ | blocked until Gate 2 | | |
+| **Gate 3: look + music approval** | owner | preview/ | **not approved** | | the owner's exact words + date when approved |
+| 8 Production | director | film folder, 06-qc.md | blocked until Gate 3 | | |
+| Gate 4: final cut | owner | final/ | todo | | |
+| 9 Publishing kit | social | 07-publish-kit.md | todo | | |
+| 10 Learn | orchestrator | studio/LEARNINGS.md | todo | | |
 
 ## Requests between agents
 - <from → to: what is needed, by which stage>
