@@ -1,0 +1,26 @@
+{
+ "slug": "truck-art",
+ "num": "13",
+ "en": "Indian Truck Art",
+ "hi": "ट्रक आर्ट",
+ "cn": "印度卡车彩绘",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one night's highway journey told on the panels of a single goods truck, its painted parrots and slogans waking up whenever headlights sweep the reflective tape.",
+ "line_hi": "प्रस्तावित डेमो: एक मालवाहक ट्रक के पैनलों पर हाईवे की एक रात का सफ़र, जहाँ हेडलाइट की रोशनी रिफ़्लेक्टिव टेप पर पड़ते ही रंगे हुए तोते और नारे जाग उठते हैं।",
+ "line_cn": "拟定演示：在一辆货运卡车的彩绘面板上讲述公路上的一夜旅程，每当车灯扫过反光条，画上的鹦鹉和标语便苏醒过来。",
+ "uses": [
+  "Road safety & public messages",
+  "Travel & logistics",
+  "Street culture"
+ ],
+ "nearest": [
+  "silkscreen-poster",
+  "memphis-diorama"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

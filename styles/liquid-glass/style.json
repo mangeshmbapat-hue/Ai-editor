@@ -1,0 +1,27 @@
+{
+ "slug": "liquid-glass",
+ "num": "57",
+ "en": "Liquid Glass UI",
+ "hi": "लिक्विड ग्लास UI",
+ "cn": "液态玻璃界面",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one city's day scrolls beneath a few drops of glass that magnify, merge and split to show the moments a single commuter notices.",
+ "line_hi": "प्रस्तावित डेमो: एक शहर का पूरा दिन काँच की कुछ बूँदों के नीचे से सरकता है; वे बूँदें बड़ा करके दिखाती हैं, आपस में मिलती हैं और फिर अलग होती हैं, ताकि वे पल दिखें जिन पर एक यात्री का ध्यान जाता है।",
+ "line_cn": "拟议演示：一座城市的一天在几滴玻璃下滚动而过，这些玻璃滴放大、融合又分开，呈现一位通勤者注意到的那些瞬间。",
+ "uses": [
+  "App and product launches",
+  "UI/UX explainers",
+  "Brand idents"
+ ],
+ "nearest": [
+  "glass-product",
+  "dark-keynote",
+  "living-screencast"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

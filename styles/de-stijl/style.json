@@ -1,0 +1,27 @@
+{
+ "slug": "de-stijl",
+ "num": "49",
+ "en": "De Stijl",
+ "hi": "दे स्टाइल",
+ "cn": "风格派",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A quiet grid of black lines rebalances itself each time a red, yellow or blue block arrives, until one small square tips it into boogie-woogie traffic.",
+ "line_hi": "प्रस्तावित डेमो: काली रेखाओं का एक शांत ग्रिड हर बार लाल, पीला या नीला खंड आने पर खुद को फिर से संतुलित करता है, जब तक कि एक छोटा-सा वर्ग उसे बूगी-वूगी ट्रैफ़िक में न बदल दे।",
+ "line_cn": "拟议演示：一张安静的黑线网格，每当红、黄或蓝色块到来就重新取得平衡，直到一个小方块让它倾覆成布吉伍吉式的车流。",
+ "uses": [
+  "Architecture & interiors",
+  "Brand systems",
+  "Music & jazz"
+ ],
+ "nearest": [
+  "swiss-motion",
+  "transit-map",
+  "memphis-diorama"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

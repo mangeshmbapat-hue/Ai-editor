@@ -1,0 +1,27 @@
+{
+ "slug": "cel-shaded-3d",
+ "num": "43",
+ "en": "Cel-shaded 3D",
+ "hi": "सेल-शेडेड 3D",
+ "cn": "三渲二",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A small delivery robot crosses a rainy rooftop city on its first day, drawn in flat tone bands with ink outlines that hold as the camera circles it.",
+ "line_hi": "प्रस्तावित डेमो: एक छोटा डिलीवरी रोबोट अपने पहले दिन बारिश में भीगे छतों वाले शहर को पार करता है, सपाट रंग-पट्टियों और स्याही की रेखाओं में बना, जो कैमरे के उसके चारों ओर घूमने पर भी टिकी रहती हैं।",
+ "line_cn": "拟议演示：一个小送货机器人在上班第一天穿越雨中的屋顶城市，平涂色阶加墨线勾边，镜头环绕它时线条始终稳定。",
+ "uses": [
+  "Game & app promos",
+  "Kids' adventure series",
+  "Brand mascots"
+ ],
+ "nearest": [
+  "cel-anime-80s",
+  "scifi-toon",
+  "lowpoly-island"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

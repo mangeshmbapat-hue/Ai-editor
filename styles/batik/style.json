@@ -1,0 +1,27 @@
+{
+ "slug": "batik",
+ "num": "26",
+ "en": "Batik",
+ "hi": "बाटिक",
+ "cn": "蜡染",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a sea turtle's year drawn in hot wax and revealed through four dye baths, the final boiling-out showing the whole cloth at once.",
+ "line_hi": "प्रस्तावित डेमो: एक समुद्री कछुए का पूरा साल गर्म मोम से खींचा जाता है और चार रंग-स्नानों में उभरता है; आख़िर में मोम उबालकर निकालते ही पूरा कपड़ा एक साथ सामने आता है।",
+ "line_cn": "拟议演示：一只海龟的一年用热蜡描绘，经过四次染缸逐层显现，最后煮去蜡层，整块布一下子完整呈现。",
+ "uses": [
+  "Process explainers",
+  "Heritage & craft",
+  "Fashion & textiles"
+ ],
+ "nearest": [
+  "crayon-book",
+  "woodcut",
+  "risograph"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

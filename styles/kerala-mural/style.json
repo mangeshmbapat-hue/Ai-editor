@@ -1,0 +1,26 @@
+{
+ "slug": "kerala-mural",
+ "num": "11",
+ "en": "Kerala Mural",
+ "hi": "केरल भित्तिचित्र",
+ "cn": "喀拉拉壁画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a fishing village's day told along one long plastered wall, each figure painted in from its ochre sketch to full five-pigment colour as an oil lamp travels across it.",
+ "line_hi": "प्रस्तावित डेमो: एक लंबी पलस्तर की दीवार पर मछुआरों के गाँव का एक दिन, जहाँ तेल के दीपक के आगे बढ़ने के साथ हर आकृति गेरू के रेखांकन से पाँच रंगों में पूरी होती जाती है।",
+ "line_cn": "拟定演示：沿一面长长的灰泥墙讲述渔村的一天，油灯移过墙面，每个人物从赭石草图逐步画成完整的五色壁画。",
+ "uses": [
+  "Heritage & history",
+  "Folk tales & fables",
+  "Craft & process"
+ ],
+ "nearest": [
+  "ukiyoe",
+  "stained-glass"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

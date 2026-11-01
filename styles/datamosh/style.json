@@ -1,0 +1,26 @@
+{
+ "slug": "datamosh",
+ "num": "58",
+ "en": "Datamosh",
+ "hi": "डेटामोश",
+ "cn": "数据融帧",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: an old portrait of a grandmother is carried, melted frame by frame, through the motion of her granddaughter's day until a fresh key frame reveals the present face.",
+ "line_hi": "प्रस्तावित डेमो: एक दादी की पुरानी तस्वीर, फ़्रेम-दर-फ़्रेम पिघलती हुई, उनकी पोती के दिन भर की हलचल में साथ बहती है, जब तक एक नया की-फ़्रेम आज का चेहरा सामने नहीं ले आता।",
+ "line_cn": "拟议演示：一张祖母的旧肖像随着孙女一天中的种种动作被一帧帧地拖拽、融化，直到一个新的关键帧让如今的面孔显现出来。",
+ "uses": [
+  "Music videos",
+  "Memory and identity essays",
+  "Fashion promos"
+ ],
+ "nearest": [
+  "backrooms",
+  "kino-montage"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

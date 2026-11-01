@@ -9,9 +9,9 @@ Use this repository's CLI and specialist skills to produce a traceable project e
 
 ## Intake and routing
 
-Read the original screenplay and any established creative choices. Select an existing project or initialize a new ignored `projects/` directory; never overwrite another film. Confirm the selected generation tool/model from available context. If unspecified, build a portable package while leaving vendor capability unverified.
+If the owner has not supplied a screenplay, run [ai-writer](../ai-writer/SKILL.md) first: a separate writer agent drafts the script and an independent agent critiques it, then show the packet and stop until the owner explicitly approves it. No voice, music, picture or render work happens before that. Read the original (or approved) screenplay and any established creative choices. Select an existing project or initialize a new ignored `projects/` directory; never overwrite another film. Confirm the selected generation tool/model from available context. If unspecified, build a portable package while leaving vendor capability unverified.
 
-Use the eight specialist skills as phases, loading only the relevant one. They can be executed by one assistant; extra agents are not required. Keep scene/beat/asset/shot IDs stable. Store assistant-authored plan JSON outside tracked example files and validate it with `set-plan`.
+Use the specialist skills as phases (ai-writer first when there is no screenplay), loading only the relevant one. They can be executed by one assistant; extra agents are not required, except that a script is written by a separate writer agent (ai-writer). Keep scene/beat/asset/shot IDs stable. Store assistant-authored plan JSON outside tracked example files and validate it with `set-plan`.
 
 ## Operating rules
 

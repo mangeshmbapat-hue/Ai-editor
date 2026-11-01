@@ -1,0 +1,27 @@
+{
+ "slug": "origami",
+ "num": "38",
+ "en": "Origami",
+ "hi": "ओरिगामी",
+ "cn": "折纸",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one square of paper folds into a boat, a frog, a house and a star in turn, its crease scars accumulating into a map of the journey.",
+ "line_hi": "प्रस्तावित डेमो: काग़ज़ का एक ही चौकोर टुकड़ा बारी-बारी से नाव, मेंढक, घर और तारा बनता है, और उसकी तहों के निशान जुड़कर सफ़र का नक़्शा बन जाते हैं।",
+ "line_cn": "建议演示：同一张方纸依次折成小船、青蛙、房子和星星，留下的折痕慢慢累积成这段旅程的地图。",
+ "uses": [
+  "Process explainer",
+  "Transformation story",
+  "Mathematics and design education"
+ ],
+ "nearest": [
+  "paper-popup",
+  "lowpoly-island",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

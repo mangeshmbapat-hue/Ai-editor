@@ -1,0 +1,27 @@
+{
+ "slug": "bauhaus",
+ "num": "48",
+ "en": "Bauhaus",
+ "hi": "बाउहाउस",
+ "cn": "包豪斯",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A circle, a square and a triangle build a working table lamp in a workshop, each part constructed with ruler and compass and fitted on the beat.",
+ "line_hi": "प्रस्तावित डेमो: एक कार्यशाला में एक वृत्त, एक वर्ग और एक त्रिभुज मिलकर चलने वाला टेबल लैंप बनाते हैं; हर पुर्ज़ा रूलर और परकार से बनता है और ताल पर फ़िट होता है।",
+ "line_cn": "拟议演示：圆、方、三角在工坊里合力造出一盏能用的台灯，每个零件都用直尺和圆规画成，并踩着节拍装配到位。",
+ "uses": [
+  "Design education",
+  "Product & furniture brands",
+  "Process explainers"
+ ],
+ "nearest": [
+  "swiss-motion",
+  "pictogram-motion",
+  "memphis-diorama"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

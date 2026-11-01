@@ -1,0 +1,26 @@
+{
+ "slug": "fauvism",
+ "num": "52",
+ "en": "Fauvism",
+ "hi": "फ़ॉविज़्म",
+ "cn": "野兽派",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one fishing harbour is painted three times in a single day, its colours re-chosen stroke by stroke as the painter's mood moves from calm to joy to heat.",
+ "line_hi": "प्रस्तावित डेमो: मछुआरों का एक बंदरगाह एक ही दिन में तीन बार रंगा जाता है; चित्रकार का मन शांति से आनंद और फिर तपिश की ओर बढ़ता है, तो उसके रंग स्ट्रोक-दर-स्ट्रोक नए चुने जाते हैं।",
+ "line_cn": "拟议演示：同一个渔港在一天之内被画了三遍，随着画家的心情从平静到喜悦再到炽热，颜色一笔一笔地被重新选择。",
+ "uses": [
+  "Travel films",
+  "Art education",
+  "Festival and lifestyle brands"
+ ],
+ "nearest": [
+  "impasto",
+  "watercolor"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

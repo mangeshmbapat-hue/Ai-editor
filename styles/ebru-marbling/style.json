@@ -1,0 +1,26 @@
+{
+ "slug": "ebru-marbling",
+ "num": "27",
+ "en": "Ebru Marbling",
+ "hi": "एब्रू मार्बलिंग",
+ "cn": "土耳其湿拓画",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one day's weather over a city told only with drops, combs and a stylus on a marbling tray, each pattern lifted onto paper as the day's record.",
+ "line_hi": "प्रस्तावित डेमो: एक शहर पर एक दिन का मौसम, केवल मार्बलिंग ट्रे पर बूँदों, कंघियों और सुई से कहा गया, और हर पैटर्न उस दिन के रिकॉर्ड की तरह काग़ज़ पर उठा लिया जाता है।",
+ "line_cn": "拟议演示：一座城市一天的天气，只用水拓盘上的颜料滴、梳子和针笔来讲述，每个图案都被拓印到纸上，成为这一天的记录。",
+ "uses": [
+  "Meditative openers",
+  "Science of fluids",
+  "Title sequences & transitions"
+ ],
+ "nearest": [
+  "watercolor",
+  "ink-wash"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

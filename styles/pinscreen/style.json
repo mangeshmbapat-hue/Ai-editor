@@ -1,0 +1,27 @@
+{
+ "slug": "pinscreen",
+ "num": "33",
+ "en": "Pinscreen",
+ "hi": "पिनस्क्रीन",
+ "cn": "针幕动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a lighthouse in fog pushed out of the dark pin by pin, whose turning lamp is the moving light that re-shades the whole board.",
+ "line_hi": "प्रस्तावित डेमो: कोहरे में एक प्रकाशस्तंभ, पिन-दर-पिन अँधेरे से उभरता है, और उसका घूमता दीपक ही वह चलती रोशनी है जो पूरे बोर्ड की छायाएँ बदल देती है।",
+ "line_cn": "建议演示：雾中的灯塔一针一针从黑暗中被推出来，它旋转的灯就是那束移动的光，让整块针板的明暗随之改变。",
+ "uses": [
+  "Poetry film",
+  "Folk tale",
+  "Nocturne and memory"
+ ],
+ "nearest": [
+  "engraving",
+  "halftone-dossier",
+  "silent-film"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

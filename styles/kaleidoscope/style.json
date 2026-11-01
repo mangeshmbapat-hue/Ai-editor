@@ -1,0 +1,27 @@
+{
+ "slug": "kaleidoscope",
+ "num": "65",
+ "en": "Kaleidoscope",
+ "hi": "कैलिडोस्कोप",
+ "cn": "万花筒",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a grandmother's buttons, bangle shards and spice seeds drop one by one into a kaleidoscope cell, each turn re-forming the pattern, until the camera pulls out to the toy in a child's hands.",
+ "line_hi": "प्रस्तावित डेमो: दादी के बटन, चूड़ियों के टुकड़े और मसालों के दाने एक-एक कर कैलिडोस्कोप में गिरते हैं, हर घुमाव पर नया पैटर्न बनता है, और अंत में कैमरा पीछे हटकर एक बच्चे के हाथों में वह खिलौना दिखाता है।",
+ "line_cn": "拟议演示：祖母的纽扣、玻璃手镯碎片和香料籽一颗颗落进万花筒，每转一次图案便重新组合，最后镜头拉出，原来是孩子手中的玩具。",
+ "uses": [
+  "Music videos",
+  "Memory & family",
+  "Festive brand films"
+ ],
+ "nearest": [
+  "stained-glass",
+  "paper-lantern",
+  "memphis-diorama"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

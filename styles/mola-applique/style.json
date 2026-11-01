@@ -1,0 +1,26 @@
+{
+ "slug": "mola-applique",
+ "num": "18",
+ "en": "Mola Appliqué",
+ "hi": "मोला कपड़ा कला",
+ "cn": "莫拉反贴布绣",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a coral reef's food chain revealed by cutting through layers of cloth, each creature appearing as the top colour is opened to show the colours beneath.",
+ "line_hi": "प्रस्तावित डेमो: कपड़े की परतों को काटकर प्रवाल-भित्ति की खाद्य-शृंखला का खुलना, जहाँ ऊपरी रंग कटते ही नीचे के रंगों में हर जीव प्रकट होता है।",
+ "line_cn": "拟定演示：剪开层层布料揭示珊瑚礁的食物链，顶层颜色被剪开时，每种生物便以下层的颜色显现出来。",
+ "uses": [
+  "Nature & ecology",
+  "Science explainers",
+  "Craft & process"
+ ],
+ "nearest": [
+  "papercut-red",
+  "paper-lantern"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

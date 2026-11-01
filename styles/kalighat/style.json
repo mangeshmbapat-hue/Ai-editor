@@ -1,0 +1,27 @@
+{
+ "slug": "kalighat",
+ "num": "07",
+ "en": "Kalighat Pat",
+ "hi": "कालीघाट पट",
+ "cn": "卡利加特画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a city office worker's morning commute as a run of satirical portraits, each figure drawn in one sweeping brush outline on blank paper and shaded soft along its edge.",
+ "line_hi": "प्रस्तावित डेमो: शहर के एक दफ़्तरी कर्मचारी की सुबह की यात्रा, व्यंग्य भरे चित्रों की एक कड़ी में, जहाँ हर आकृति खाली काग़ज़ पर एक ही लहराती रेखा से बनती है और किनारों पर हल्की छाया पाती है।",
+ "line_cn": "拟定演示：一位城市上班族的早晨通勤，画成一串讽刺肖像，每个人物都在空白纸上一笔扫出轮廓，沿边缘柔和晕染。",
+ "uses": [
+  "Satire & social comment",
+  "Character portraits",
+  "City life"
+ ],
+ "nearest": [
+  "one-line",
+  "ink-wash",
+  "watercolor"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

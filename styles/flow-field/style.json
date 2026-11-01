@@ -1,0 +1,27 @@
+{
+ "slug": "flow-field",
+ "num": "63",
+ "en": "Flow-field Generative",
+ "hi": "जनरेटिव फ़्लो फ़ील्ड",
+ "cn": "生成式流场",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: thousands of lines tracing a day of wind over a coastal city slowly gather into the shape of the monsoon's first cloud, then release it as rain.",
+ "line_hi": "प्रस्तावित डेमो: एक तटीय शहर पर दिन भर की हवा को दर्शाती हज़ारों रेखाएँ धीरे-धीरे मानसून के पहले बादल का आकार ले लेती हैं, फिर उसे बारिश बनाकर छोड़ देती हैं।",
+ "line_cn": "拟议演示：描绘一座海滨城市一整天风向的数千条线，渐渐聚成季风第一朵云的形状，再化作雨散开。",
+ "uses": [
+  "Data & science",
+  "Brand idents",
+  "Music visuals"
+ ],
+ "nearest": [
+  "one-line",
+  "dataviz",
+  "circuit-board"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

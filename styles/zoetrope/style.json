@@ -1,0 +1,26 @@
+{
+ "slug": "zoetrope",
+ "num": "40",
+ "en": "Zoetrope",
+ "hi": "ज़ोइट्रोप",
+ "cn": "走马盘",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a parlour drum spins up a cyclist, a juggler and a bird in flight, then slows until each loop freezes into a row of drawings and a new strip goes in.",
+ "line_hi": "प्रस्तावित डेमो: बैठक में रखा एक घूमता ड्रम एक साइकिल सवार, एक बाज़ीगर और उड़ती चिड़िया को जीवित करता है, फिर धीमा होता है जब तक हर लूप चित्रों की एक पंक्ति में थम नहीं जाता और नई पट्टी नहीं डाली जाती।",
+ "line_cn": "建议演示：客厅里的转筒转起来，骑车人、杂耍艺人和飞鸟依次活了过来；转筒放慢，每段循环凝固成一排画，再换上新的画条。",
+ "uses": [
+  "Cinema history explainer",
+  "Loop-based music video",
+  "Museum installation"
+ ],
+ "nearest": [
+  "silent-film",
+  "engraving"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

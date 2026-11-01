@@ -1,0 +1,27 @@
+{
+ "slug": "black-figure-vase",
+ "num": "22",
+ "en": "Black-figure Vase",
+ "hi": "ग्रीक मृदभांड",
+ "cn": "黑绘陶瓶",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a relay of water carriers painted round a turning jar comes alive as zoetrope frames under a strobe, then the jar is fired and the black figures emerge from the orange clay.",
+ "line_hi": "प्रस्तावित डेमो: घूमते घड़े पर चित्रित पानी ढोने वालों की रिले स्ट्रोब रोशनी में ज़ोइट्रोप की तरह जीवित हो उठती है, फिर घड़ा भट्ठी में पकता है और नारंगी मिट्टी से काली आकृतियाँ उभर आती हैं।",
+ "line_cn": "拟议演示：一只转动的陶罐上画着接力运水的人，在频闪光下像走马灯一样活动起来；随后陶罐入窑烧制，黑色人物从橙色陶土中显现。",
+ "uses": [
+  "Fables & cycles",
+  "Museum & heritage",
+  "Sport and repeated labour"
+ ],
+ "nearest": [
+  "shadow-puppet",
+  "engraving",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

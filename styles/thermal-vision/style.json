@@ -1,0 +1,27 @@
+{
+ "slug": "thermal-vision",
+ "num": "61",
+ "en": "Thermal Vision",
+ "hi": "थर्मल विज़न",
+ "cn": "热成像",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: on a frosty night a thermal camera follows the fading warm traces of one fox across a sleeping village: paw prints, a just-vacated doorstep, a car bonnet still warm.",
+ "line_hi": "प्रस्तावित डेमो: पाले वाली रात में एक थर्मल कैमरा सोते हुए गाँव में एक लोमड़ी के मिटते गर्म निशानों का पीछा करता है: पंजों के निशान, अभी-अभी खाली हुई दहलीज़, अब भी गर्म कार का बोनट।",
+ "line_cn": "拟议演示：霜夜里，一台热成像相机在沉睡的村庄中追踪一只狐狸渐渐消散的温热痕迹：爪印、刚刚空出的门阶、仍有余温的车引擎盖。",
+ "uses": [
+  "Science explainers",
+  "Nature & wildlife",
+  "Energy & buildings"
+ ],
+ "nearest": [
+  "hologram-hud",
+  "lidar-survey",
+  "satellite-briefing"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

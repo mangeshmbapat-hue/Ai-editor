@@ -1,0 +1,26 @@
+{
+ "slug": "futurism",
+ "num": "47",
+ "en": "Futurism",
+ "hi": "फ़्यूचरिज़्म",
+ "cn": "未来主义",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A cyclist's morning commute where speed is drawn: wheels repeat, lines of force cut the street open and the city roars like a noise orchestra.",
+ "line_hi": "प्रस्तावित डेमो: एक साइकिल सवार का सुबह का सफ़र, जहाँ रफ़्तार चित्रित होती है: पहिए दोहराते हैं, बल-रेखाएँ सड़क को चीर देती हैं और शहर किसी शोर-वाद्यवृंद की तरह गरजता है।",
+ "line_cn": "拟议演示：一位骑车人的早晨通勤，速度被画了出来：车轮层层重复，力线劈开街道，城市像噪音乐团一样轰鸣。",
+ "uses": [
+  "Sports & mobility",
+  "Engineering & industry",
+  "Urban culture"
+ ],
+ "nearest": [
+  "kino-montage",
+  "city-symphony"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

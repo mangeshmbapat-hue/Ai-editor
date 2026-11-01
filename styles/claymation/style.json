@@ -1,0 +1,27 @@
+{
+ "slug": "claymation",
+ "num": "30",
+ "en": "Claymation",
+ "hi": "क्लेमेशन",
+ "cn": "黏土动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a lump of clay on a workbench keeps trying to become a useful household object, failing in funny ways, until it finally settles into a cup.",
+ "line_hi": "प्रस्तावित डेमो: वर्कबेंच पर मिट्टी का एक लौंदा बार-बार कोई काम की घरेलू चीज़ बनने की कोशिश करता है, मज़ेदार ढंग से नाकाम होता है, और आख़िरकार एक प्याला बन जाता है।",
+ "line_cn": "拟议演示：工作台上的一团黏土不停地想变成一件有用的家居用品，一次次滑稽地失败，最后终于变成了一只杯子。",
+ "uses": [
+  "Character comedy",
+  "Children's education",
+  "Mascots & product stories"
+ ],
+ "nearest": [
+  "brick-toy",
+  "paper-popup",
+  "memphis-diorama"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "bollywood-poster",
+ "num": "12",
+ "en": "Bollywood Hand-painted Poster",
+ "hi": "हाथ से बना फ़िल्मी पोस्टर",
+ "cn": "宝莱坞手绘海报",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a small-town tailor's ordinary week sold like a blockbuster, as a painter on scaffolding brushes giant faces and a hand-lettered title onto a cinema hoarding.",
+ "line_hi": "प्रस्तावित डेमो: एक छोटे शहर के दर्ज़ी का साधारण हफ़्ता किसी बड़ी फ़िल्म की तरह पेश, जब मचान पर खड़ा पेंटर सिनेमा के होर्डिंग पर विशाल चेहरे और हाथ से लिखा शीर्षक रंगता है।",
+ "line_cn": "拟定演示：小镇裁缝平凡的一周被当作大片来宣传，脚手架上的画师在影院广告牌上刷出巨大的面孔和手绘片名。",
+ "uses": [
+  "Launches & announcements",
+  "Comedy & melodrama",
+  "Local heroes"
+ ],
+ "nearest": [
+  "impasto",
+  "silkscreen-poster",
+  "art-deco"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

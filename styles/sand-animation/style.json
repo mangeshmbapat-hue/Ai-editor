@@ -1,0 +1,27 @@
+{
+ "slug": "sand-animation",
+ "num": "31",
+ "en": "Sand Animation",
+ "hi": "रेत एनिमेशन",
+ "cn": "沙画动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: in one overhead take on a lightbox, a river delta is swept by a palm into a town, a market, a field of lamps and back into a river.",
+ "line_hi": "प्रस्तावित डेमो: लाइटबॉक्स पर ऊपर से एक ही टेक में, हथेली की बुहार से एक नदी का डेल्टा कस्बा, बाज़ार, दीयों का खेत और फिर से नदी बन जाता है।",
+ "line_cn": "建议演示：灯箱上俯拍一镜到底，手掌一抹，河口三角洲变成小镇、集市、一片灯火，最后又回到河流。",
+ "uses": [
+  "Poetic storytelling",
+  "Live-performance music video",
+  "Family history and memory"
+ ],
+ "nearest": [
+  "shadow-puppet",
+  "ink-wash",
+  "paper-lantern"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

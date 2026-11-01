@@ -1,0 +1,27 @@
+{
+ "slug": "voxel",
+ "num": "64",
+ "en": "Voxel World",
+ "hi": "वॉक्सल संसार",
+ "cn": "体素世界",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one small island grows block by block from a single shoreline stone into a village, loses half of it to a flood, and is rebuilt on higher ground.",
+ "line_hi": "प्रस्तावित डेमो: एक छोटा द्वीप ब्लॉक-दर-ब्लॉक किनारे के एक पत्थर से एक गाँव बनता है, बाढ़ में उसका आधा हिस्सा बह जाता है, और फिर ऊँची ज़मीन पर दोबारा बसता है।",
+ "line_cn": "拟议演示：一座小岛从岸边的一块石头开始，一块一块地长成村庄，一场洪水冲走了一半，人们又在高处重建。",
+ "uses": [
+  "Kids & education",
+  "Games & tech",
+  "History & urban growth"
+ ],
+ "nearest": [
+  "brick-toy",
+  "lowpoly-island",
+  "pixel-rpg"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

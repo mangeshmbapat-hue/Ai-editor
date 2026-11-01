@@ -2,7 +2,7 @@
 
 A portable screenplay-to-video production foundation. Keep the screenplay, creative decisions, reference assets, shot plan and review evidence in your own project, then hand shots to different image/video tools.
 
-**Current release: runnable CLI + eight production skills + an orchestrator skill + SOP.** It is not yet an autonomous video generator or a graphical app. No provider accounts, model calls, paid generation, browser automation or verified vendor integrations are included.
+**Current release: runnable CLI + eight production skills + a script-writing skill with an approval gate + an orchestrator skill + SOP.** It is not yet an autonomous video generator or a graphical app. No provider accounts, model calls, paid generation, browser automation or verified vendor integrations are included.
 
 ## What works now
 
@@ -49,6 +49,21 @@ Keep this repository available to the assistant and ask:
 These are repository skills, not automatically installed plugins. Hosts that load `SKILL.md` can use them directly; other assistants can read the same instructions and linked contracts. Keep the repo layout intact because skills link to shared docs. [Skill map](docs/SKILLS.md).
 
 For image references, manual video import and review commands, follow the [walkthrough](docs/WALKTHROUGH.md). The [data contract](docs/CONTRACT.md) defines plan and review formats. The [SOP](docs/SOP.md) defines decision and completion rules.
+
+## Style library (drafts)
+
+[`styles/`](styles/README.md) holds 67 draft style prompts (Indian traditions, world folk arts, animation techniques, art movements, internet/digital looks, cinema eras) for films rendered in code, in the Lemo-Opuscar `STYLE.md` format. They are written prompts with **no demo film yet**; treat them as creative-direction references, not tested looks.
+
+## Viral studio
+
+[`studio/`](studio/README.md) and `.claude/` define a four-agent team, run with `/viral-studio`:
+
+- **social** finds trending topics and writes the publishing kit
+- **researcher** finds the unique angle and verified detail
+- **writer** writes hook-driven scripts
+- **director** decides the style, format and duration, then makes the film
+
+The owner approves the script before any production starts, and agents never post anything. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
 
 ## Next implementation stages
 

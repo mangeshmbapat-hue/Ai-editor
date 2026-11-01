@@ -1,0 +1,27 @@
+{
+ "slug": "collage-cutout",
+ "num": "35",
+ "en": "Cut-paper Collage",
+ "hi": "कोलाज",
+ "cn": "剪贴拼贴",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a commuter's week assembled from generated newsprint, torn timetables, tape and ransom-note headlines, each day ripped away to reveal the next.",
+ "line_hi": "प्रस्तावित डेमो: एक दफ़्तर जाने वाले का एक हफ़्ता — बनाए गए अख़बारी काग़ज़, फटी समय-सारणियों, टेप और कटे-अक्षरों वाली सुर्ख़ियों से जोड़ा गया; हर दिन फाड़कर हटाने पर अगला दिखता है।",
+ "line_cn": "建议演示：用生成的旧报纸、撕开的时刻表、胶带和拼字标题拼出一位通勤者的一周，每撕掉一天，就露出下一天。",
+ "uses": [
+  "Social commentary",
+  "Culture and brand explainers",
+  "Music video"
+ ],
+ "nearest": [
+  "spy-titles",
+  "papercut-red",
+  "halftone-dossier"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

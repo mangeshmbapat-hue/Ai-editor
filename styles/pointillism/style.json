@@ -1,0 +1,27 @@
+{
+ "slug": "pointillism",
+ "num": "45",
+ "en": "Pointillism",
+ "hi": "बिंदुवाद",
+ "cn": "点彩派",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A riverbank on a summer afternoon resolves out of loose dots as the camera pulls back, then the evening light changes the colour of every dab.",
+ "line_hi": "प्रस्तावित डेमो: कैमरा पीछे हटते ही गर्मी की एक दोपहर का नदी-किनारा बिखरे बिंदुओं से उभर आता है, फिर शाम की रोशनी हर बिंदु का रंग बदल देती है।",
+ "line_cn": "拟议演示：镜头后拉，夏日午后的河岸从散落的色点中浮现；随后傍晚的光线改变了每一个色点的颜色。",
+ "uses": [
+  "Art education",
+  "Nature & travel",
+  "Calm brand films"
+ ],
+ "nearest": [
+  "impasto",
+  "risograph",
+  "halftone-dossier"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}
