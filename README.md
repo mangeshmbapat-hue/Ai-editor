@@ -62,8 +62,13 @@ For image references, manual video import and review commands, follow the [walkt
 - **researcher** finds the unique angle and verified detail
 - **writer** writes hook-driven scripts
 - **director** decides the style, format and duration, then makes the film
+- **mann** edits the owner's raw footage (storyboard first), and learns styles and corrections
 
 The owner approves the script before any production starts, and agents never post anything. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
+
+## Mann: AI video editor
+
+[`editor/`](editor/README.md) adds **Mann**, an editor agent for the owner's own footage (`/mann-edit`): ingest and Whisper transcripts, a cut plan (EDL), a **storyboard of numbered frames that must be approved before the full render**, then FFmpeg assembly with transitions, speed ramps, punch-ins, colour presets/LUTs, titles, burned Hindi/English subtitles, Hyperframes motion graphics (alpha overlays), ducked music, SFX, −14 LUFS mastering and measured QC. `/mann-style-lab` breaks down reference videos (yt-dlp) into style sheets in `editor/styles/`, and the owner's corrections tighten `editor/rules.json`, which QC enforces. Tools: `bash editor/install.sh`; `python3 -m aifilm.editor doctor`.
 
 ## Next implementation stages
 

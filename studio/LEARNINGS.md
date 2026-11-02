@@ -1,6 +1,6 @@
 # Studio learnings
 
-The owner's standing rules for the studio agents (social, researcher, writer, director) and the orchestrator. Every agent reads this file before working. **The newest explicit rule wins.** Entries are added with the `studio-learn` skill.
+The owner's standing rules for the studio agents (social, researcher, writer, director, Mann the editor) and the orchestrator. Every agent reads this file before working. **The newest explicit rule wins.** Entries are added with the `studio-learn` skill.
 
 Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (project)`. The kind is `owner` (the owner said it), `result` (real performance numbers) or `observed` (a check we ran).
 
@@ -31,6 +31,13 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · The director handles the whole creative and art direction and keeps the video in flow, from edit to final product. Source: "ek director agent jo puri video ka creative art direction dekhe ... edit se lekr final product" (studio)
 - 2026-11-01 · owner · For "preview dikhao", show individual numbered frames, not one dense contact sheet. Source: owner's director overrides (all)
 - 2026-11-01 · owner · The owner liked the Tholu Bommalata (Indian leather shadow puppet) look for the Ramayana preview. Source: "badiya h ye to" (ramayana)
+
+## Editor
+- 2026-11-02 · owner · Mann is the AI video editor agent. It edits the owner's raw footage from the owner's script or direction and knows editing, motion graphics, sound design, colour and VFX, using open-source tools (FFmpeg, Whisper, yt-dlp, Hyperframes). Source: "ek ai video editor agent bana jiska naam hoga mann jo video edit krna janta ho, motion graphics, sound designing, colour, vfx sab janta ho ... m tumhe raw data du or script ya direction du tum usko edit kro" (ai-editor)
+- 2026-11-02 · owner · Before editing the full video, show the storyboard: the numbered frames and what changed since the last version. Render the full edit only after the owner approves it (`approve --words`). Source: "video banane se phle storyboard dikhao kaise frames h or changes h ki nhi fir uske baad process pura kro editing ka" (ai-editor)
+- 2026-11-02 · owner · Keep a learning part: break down the AI videos and styles the owner shares (cuts, pace, type, motion graphics, colour, sound, VFX) and save a style sheet for each in `editor/styles/`. Source: "ek leaning part jisme m ai videos or styles samjha sku. jisse editing breakdown krke styles samjhe. or style sheet banye" (ai-editor)
+- 2026-11-02 · owner · Auto-improve: every mistake the owner points out becomes an Editor rule here (and a measurable check in `editor/rules.json` when it can be measured) that Mann applies before every storyboard and checks in every QC. Source: "auto improve krta jaaye jo jo gltiya m usko btata jua unko" (ai-editor)
+- 2026-11-02 · observed · In the cloud environment `youtube.com` (yt-dlp), `huggingface.co` and `openaipublic.azureedge.net` (Whisper models) and `cdn.jsdelivr.net` (Hyperframes' GSAP) are blocked; npm and PyPI work. `mg-new`/`mg-render` copy GSAP from npm. Ask the owner for files, or to allow the hosts, when a job needs them. (ai-editor)
 
 ## Production
 - 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)

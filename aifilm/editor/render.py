@@ -1,0 +1,259 @@
+"""Assemble the approved EDL with FFmpeg, master the loudness, and QC the result against
+`editor/rules.json` (the rules Mann has learned from the owner's corrections)."""
+
+import shutil
+from pathlib import Path
+
+from ..core import ProductionError, inside, now, project_lock, read_json, require, write_json
+from . import edl as E
+from . import media
+
+REPO = Path(__file__).resolve().parents[2]
+RULES = REPO / "editor" / "rules.json"
+STYLES = REPO / "editor" / "styles"
+
+
+def atempo(speed):
+    """atempo accepts 0.5-2.0 per stage; chain stages for other speeds."""
+    parts, s = [], float(speed)
+    while s > 2.0:
+        parts.append("atempo=2.0")
+        s /= 2.0
+    while s < 0.5:
+        parts.append("atempo=0.5")
+        s /= 0.5
+    if abs(s - 1.0) > 1e-6:
+        parts.append("atempo={:.5f}".format(s))
+    return parts
+
+
+def build_graph(root, edl, probes, textfiles):
+    """Return (ffmpeg input args, filter_complex, video label, audio label, total seconds)."""
+    inputs, graph = [], []
+    rows, total = E.timeline(edl)
+    audio_cfg = edl.get("audio", {})
+    keep = audio_cfg.get("keep_source", True)
+    for i, clip in enumerate(edl["clips"]):
+        src = inside(root, edl["sources"][clip["source"]])
+        span = clip["out"] - clip["in"]
+        inputs += ["-ss", "{:.3f}".format(clip["in"]), "-t", "{:.3f}".format(span), "-i", str(src)]
+        graph.append("[{}:v]{}[v{}]".format(i, E.clip_video_chain(root, edl, clip, textfiles), i))
+        dur = E.clip_duration(clip)
+        if keep and clip.get("audio", True) and probes[clip["source"]]["has_audio"]:
+            chain = ["asetpts=PTS-STARTPTS"] + atempo(clip.get("speed", 1.0)) + [
+                "aresample=48000", "aformat=sample_fmts=fltp:channel_layouts=stereo", "apad", "atrim=0:{:.4f}".format(dur)]
+            graph.append("[{}:a]{}[a{}]".format(i, ",".join(chain), i))
+        else:
+            graph.append("anullsrc=r=48000:cl=stereo,atrim=0:{:.4f},aformat=sample_fmts=fltp[a{}]".format(dur, i))
+    v, a, length = "v0", "a0", E.clip_duration(edl["clips"][0])
+    for i in range(1, len(edl["clips"])):
+        kind, tdur = E.transition(edl["clips"][i])
+        nv, na = "vj{}".format(i), "aj{}".format(i)
+        if kind == "cut":
+            graph.append("[{}][{}][v{}][a{}]concat=n=2:v=1:a=1[{}][{}]".format(v, a, i, i, nv, na))
+        else:
+            xf = "fade" if kind == "dissolve" else kind
+            graph.append("[{}][v{}]xfade=transition={}:duration={:.3f}:offset={:.3f}[{}]".format(v, i, xf, tdur, length - tdur, nv))
+            graph.append("[{}][a{}]acrossfade=d={:.3f}[{}]".format(a, i, tdur, na))
+        length += E.clip_duration(edl["clips"][i]) - tdur
+        v, a = nv, na
+    n_inputs = len(edl["clips"])
+    fmt = edl["format"]
+    for k, ov in enumerate(edl.get("overlays", [])):
+        inputs += ["-i", str(inside(root, ov["file"]))]
+        at = float(ov.get("at", 0))
+        graph.append("[{}:v]scale={}:{},setpts=PTS-STARTPTS+{:.3f}/TB[ov{}]".format(n_inputs, fmt["width"], fmt["height"], at, k))
+        graph.append("[{}][ov{}]overlay=eof_action=pass:format=auto[vo{}]".format(v, k, k))
+        v = "vo{}".format(k)
+        n_inputs += 1
+    subs = edl.get("subtitles")
+    if subs and subs.get("burn", True):
+        staged = Path(root) / ".mann-subs.srt"
+        shutil.copyfile(inside(root, subs["file"]), staged)
+        textfiles.append(str(staged))
+        style = subs.get("force_style", "Fontname=Noto Sans,Fontsize=14,Bold=1,Outline=2,Shadow=0,MarginV={}".format(
+            int(subs.get("margin_v", 70 if fmt["height"] > fmt["width"] else 30))))
+        graph.append("[{}]subtitles=filename='{}':force_style='{}'[vs]".format(v, E.esc(staged), style))
+        v = "vs"
+    graph.append("[{}]format=yuv420p[vout]".format(v))
+    # Audio: dialogue/source bed, music (looped, ducked), SFX.
+    gain = float(audio_cfg.get("source_gain_db", 0))
+    music = audio_cfg.get("music")
+    duck = bool(music and music.get("duck", True) and keep)
+    graph.append("[{}]volume={}dB,atrim=0:{:.4f}{}".format(a, gain, total, ",asplit=2[bed][key]" if duck else "[bed]"))
+    mix = ["bed"]
+    if music:
+        inputs += ["-stream_loop", "-1", "-i", str(inside(root, music["file"]))]
+        start = float(music.get("start", 0))
+        fade = float(music.get("fade_out", 1.5))
+        chain = ["aresample=48000", "aformat=sample_fmts=fltp:channel_layouts=stereo", "atrim={:.3f}:{:.3f}".format(start, start + total),
+                 "asetpts=PTS-STARTPTS", "volume={}dB".format(float(music.get("gain_db", -16)))]
+        if fade:
+            chain.append("afade=t=out:st={:.3f}:d={:.3f}".format(max(total - fade, 0), fade))
+        graph.append("[{}:a]{}[mus]".format(n_inputs, ",".join(chain)))
+        n_inputs += 1
+        if duck:
+            graph.append("[mus][key]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=350:makeup=1[musd]")
+            mix.append("musd")
+        else:
+            mix.append("mus")
+    for k, sfx in enumerate(audio_cfg.get("sfx", [])):
+        inputs += ["-i", str(inside(root, sfx["file"]))]
+        ms = int(round(float(sfx["at"]) * 1000))
+        graph.append("[{}:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,volume={}dB,adelay={}|{}[sfx{}]".format(
+            n_inputs, float(sfx.get("gain_db", 0)), ms, ms, k))
+        mix.append("sfx{}".format(k))
+        n_inputs += 1
+    if len(mix) > 1:
+        graph.append("{}amix=inputs={}:duration=first:normalize=0,atrim=0:{:.4f}[aout]".format("".join("[{}]".format(m) for m in mix), len(mix), total))
+    else:
+        graph.append("[bed]anull[aout]")
+    return inputs, ";".join(graph), "vout", "aout", total
+
+
+def render(root, preview=True):
+    root = Path(root)
+    media.need("ffmpeg")
+    with project_lock(root):
+        edl = E.load(root)
+        E.require_approval(root, edl)
+        probes = E.validate(root, edl)
+        out = root / "renders"
+        out.mkdir(parents=True, exist_ok=True)
+        stage, master = out / ".stage.mkv", out / "master.mp4"
+        textfiles = []
+        try:
+            inputs, graph, v, a, total = build_graph(root, edl, probes, textfiles)
+            media.run(["ffmpeg", "-hide_banner", "-y"] + inputs + ["-filter_complex", graph, "-map", "[" + v + "]", "-map", "[" + a + "]",
+                       "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", str(edl["format"].get("fps", 30)),
+                       "-c:a", "pcm_s16le", "-t", "{:.3f}".format(total), str(stage)])
+        finally:
+            for f in textfiles:
+                Path(f).unlink(missing_ok=True)
+        target = edl.get("master", {})
+        lufs, tp = float(target.get("lufs", -14)), float(target.get("true_peak", -1))
+        measured = media.loudness(stage)
+        if measured["lufs"] is None:
+            norm = "anull"
+        else:
+            norm = ("loudnorm=I={}:TP={}:LRA=11:measured_I={}:measured_TP={}:measured_LRA={}:linear=true,"
+                    "aresample=48000").format(lufs, tp, measured["lufs"], measured["true_peak"], measured["lra"] or 7)
+        media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(stage), "-map", "0:v", "-map", "0:a", "-c:v", "copy", "-af", norm,
+                   "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(master)])
+        # loudnorm misses on very short or very dynamic mixes; measure and correct with a gain + limiter pass.
+        result = media.loudness(master) if measured["lufs"] is not None else {"lufs": None}
+        for _ in range(2):
+            if result["lufs"] is None or abs(result["lufs"] - lufs) <= 0.5:
+                break
+            fixed = out / ".fixed.mp4"
+            limit = 10 ** ((tp - 0.3) / 20.0)
+            media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(stage), "-map", "0:v", "-map", "0:a", "-c:v", "copy",
+                       "-af", "{},volume={:.2f}dB,alimiter=limit={:.4f}:level=disabled".format(norm, lufs - result["lufs"], limit),
+                       "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(fixed)])
+            fixed.replace(master)
+            norm = "{},volume={:.2f}dB".format(norm, lufs - result["lufs"])
+            result = media.loudness(master)
+        stage.unlink(missing_ok=True)
+        if preview:
+            media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(master), "-vf", "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)'",
+                       "-c:v", "libx264", "-crf", "26", "-preset", "veryfast", "-c:a", "aac", "-b:a", "128k", str(out / "preview_720p.mp4")])
+        write_json(out / "render.json", {"edl_fingerprint": E.edit_fingerprint(root, edl), "rendered": now(),
+                                         "expected_seconds": total, "file": "renders/master.mp4"})
+        return {"master": str(master), "expected_seconds": total}
+
+
+def load_rules():
+    return read_json(RULES)
+
+
+def style_targets(name):
+    if not name:
+        return None
+    path = STYLES / name / "style.json"
+    return read_json(path) if path.exists() else None
+
+
+def qc(root):
+    """Measure the master and compare it with the EDL, the learned rules and the style target.
+    Writes renders/qc.json and renders/QC.md. Returns the record; `passed` is False on any failure."""
+    root = Path(root)
+    edl = E.load(root)
+    master = root / "renders" / "master.mp4"
+    require(master.exists(), "No renders/master.mp4; render first")
+    rules = load_rules()["rules"]
+    info = media.probe(master)
+    _, total = E.timeline(edl)
+    fmt = edl["format"]
+    checks = []
+
+    def check(name, ok, detail, kind="fail"):
+        checks.append({"check": name, "result": "pass" if ok else kind, "detail": detail})
+
+    frame = 1.0 / float(fmt.get("fps", 30))
+    check("duration", abs(info["duration"] - total) <= max(2 * frame, 0.08), "{:.3f}s vs planned {:.3f}s".format(info["duration"], total))
+    check("resolution", (info.get("width"), info.get("height")) == (fmt["width"], fmt["height"]),
+          "{}x{} vs {}x{}".format(info.get("width"), info.get("height"), fmt["width"], fmt["height"]))
+    check("fps", abs(info.get("fps", 0) - float(fmt.get("fps", 30))) < 0.05, "{} fps".format(info.get("fps")))
+    target = edl.get("master", {})
+    lufs_target = float(target.get("lufs", rules["loudness_lufs"]))
+    loud = media.loudness(master) if info["has_audio"] else {"lufs": None, "true_peak": None}
+    if loud["lufs"] is None:
+        check("loudness", False, "no measurable audio")
+    else:
+        check("loudness", abs(loud["lufs"] - lufs_target) <= rules["loudness_tolerance_lu"], "{} LUFS (target {})".format(loud["lufs"], lufs_target))
+        check("true peak", loud["true_peak"] <= float(target.get("true_peak", rules["true_peak_max_db"])) + 0.2,
+              "{} dBTP (max {})".format(loud["true_peak"], target.get("true_peak", rules["true_peak_max_db"])))
+    blacks = [b for b in media.black_segments(master, rules["max_black_seconds"]) if not edl.get("allow_black")]
+    check("black frames", not blacks, ", ".join("{}-{}".format(E.tc(b["start"]), E.tc(b["end"])) for b in blacks) or "none")
+    dead = [s for s in media.silences(master, rules["dead_air_noise_db"], rules["max_dead_air_seconds"])
+            if not any(abs((s["start"] or 0) - float(d)) < 0.5 for d in edl.get("deliberate_silences", []))]
+    check("dead air", not dead, ", ".join("{}-{}".format(E.tc(s["start"]), E.tc(s["end"] if s["end"] is not None else total)) for s in dead) or "none")
+    stats = E.pace(edl)
+    short = fmt["height"] > fmt["width"] and total <= rules["short_form_max_seconds"]
+    if short:
+        check("shot length (short form)", stats["longest_shot_seconds"] <= rules["short_form_max_shot_seconds"],
+              "longest {}s (max {}s)".format(stats["longest_shot_seconds"], rules["short_form_max_shot_seconds"]), "warn")
+        first = E.timeline(edl)[0][0]["duration"]
+        check("hook (first cut)", first <= rules["hook_first_cut_max_seconds"], "first shot {}s (max {}s)".format(first, rules["hook_first_cut_max_seconds"]), "warn")
+        check("subtitles", bool(edl.get("subtitles")) or not rules["short_form_requires_subtitles"], "burned subtitles required for short form", "fail")
+    check("shortest shot", stats["shortest_shot_seconds"] >= rules["min_shot_seconds"],
+          "{}s (min {}s)".format(stats["shortest_shot_seconds"], rules["min_shot_seconds"]), "warn")
+    style = style_targets(edl.get("style"))
+    if style and style.get("targets", {}).get("average_shot_seconds"):
+        want = style["targets"]["average_shot_seconds"]
+        tol = rules["style_pace_tolerance"]
+        check("style pace ({})".format(edl["style"]), abs(stats["average_shot_seconds"] - want) <= want * tol,
+              "average shot {}s vs style {}s (±{:.0%})".format(stats["average_shot_seconds"], want, tol), "warn")
+    failed = [c for c in checks if c["result"] == "fail"]
+    record = {"edl_fingerprint": E.edit_fingerprint(root, edl), "checked": now(), "passed": not failed, "checks": checks,
+              "measured": {"probe": info, "loudness": loud, "pace": stats},
+              "not_checked": ["picture quality and continuity by eye", "lip sync", "audio quality by ear",
+                              "spoken words vs the approved script (run `transcribe` on the master when Whisper is available)"]}
+    write_json(root / "renders" / "qc.json", record)
+    lines = ["# QC: {}".format(edl.get("title", "untitled")), "", "Result: **{}**".format("PASS" if record["passed"] else "FAIL"), "",
+             "| Check | Result | Detail |", "|---|---|---|"]
+    lines += ["| {} | {} | {} |".format(c["check"], c["result"].upper(), c["detail"]) for c in checks]
+    lines += ["", "Not checked by this tool (Mann reviews the contact frames and says so plainly):", ""]
+    lines += ["- " + x for x in record["not_checked"]]
+    (root / "renders" / "QC.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return record
+
+
+def contact_frames(root, every=1.5):
+    """Individual numbered QC frames from the master, every `every` seconds."""
+    root = Path(root)
+    master = root / "renders" / "master.mp4"
+    require(master.exists(), "No renders/master.mp4; render first")
+    dur = media.probe(master)["duration"]
+    out = root / "renders" / "qc-frames"
+    if out.exists():
+        shutil.rmtree(out)
+    files, t, n = [], 0.0, 0
+    while t < dur:
+        n += 1
+        files.append(str(media.save_frame(master, t, out / "Q{:03d}_{}.jpg".format(n, E.tc(t).replace(":", "m") + "s"), width=540)))
+        t += every
+    return files
+
+
+__all__ = ["render", "qc", "contact_frames", "ProductionError"]

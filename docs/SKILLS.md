@@ -19,3 +19,7 @@ These files add domain instructions; they do not supply model subscriptions, ima
 ## Viral studio
 
 For trend-led films, `/viral-studio` ([pipeline](../.claude/skills/viral-studio/SKILL.md)) coordinates four project agents in `.claude/agents/`: **social** (trends, virality, publishing kit), **researcher** (unique angle, verified detail), **writer** (hooks, retention, the script packet for [ai-writer](../skills/ai-writer/SKILL.md)'s approval gate) and **director** (style, format, duration, production, QC). The owner's feedback is recorded by `/studio-learn` in [studio/LEARNINGS.md](../studio/LEARNINGS.md). An overview is in [studio/README.md](../studio/README.md).
+
+## Mann: AI video editor
+
+For the owner's own raw footage, the **mann** agent ([definition](../.claude/agents/mann.md)) edits with FFmpeg, Whisper, yt-dlp and Hyperframes. `/mann-edit` ([skill](../.claude/skills/mann-edit/SKILL.md)) runs ingest → cut plan → **storyboard approval** → render → QC → final-cut approval. `/mann-style-lab` ([skill](../.claude/skills/mann-style-lab/SKILL.md)) turns reference videos into style sheets in [editor/styles/](../editor/styles/README.md). Corrections are recorded by `/studio-learn` in the Editor section of the ledger and, when measurable, in [editor/rules.json](../editor/rules.json). Commands and the EDL format: [editor/README.md](../editor/README.md).
