@@ -1,17 +1,24 @@
 """Mann's edit decision list (EDL): validation, timeline maths, the filter graph per clip,
-the storyboard and the owner's approval gate.
+the storyboard and the owner's approval gates.
 
 An edit project is a folder (normally `projects/<slug>/edit/`, git-ignored):
 
     BRIEF.md            the owner's script / direction (verbatim)
     raw/                the owner's footage, music and SFX (never modified)
     media.json          probe + sha256 of every ingested file
+    analysis/           the smart engine's per-file analysis (cached by hash)
+    SUGGESTIONS.md      the engine's edit suggestions for this footage
     edl.json            Mann's cut (this module's schema)
-    storyboard/         numbered frames + STORYBOARD.md + storyboard.json
-    approvals.json      the owner's explicit approvals, tied to an EDL fingerprint
-    renders/            master.mp4, preview_720p.mp4, QC.md, qc.json
+    storyboard/         numbered frames + STORYBOARD.md + storyboard.json; part/ for one-part corrections
+    approvals.json      the owner's decisions: style, script lock, storyboard (whole or per part), final
+    renders/            master.mp4, preview_720p.mp4, parts/, QC.md, qc.json
+
+Approvals are per clip. The "globals" (format, grade, audio, overlays, subtitles, style,
+script, clip order) and each clip have their own fingerprint, so a correction to one part
+needs only that part re-approved, while a whole-video change needs the whole storyboard.
 """
 
+import json
 import re
 import shutil
 import subprocess
@@ -37,8 +44,28 @@ GRADES = {
     "faded-vintage": "curves=preset=vintage,eq=saturation=0.85",
     "moody-dark": "eq=brightness=-0.05:contrast=1.15:saturation=0.85,vignette=PI/4.5",
     "bright-clean": "eq=brightness=0.03:contrast=1.04:saturation=1.08,colorbalance=rh=0.02:bh=0.02",
+    "pastel": "eq=brightness=0.04:contrast=0.92:saturation=0.9,colorbalance=rh=0.05:gh=0.02:bh=0.04:rs=0.03",
+    "bleach-bypass": "eq=saturation=0.55:contrast=1.25:gamma=0.95",
+    "desat-doc": "eq=saturation=0.7:contrast=1.08,colorbalance=bs=0.03:bm=0.02",
+    "neon-night": "eq=saturation=1.4:contrast=1.15:brightness=-0.03,colorbalance=bs=0.08:rs=0.05:gm=-0.04",
+    "vhs-retro": "curves=preset=vintage,eq=saturation=1.15:contrast=0.92,rgbashift=rh=3:bh=-3",
+    "golden-hour": "colorbalance=rm=0.08:gm=0.02:bm=-0.08:rh=0.05,eq=saturation=1.1:contrast=1.03",
+}
+# Per-clip effects (VFX). Each is a plain FFmpeg chain applied after the grade.
+FX = {
+    "shake": "scale=w='2*trunc(iw*1.08/2)':h='2*trunc(ih*1.08/2)',crop={W}:{H}:x='(iw-{W})/2+(iw-{W})/2*0.8*sin(t*37)':y='(ih-{H})/2+(ih-{H})/2*0.8*sin(t*29+1)'",
+    "flash": "fade=t=in:st=0:d=0.15:color=white",
+    "fade_in": "fade=t=in:st=0:d=0.4",
+    "rgb_split": "rgbashift=rh=6:bh=-6:rv=2:bv=-2",
+    "letterbox": "drawbox=x=0:y=0:w=iw:h=ih*0.11:color=black:t=fill,drawbox=x=0:y=ih*0.89:w=iw:h=ih*0.11:color=black:t=fill",
+    "step_print": "fps=12,tmix=frames=3",
+    "vhs": "noise=alls=14:allf=t,gblur=sigma=0.6",
+    "stop_motion": "fps=10",
+    "glow": "eq=brightness=0.04:saturation=1.1,gblur=sigma=1.2",
+    "bw": "hue=s=0",
 }
 TEXT_POSITIONS = {"top": "h*0.18", "center": "(h-text_h)/2", "bottom": "h*0.66"}
+SUB_COLOURS = {"white": "&H00FFFFFF", "yellow": "&H0000F0FF", "green": "&H0033FF66", "red": "&H003333FF", "cyan": "&H00FFFF00"}
 DEVANAGARI = re.compile("[ऀ-ॿ]")
 
 
@@ -57,12 +84,16 @@ def num(value, name, low=None, high=None):
 
 
 def clip_duration(clip):
-    return (clip["out"] - clip["in"]) / clip.get("speed", 1.0)
+    return (clip["out"] - clip["in"]) / clip.get("speed", 1.0) + float(clip.get("freeze", 0) or 0)
 
 
 def transition(clip):
     t = clip.get("transition_in") or {"type": "cut"}
     return t.get("type", "cut"), (0.0 if t.get("type", "cut") == "cut" else float(t.get("duration", 0.5)))
+
+
+def as_list(value):
+    return value if isinstance(value, list) else ([value] if value else [])
 
 
 def validate(root, edl):
@@ -83,7 +114,8 @@ def validate(root, edl):
     seen = set()
     for i, clip in enumerate(clips):
         cid = clip.get("id")
-        require(isinstance(cid, str) and cid not in seen, "Clip {} needs a unique id".format(i + 1))
+        require(isinstance(cid, str) and re.fullmatch(r"[A-Za-z0-9_-]+", cid) is not None and cid not in seen,
+                "Clip {} needs a unique id (letters, digits, - and _)".format(i + 1))
         seen.add(cid)
         require(clip.get("source") in sources, "{}: unknown source {!r}".format(cid, clip.get("source")))
         dur = probes[clip["source"]]["duration"]
@@ -91,6 +123,7 @@ def validate(root, edl):
         require(start < end, cid + ": in must be before out")
         require(end <= dur + 0.05, "{}: out {:.2f}s is past the end of {} ({:.2f}s)".format(cid, end, clip["source"], dur))
         num(clip.get("speed", 1.0), cid + ".speed", 0.25, 4.0)
+        num(clip.get("freeze", 0), cid + ".freeze", 0, 10)
         kind, tdur = transition(clip)
         require(kind in TRANSITIONS, "{}: unknown transition {!r}".format(cid, kind))
         require(i > 0 or kind == "cut", cid + ": the first clip cannot have a transition in")
@@ -99,13 +132,21 @@ def validate(root, edl):
             require(0 <= tdur < shortest, "{}: transition {:.2f}s must be shorter than both clips".format(cid, tdur))
         grade = clip.get("grade")
         require(grade is None or grade in GRADES, "{}: unknown grade {!r}".format(cid, grade))
+        for fx in as_list(clip.get("fx")):
+            require(fx in FX, "{}: unknown fx {!r}; choose from {}".format(cid, fx, sorted(FX)))
         zoom = clip.get("zoom")
         if zoom:
             num(zoom.get("from", 1.0), cid + ".zoom.from", 1.0, 3.0)
             num(zoom.get("to", 1.0), cid + ".zoom.to", 1.0, 3.0)
-        for text in clip.get("text", []) if isinstance(clip.get("text"), list) else [clip["text"]] if clip.get("text") else []:
+        for text in as_list(clip.get("text")):
             require(isinstance(text.get("value"), str) and text["value"].strip(), cid + ": text needs a value")
             require(text.get("position", "bottom") in TEXT_POSITIONS, cid + ": text position must be top/center/bottom")
+        for ins in clip.get("inserts", []):
+            require(ins.get("source") in sources, "{}: insert has unknown source {!r}".format(cid, ins.get("source")))
+            a, b = num(ins.get("in"), cid + ".insert.in", 0), num(ins.get("out"), cid + ".insert.out", 0)
+            require(a < b <= probes[ins["source"]]["duration"] + 0.05, cid + ": insert in/out outside its source")
+            at = num(ins.get("at", 0), cid + ".insert.at", 0)
+            require(at + (b - a) <= clip_duration(clip) + 0.05, cid + ": insert runs past the end of its clip")
     grade = edl.get("grade", {})
     require(grade.get("preset", "neutral") in GRADES, "Unknown grade preset {!r}; choose from {}".format(grade.get("preset"), sorted(GRADES)))
     if grade.get("lut"):
@@ -123,6 +164,10 @@ def validate(root, edl):
     subs = edl.get("subtitles")
     if subs:
         require(inside(root, subs["file"]).is_file(), "Subtitle file missing: " + subs["file"])
+        require(subs.get("position", "bottom") in TEXT_POSITIONS, "subtitles.position must be top/center/bottom")
+        require(subs.get("color", "white") in SUB_COLOURS, "subtitles.color must be one of {}".format(sorted(SUB_COLOURS)))
+    if edl.get("script"):
+        require(inside(root, edl["script"]).is_file(), "Script file missing: " + edl["script"])
     return probes
 
 
@@ -192,31 +237,35 @@ def grade_chain(root, edl, clip):
     return ",".join(p for p in parts if p)
 
 
+def frame_chain(edl, W, H):
+    if edl["format"].get("fit", "cover") == "contain":
+        return ["scale={W}:{H}:force_original_aspect_ratio=decrease".format(W=W, H=H),
+                "pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black".format(W=W, H=H)]
+    return ["scale={W}:{H}:force_original_aspect_ratio=increase".format(W=W, H=H), "crop={W}:{H}".format(W=W, H=H)]
+
+
 def clip_video_chain(root, edl, clip, textfiles, t0=0.0):
-    """FFmpeg filters that turn a trimmed source clip into a formatted, graded, titled shot.
-    `t0` offsets time-based expressions so a single storyboard frame matches the moving render."""
+    """FFmpeg filters that turn a trimmed source clip into a formatted, graded, titled shot."""
     fmt = edl["format"]
     W, H, fps = fmt["width"], fmt["height"], fmt.get("fps", 30)
     speed = clip.get("speed", 1.0)
     dur = clip_duration(clip)
     chain = ["setpts=(PTS-STARTPTS)/{}".format(speed)] if speed != 1.0 else ["setpts=PTS-STARTPTS"]
-    if fmt.get("fit", "cover") == "contain":
-        chain += ["scale={W}:{H}:force_original_aspect_ratio=decrease".format(W=W, H=H),
-                  "pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black".format(W=W, H=H)]
-    else:
-        chain += ["scale={W}:{H}:force_original_aspect_ratio=increase".format(W=W, H=H), "crop={W}:{H}".format(W=W, H=H)]
+    chain += frame_chain(edl, W, H)
     zoom = clip.get("zoom")
     if zoom and (zoom.get("from", 1.0) != 1.0 or zoom.get("to", 1.0) != 1.0):
         z0, z1 = float(zoom.get("from", 1.0)), float(zoom.get("to", 1.0))
         expr = "({z0}+({z1}-{z0})*min(1,(t+{t0})/{d}))".format(z0=z0, z1=z1, t0=t0, d=dur)
         chain += ["scale=w='2*trunc({W}*{e}/2)':h='2*trunc({H}*{e}/2)':eval=frame".format(W=W, H=H, e=expr),
                   "crop={W}:{H}".format(W=W, H=H)]
+    if clip.get("freeze"):
+        chain.append("tpad=stop_mode=clone:stop_duration={:.3f}".format(float(clip["freeze"])))
     graded = grade_chain(root, edl, clip)
     if graded:
         chain.append(graded)
-    texts = clip.get("text") or []
-    texts = texts if isinstance(texts, list) else [texts]
-    for item in texts:
+    for fx in as_list(clip.get("fx")):
+        chain.append(FX[fx].format(W=W, H=H))
+    for item in as_list(clip.get("text")):
         handle = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
         handle.write(item["value"])
         handle.close()
@@ -237,24 +286,178 @@ def clip_video_chain(root, edl, clip, textfiles, t0=0.0):
     return ",".join(chain)
 
 
-def edit_fingerprint(root, edl):
-    files = sorted(set(list(edl["sources"].values())
-                       + ([edl["audio"]["music"]["file"]] if edl.get("audio", {}).get("music") else [])
-                       + [s["file"] for s in edl.get("audio", {}).get("sfx", [])]
-                       + [o["file"] for o in edl.get("overlays", [])]
-                       + ([edl["subtitles"]["file"]] if edl.get("subtitles") else [])
-                       + ([edl["grade"]["lut"]] if edl.get("grade", {}).get("lut") else [])))
-    return fingerprint({"edl": edl, "files": {f: file_hash(inside(root, f)) for f in files}})
+def insert_chain(root, edl, clip, ins, at):
+    fmt = edl["format"]
+    chain = ["setpts=PTS-STARTPTS+{:.3f}/TB".format(at)] + frame_chain(edl, fmt["width"], fmt["height"])
+    graded = grade_chain(root, edl, clip)
+    if graded:
+        chain.append(graded)
+    chain += ["fps={}".format(fmt.get("fps", 30)), "format=yuv420p", "setsar=1"]
+    return ",".join(chain)
 
+
+def subtitle_style(edl):
+    subs = edl["subtitles"]
+    fmt = edl["format"]
+    if subs.get("force_style"):
+        return subs["force_style"]
+    # libass scales against a 288-line play resolution by default.
+    size = int(round(288 * float(subs.get("size", 0.05))))
+    pos = subs.get("position", "bottom")
+    align = {"bottom": 2, "center": 5, "top": 8}[pos]
+    margin = int(subs.get("margin_v", (70 if fmt["height"] > fmt["width"] else 30) if pos == "bottom" else 40))
+    style = ["Fontname=Noto Sans", "Fontsize={}".format(size), "Bold=1", "PrimaryColour={}".format(SUB_COLOURS[subs.get("color", "white")]),
+             "Alignment={}".format(align), "MarginV={}".format(margin)]
+    style += ["BorderStyle=3", "Outline=6", "BackColour=&H80000000", "OutlineColour=&H80000000", "Shadow=0"] if subs.get("box") else ["Outline=2", "Shadow=0"]
+    return ",".join(style)
+
+
+def stage_subtitles(root, edl, shift=0.0, name=".mann-subs.srt"):
+    """Copy the subtitle file to a filter-safe name, uppercased and time-shifted when asked."""
+    text = inside(root, edl["subtitles"]["file"]).read_text(encoding="utf-8-sig")
+    if edl["subtitles"].get("uppercase"):
+        text = "\n".join(l if ("-->" in l or l.strip().isdigit()) else l.upper() for l in text.splitlines())
+    if shift:
+        text = shift_srt(text, shift)
+    staged = Path(root) / name
+    staged.write_text(text, encoding="utf-8")
+    return staged
+
+
+def shift_srt(text, shift):
+    def stamp(m):
+        t = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3)) + int(m.group(4)) / 1000.0 - shift
+        t = max(t, 0)
+        ms = int(round(t * 1000))
+        return "{:02d}:{:02d}:{:02d},{:03d}".format(ms // 3600000, ms // 60000 % 60, ms // 1000 % 60, ms % 1000)
+    return re.sub(r"(\d+):(\d+):(\d+)[,.](\d+)", stamp, text)
+
+
+# ---- fingerprints and approvals -------------------------------------------------
+
+def hashed(root, rel):
+    """sha256 of an edit file, cached by size and mtime so big footage is hashed once."""
+    root = Path(root)
+    path = inside(root, rel)
+    st = path.stat()
+    cache_path = root / ".mann-hash-cache.json"
+    try:
+        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        cache = {}
+    key = "{}|{}|{}".format(rel, st.st_size, st.st_mtime_ns)
+    if key not in cache:
+        cache = {k: v for k, v in cache.items() if not k.startswith(rel + "|")}
+        cache[key] = file_hash(path)
+        write_json(cache_path, cache)
+    return cache[key]
+
+
+def global_files(edl):
+    audio = edl.get("audio", {})
+    files = ([audio["music"]["file"]] if audio.get("music") else []) + [s["file"] for s in audio.get("sfx", [])]
+    files += [o["file"] for o in edl.get("overlays", [])]
+    files += ([edl["subtitles"]["file"]] if edl.get("subtitles") else []) + ([edl["grade"]["lut"]] if edl.get("grade", {}).get("lut") else [])
+    files += [edl["script"]] if edl.get("script") else []
+    return sorted(set(files))
+
+
+def globals_fingerprint(root, edl):
+    rest = {k: v for k, v in edl.items() if k != "clips"}
+    return fingerprint({"globals": rest, "order": [c["id"] for c in edl["clips"]],
+                        "files": {f: hashed(root, f) for f in global_files(edl)}})
+
+
+def clip_fingerprint(root, edl, clip):
+    files = sorted({edl["sources"][clip["source"]]} | {edl["sources"][i["source"]] for i in clip.get("inserts", [])})
+    return fingerprint({"clip": clip, "files": {f: hashed(root, f) for f in files}})
+
+
+def fingerprints(root, edl):
+    return globals_fingerprint(root, edl), {c["id"]: clip_fingerprint(root, edl, c) for c in edl["clips"]}
+
+
+def edit_fingerprint(root, edl):
+    g, clips = fingerprints(root, edl)
+    return fingerprint({"globals": g, "clips": clips})
+
+
+def approvals(root):
+    path = Path(root) / "approvals.json"
+    return read_json(path)["approvals"] if path.exists() else []
+
+
+def record(root, entry):
+    path = Path(root) / "approvals.json"
+    log = read_json(path) if path.exists() else {"approvals": []}
+    entry = dict(entry, at=now())
+    log["approvals"].append(entry)
+    write_json(path, log)
+    return entry
+
+
+def status(root, edl):
+    """What the owner still has to see: nothing, some parts, or the whole video."""
+    g, clips = fingerprints(root, edl)
+    boards = [a for a in approvals(root) if a["kind"] == "storyboard"]
+    globals_ok = any(a.get("globals") == g for a in boards)
+    approved_fps = {(cid, fp) for a in boards for cid, fp in a.get("clips", {}).items()}
+    changed = [cid for cid, fp in clips.items() if (cid, fp) not in approved_fps]
+    scope = "whole" if not globals_ok else ("part" if changed else "none")
+    return {"scope": scope, "globals_approved": globals_ok, "changed_clips": changed if globals_ok else list(clips)}
+
+
+def approved(root, edl, kind="storyboard"):
+    if kind == "storyboard":
+        return status(root, edl)["scope"] == "none"
+    current = edit_fingerprint(root, edl)
+    return any(a["kind"] == kind and a.get("edl_fingerprint") == current for a in approvals(root))
+
+
+def require_approval(root, edl):
+    st = status(root, edl)
+    if st["scope"] == "whole":
+        raise ProductionError("Storyboard not approved for this exact EDL (a whole-video setting changed or nothing is approved yet). "
+                              "Run `storyboard`, show the owner, and record their words with `approve` before rendering.")
+    if st["scope"] == "part":
+        raise ProductionError("Storyboard not approved for the changed part(s) {}. Run `storyboard --changed` (and `preview-part`), "
+                              "show the owner that part, and record their words with `approve --clips {}`.".format(
+                                  ", ".join(st["changed_clips"]), ",".join(st["changed_clips"])))
+
+
+def require_decisions(root, edl):
+    """The owner's other two decisions: the style is final and the script is locked."""
+    if edl.get("style"):
+        require(any(a["kind"] == "style" and a.get("slug") == edl["style"] for a in approvals(root)),
+                "Style `{}` is not finalised by the owner. Show the suggestions and record their pick with `approve-style`.".format(edl["style"]))
+    if edl.get("script"):
+        sha = hashed(root, edl["script"])
+        require(any(a["kind"] == "script" and a.get("file") == edl["script"] and a.get("sha256") == sha for a in approvals(root)),
+                "Script `{}` is not locked (or changed after locking). Get the owner's lock with `lock-script`.".format(edl["script"]))
+
+
+def approve_style(root, slug, words):
+    require(isinstance(words, str) and words.strip(), "Quote the owner's exact words with --words")
+    with project_lock(Path(root)):
+        return record(root, {"kind": "style", "slug": slug, "by": "owner", "words": words.strip()})
+
+
+def lock_script(root, rel, words):
+    require(isinstance(words, str) and words.strip(), "Quote the owner's exact words with --words")
+    with project_lock(Path(root)):
+        require(inside(root, rel).is_file(), "Script file missing: " + rel)
+        return record(root, {"kind": "script", "file": rel, "sha256": hashed(root, rel), "by": "owner", "words": words.strip()})
+
+
+# ---- storyboard -----------------------------------------------------------------
 
 def clip_summary(edl, row, clip):
     kind, tdur = transition(clip)
-    texts = clip.get("text") or []
-    texts = texts if isinstance(texts, list) else [texts]
     return {"id": clip["id"], "source": clip["source"], "in": clip["in"], "out": clip["out"], "speed": clip.get("speed", 1.0),
             "start": row["start"], "duration": row["duration"], "transition": kind if kind == "cut" else "{} {:.2f}s".format(kind, tdur),
             "grade": clip.get("grade") or edl.get("grade", {}).get("preset", "neutral"),
-            "text": " | ".join(t["value"] for t in texts), "beat": clip.get("beat", ""), "zoom": clip.get("zoom")}
+            "text": " | ".join(t["value"] for t in as_list(clip.get("text"))), "beat": clip.get("beat", ""), "zoom": clip.get("zoom"),
+            "fx": as_list(clip.get("fx")), "freeze": clip.get("freeze", 0), "inserts": len(clip.get("inserts", []))}
 
 
 def diff(old, new):
@@ -264,7 +467,8 @@ def diff(old, new):
     lines += ["- removed {}".format(i) for i in before if i not in after]
     for i in after:
         if i in before:
-            changed = [k for k in ("source", "in", "out", "speed", "transition", "grade", "text", "beat", "zoom") if before[i].get(k) != after[i].get(k)]
+            changed = [k for k in ("source", "in", "out", "speed", "transition", "grade", "text", "beat", "zoom", "fx", "freeze", "inserts")
+                       if before[i].get(k) != after[i].get(k)]
             if changed:
                 lines.append("- changed {}: {}".format(i, ", ".join("{} {!r} -> {!r}".format(k, before[i].get(k), after[i].get(k)) for k in changed)))
     if [c["id"] for c in old if c["id"] in after] != [c["id"] for c in new if c["id"] in before]:
@@ -274,7 +478,8 @@ def diff(old, new):
 
 def global_summary(edl):
     return {"format": edl["format"], "grade": edl.get("grade", {}), "audio": edl.get("audio", {}),
-            "overlays": edl.get("overlays", []), "subtitles": edl.get("subtitles"), "master": edl.get("master", {}), "style": edl.get("style")}
+            "overlays": edl.get("overlays", []), "subtitles": edl.get("subtitles"), "master": edl.get("master", {}),
+            "style": edl.get("style"), "script": edl.get("script")}
 
 
 def flatten(value, prefix=""):
@@ -300,14 +505,13 @@ def diff_globals(old, new):
 
 
 def json_short(value):
-    import json
     text = json.dumps(value, ensure_ascii=False, sort_keys=True)
     return text if len(text) <= 160 else text[:157] + "..."
 
 
 def still_frames(root, edl, indices, out):
-    """Pull exact frames out of the full edit graph (transitions, overlays, subtitles included)
-    without writing a video file: what the owner approves is what will render."""
+    """Pull exact frames out of the full edit graph (transitions, overlays, inserts, subtitles
+    included) without writing a video file: what the owner approves is what will render."""
     from .render import build_graph
     probes = validate(root, edl)
     textfiles = []
@@ -325,66 +529,86 @@ def still_frames(root, edl, indices, out):
     require(len(written) == len(unique), "Storyboard extraction returned {} of {} frames".format(len(written), len(unique)))
     by_index = dict(zip(unique, written))
     for n, i in enumerate(indices, 1):
-        target = out / ".still-{:04d}.jpg".format(n)
-        target.write_bytes(by_index[i].read_bytes())
+        (out / ".still-{:04d}.jpg".format(n)).write_bytes(by_index[i].read_bytes())
     for f in written:
         f.unlink()
 
 
-def storyboard(root, frames_per_clip=1):
-    """Render one graded, formatted, titled frame per clip (two when asked) and write STORYBOARD.md.
-    This is the owner's gate: nothing is rendered in full until the owner approves this exact EDL."""
+def storyboard(root, frames_per_clip=1, only=None):
+    """Numbered frames from the full edit graph plus STORYBOARD.md. With `only` (clip ids) it
+    makes a part storyboard in storyboard/part/ for a one-part correction."""
     root = Path(root)
     with project_lock(root):
         edl = load(root)
+        require_decisions(root, edl)
         rows, total = timeline(edl)
-        out = root / "storyboard"
-        previous = read_json(out / "storyboard.json") if (out / "storyboard.json").exists() else None
+        ids = [c["id"] for c in edl["clips"]]
+        if only:
+            unknown = [c for c in only if c not in ids]
+            require(not unknown, "Unknown clip id(s): " + ", ".join(unknown))
+        out = root / "storyboard" / ("part" if only else "")
         if out.exists():
-            for f in out.glob("F*.jpg"):
+            for f in list(out.glob("F*.jpg")) + list(out.glob("P*.jpg")):
                 f.unlink()
         out.mkdir(parents=True, exist_ok=True)
-        frames, summaries, picks = [], [], []
+        previous_path = root / "storyboard" / "storyboard.json"
+        previous = read_json(previous_path) if previous_path.exists() else None
         fps = float(edl["format"].get("fps", 30))
+        frames, summaries, picks = [], [], []
         for row, clip in zip(rows, edl["clips"]):
             summaries.append(clip_summary(edl, row, clip))
+            if only and clip["id"] not in only:
+                continue
             for frac in ([0.5] if frames_per_clip == 1 else [0.15, 0.85]):
                 picks.append((clip["id"], min(int(round((row["start"] + row["duration"] * frac) * fps)), int(total * fps) - 1)))
         still_frames(root, edl, [p[1] for p in picks], out)
+        prefix = "P" if only else "F"
         for n, (cid, index) in enumerate(picks, 1):
-            name = "F{:02d}_{}_{}.jpg".format(n, cid, tc(index / fps).replace(":", "m") + "s")
+            name = "{}{:02d}_{}_{}.jpg".format(prefix, n, cid, tc(index / fps).replace(":", "m") + "s")
             (out / ".still-{:04d}.jpg".format(n)).replace(out / name)
             frames.append({"file": name, "clip": cid, "timeline": round(index / fps, 2)})
-        stats = pace(edl)
+        g, clip_fps = fingerprints(root, edl)
         globals_now = global_summary(edl)
         changes = (diff(previous["clips"], summaries) + diff_globals(previous.get("globals", {}), globals_now)) if previous else []
-        record = {"edl_fingerprint": edit_fingerprint(root, edl), "created": now(), "frames": frames, "clips": summaries,
-                  "globals": globals_now, "pace": stats, "changes_since_previous": changes}
-        write_json(out / "storyboard.json", record)
-        (out / "STORYBOARD.md").write_text(storyboard_markdown(edl, record, total), encoding="utf-8")
-        return record
+        rec = {"edl_fingerprint": fingerprint({"globals": g, "clips": clip_fps}), "globals_fingerprint": g,
+               "clip_fingerprints": {c: clip_fps[c] for c in (only or ids)}, "created": now(), "frames": frames,
+               "clips": summaries, "globals": globals_now, "pace": pace(edl), "changes_since_previous": changes,
+               "scope": "part" if only else "whole", "only": only or []}
+        if only:
+            write_json(out / "part.json", rec)
+            (out / "PART.md").write_text(storyboard_markdown(edl, rec, total), encoding="utf-8")
+        else:
+            write_json(out / "storyboard.json", rec)
+            (out / "STORYBOARD.md").write_text(storyboard_markdown(edl, rec, total), encoding="utf-8")
+        return rec
 
 
-def storyboard_markdown(edl, record, total):
+def storyboard_markdown(edl, rec, total):
     fmt = edl["format"]
-    p = record["pace"]
-    lines = ["# Storyboard: {}".format(edl.get("title", "untitled")), "",
-             "Status: **waiting for owner approval** (`python3 -m aifilm.editor approve <edit-dir> --words \"<owner's words>\"`).",
-             "Fingerprint: `{}`".format(record["edl_fingerprint"][:16]), "",
+    p = rec["pace"]
+    part = rec["scope"] == "part"
+    approve_cmd = "approve <edit-dir> --clips {} --words \"<owner's words>\"".format(",".join(rec["only"])) if part else \
+        "approve <edit-dir> --words \"<owner's words>\""
+    lines = ["# {}: {}".format("Part storyboard ({})".format(", ".join(rec["only"])) if part else "Storyboard", edl.get("title", "untitled")), "",
+             "Status: **waiting for owner approval** (`python3 -m aifilm.editor {}`).".format(approve_cmd),
+             "Fingerprint: `{}`".format(rec["edl_fingerprint"][:16]), "",
              "Format {}x{} @ {} fps · total {} · {} shots · average shot {}s · {} cuts per 10 s · grade `{}`{}".format(
                  fmt["width"], fmt["height"], fmt.get("fps", 30), tc(total), p["shots"], p["average_shot_seconds"], p["cuts_per_10s"],
                  edl.get("grade", {}).get("preset", "neutral"), " · style `{}`".format(edl["style"]) if edl.get("style") else ""), ""]
-    if record["changes_since_previous"]:
-        lines += ["## Changes since the previous storyboard", ""] + record["changes_since_previous"] + [""]
-    lines += ["## Frames", "", "| # | Frame | Timeline | Clip | Source in-out | Shot | Transition in | Grade | On-screen text | Beat |",
-              "|---|---|---|---|---|---|---|---|---|---|"]
-    by_id = {c["id"]: c for c in record["clips"]}
-    for i, f in enumerate(record["frames"], 1):
+    if part:
+        lines += ["Only these clips changed; everything else stays as approved.", ""]
+    if rec["changes_since_previous"]:
+        lines += ["## Changes since the previous storyboard", ""] + rec["changes_since_previous"] + [""]
+    lines += ["## Frames", "", "| # | Frame | Timeline | Clip | Source in-out | Shot | Transition in | Grade | FX | On-screen text | Beat |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
+    by_id = {c["id"]: c for c in rec["clips"]}
+    for i, f in enumerate(rec["frames"], 1):
         c = by_id[f["clip"]]
-        lines.append("| {} | `{}` | {} | {} | {} {:.2f}-{:.2f}s{} | {:.2f}s | {} | {} | {} | {} |".format(
+        extras = [x for x in c["fx"]] + (["freeze {}s".format(c["freeze"])] if c["freeze"] else []) + (["{} insert(s)".format(c["inserts"])] if c["inserts"] else [])
+        lines.append("| {} | `{}` | {} | {} | {} {:.2f}-{:.2f}s{} | {:.2f}s | {} | {} | {} | {} | {} |".format(
             i, f["file"], tc(f["timeline"]), c["id"], c["source"], c["in"], c["out"],
             " x{}".format(c["speed"]) if c["speed"] != 1.0 else "", c["duration"], c["transition"], c["grade"],
-            c["text"].replace("|", "/") or "-", c["beat"].replace("|", "/") or "-"))
+            ", ".join(extras) or "-", c["text"].replace("|", "/") or "-", c["beat"].replace("|", "/") or "-"))
     audio = edl.get("audio", {})
     lines += ["", "## Sound plan", ""]
     music = audio.get("music")
@@ -404,38 +628,51 @@ def storyboard_markdown(edl, record, total):
     return "\n".join(lines) + "\n"
 
 
-def approve(root, words, by="owner", kind="storyboard"):
-    """Record the owner's explicit approval of the current storyboard (or final cut), tied to the EDL fingerprint."""
+def approve(root, words, by="owner", kind="storyboard", clips=None):
+    """Record the owner's explicit approval: the whole storyboard, some parts (`clips`), or the final cut."""
     root = Path(root)
     require(isinstance(words, str) and words.strip(), "Quote the owner's exact approval words with --words")
     require(kind in ("storyboard", "final"), "kind must be storyboard or final")
     with project_lock(root):
         edl = load(root)
-        current = edit_fingerprint(root, edl)
-        if kind == "storyboard":
-            board = root / "storyboard" / "storyboard.json"
-            require(board.exists(), "No storyboard yet; run `storyboard` and show it to the owner first")
-            require(read_json(board)["edl_fingerprint"] == current, "The EDL changed after the storyboard was made; rebuild and re-show it")
-        else:
+        g, clip_fps = fingerprints(root, edl)
+        if kind == "final":
             qc = root / "renders" / "qc.json"
+            current = fingerprint({"globals": g, "clips": clip_fps})
             require(qc.exists() and read_json(qc).get("edl_fingerprint") == current, "Run render and qc for this EDL before final approval")
-        path = root / "approvals.json"
-        log = read_json(path) if path.exists() else {"approvals": []}
-        entry = {"kind": kind, "edl_fingerprint": current, "by": by, "words": words.strip(), "at": now()}
-        log["approvals"].append(entry)
-        write_json(path, log)
-        return entry
+            return record(root, {"kind": "final", "edl_fingerprint": current, "by": by, "words": words.strip()})
+        if clips:
+            board = root / "storyboard" / "part" / "part.json"
+            require(board.exists(), "No part storyboard yet; run `storyboard --only {}` first".format(",".join(clips)))
+            part = read_json(board)
+            require(status(root, edl)["globals_approved"], "A whole-video setting changed, so the whole storyboard needs approval, not a part")
+            for cid in clips:
+                require(cid in clip_fps, "Unknown clip " + cid)
+                require(part["clip_fingerprints"].get(cid) == clip_fps[cid], "Clip {} changed after its part storyboard; rebuild and re-show it".format(cid))
+            return record(root, {"kind": "storyboard", "scope": "part", "globals": None, "clips": {c: clip_fps[c] for c in clips},
+                                 "by": by, "words": words.strip()})
+        board = root / "storyboard" / "storyboard.json"
+        require(board.exists(), "No storyboard yet; run `storyboard` and show it to the owner first")
+        require(read_json(board)["edl_fingerprint"] == fingerprint({"globals": g, "clips": clip_fps}),
+                "The EDL changed after the storyboard was made; rebuild and re-show it")
+        return record(root, {"kind": "storyboard", "scope": "whole", "globals": g, "clips": clip_fps, "by": by, "words": words.strip()})
 
 
-def approved(root, edl, kind="storyboard"):
-    path = Path(root) / "approvals.json"
-    if not path.exists():
-        return False
-    current = edit_fingerprint(root, edl)
-    return any(a["kind"] == kind and a["edl_fingerprint"] == current for a in read_json(path)["approvals"])
-
-
-def require_approval(root, edl):
-    if not approved(root, edl, "storyboard"):
-        raise ProductionError("Storyboard not approved for this exact EDL. Run `storyboard`, show the frames to the owner, "
-                              "and record their words with `approve` before rendering.")
+def sub_edl(edl, ids, context=1):
+    """The part of the EDL around `ids` (plus `context` neighbours), re-timed to start at 0,
+    for a quick video preview of a one-part correction."""
+    order = [c["id"] for c in edl["clips"]]
+    idx = sorted(order.index(i) for i in ids)
+    lo, hi = max(idx[0] - context, 0), min(idx[-1] + context, len(order) - 1)
+    rows, _ = timeline(edl)
+    offset = rows[lo]["start"]
+    part = json.loads(json.dumps(edl))
+    part["clips"] = part["clips"][lo:hi + 1]
+    part["clips"][0]["transition_in"] = {"type": "cut"}
+    _, length = timeline(part)
+    audio = part.get("audio", {})
+    if audio.get("music"):
+        audio["music"]["start"] = float(audio["music"].get("start", 0)) + offset
+    audio["sfx"] = [dict(s, at=s["at"] - offset) for s in audio.get("sfx", []) if offset <= s["at"] < offset + length]
+    part["overlays"] = [dict(o, at=o.get("at", 0) - offset) for o in part.get("overlays", []) if offset <= o.get("at", 0) < offset + length]
+    return part, offset, length

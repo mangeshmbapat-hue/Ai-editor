@@ -1,7 +1,9 @@
 """`python3 -m aifilm.editor` (alias `mann`): Mann, the AI video editor's command line.
 
-Flow: doctor -> ingest -> transcribe -> (Mann writes edl.json) -> storyboard -> owner approves
--> render -> qc -> owner approves the final cut. Style lab: fetch -> analyze-style -> publish-style.
+Flow: doctor -> ingest -> transcribe -> assets -> suggest -> [owner: approve-style, lock-script]
+-> autocut (draft EDL) -> Mann refines -> storyboard -> [owner: approve] -> render -> qc -> deliver.
+Corrections: status tells whole vs part; part -> storyboard --changed + preview-part -> approve --clips -> render.
+Style lab: fetch -> analyze-style -> publish-style.
 """
 
 import argparse
@@ -11,6 +13,7 @@ from pathlib import Path
 
 from ..core import ProductionError
 from . import edl as E
+from . import engine as G
 from . import media as M
 from . import render as R
 from . import style as S
@@ -36,12 +39,44 @@ def parser():
     p.add_argument("--threshold", type=float, default=0.3)
     p = c.add_parser("validate", help="Validate <edit>/edl.json and print the timeline")
     p.add_argument("edit")
-    p = c.add_parser("storyboard", help="Render numbered storyboard frames + STORYBOARD.md for the owner's approval")
+    p = c.add_parser("assets", help="Analyse every ingested file (shots, motion, colour, audio, beats); cached by hash")
+    p.add_argument("edit")
+    p = c.add_parser("suggest", help="Smart engine: best styles, unique ideas, hooks and problems for this footage")
+    p.add_argument("edit")
+    p.add_argument("--aspect", choices=sorted(G.SIZES))
+    p = c.add_parser("autocut", help="Draft edl.json from the footage in a catalog style")
+    p.add_argument("edit")
+    p.add_argument("--style", required=True)
+    p.add_argument("--seconds", type=float)
+    p.add_argument("--aspect", choices=sorted(G.SIZES))
+    p = c.add_parser("beats", help="Tempo and beat times of a music file")
+    p.add_argument("audio")
+    p = c.add_parser("library-scan", help="Index a reusable music/SFX/LUT/overlay folder")
+    p.add_argument("folder")
+    p = c.add_parser("styles", help="List the 50 catalog styles")
+    p.add_argument("--family")
+    p = c.add_parser("approve-style", help="Owner decision 1: record the finalised style")
+    p.add_argument("edit")
+    p.add_argument("slug")
+    p.add_argument("--words", required=True)
+    p = c.add_parser("lock-script", help="Owner decision 2: lock the script file (its hash is checked before storyboard)")
+    p.add_argument("edit")
+    p.add_argument("file", help="Path inside the edit folder, e.g. SCRIPT.md")
+    p.add_argument("--words", required=True)
+    p = c.add_parser("status", help="What still needs the owner: nothing, some parts, or the whole video")
+    p.add_argument("edit")
+    p = c.add_parser("storyboard", help="Numbered frames + STORYBOARD.md (owner decision 3); --changed/--only for one-part corrections")
     p.add_argument("edit")
     p.add_argument("--two", action="store_true", help="Two frames per clip (start and end)")
+    p.add_argument("--only", help="Comma-separated clip ids: a part storyboard")
+    p.add_argument("--changed", action="store_true", help="Whole storyboard if a global setting changed, else only the changed clips")
+    p = c.add_parser("preview-part", help="Quick 720p video of the corrected part (plus neighbours) for the owner's check")
+    p.add_argument("edit")
+    p.add_argument("--clips", required=True)
     p = c.add_parser("approve", help="Record the owner's explicit approval (their exact words)")
     p.add_argument("edit")
     p.add_argument("--words", required=True)
+    p.add_argument("--clips", help="Approve only these corrected clips (comma-separated)")
     p.add_argument("--final", action="store_true", help="Approve the final cut instead of the storyboard")
     p = c.add_parser("render", help="Render the approved EDL to renders/master.mp4 (+ 720p preview)")
     p.add_argument("edit")
@@ -88,12 +123,46 @@ def main(argv=None):
             edl = E.load(args.edit)
             rows, total = E.timeline(edl)
             result = {"total": total, "pace": E.pace(edl), "timeline": rows, "storyboard_approved": E.approved(args.edit, edl)}
+        elif cmd == "assets":
+            result = G.assets(args.edit)
+        elif cmd == "suggest":
+            r = G.suggest(args.edit, args.aspect)
+            result = {"suggestions": str(Path(args.edit) / "SUGGESTIONS.md"), "recommended": r["recommended"], "experiment": r["experiment"],
+                      "problems": r["problems"]}
+        elif cmd == "autocut":
+            result = G.autocut(args.edit, args.style, args.seconds, args.aspect)
+        elif cmd == "beats":
+            result = G.beats(args.audio)
+        elif cmd == "library-scan":
+            result = {"indexed": len(G.library_scan(args.folder))}
+        elif cmd == "styles":
+            result = [{"slug": s["slug"], "name": s["name"], "family": s["family"], "best_for": s["best_for"]}
+                      for s in G.catalog() if not args.family or s["family"] == args.family]
+        elif cmd == "approve-style":
+            G.style(args.slug)
+            result = E.approve_style(args.edit, args.slug, args.words)
+        elif cmd == "lock-script":
+            result = E.lock_script(args.edit, args.file, args.words)
+        elif cmd == "status":
+            edl = E.load(args.edit)
+            result = E.status(args.edit, edl)
         elif cmd == "storyboard":
-            rec = E.storyboard(args.edit, 2 if args.two else 1)
-            result = {"storyboard": str(Path(args.edit) / "storyboard" / "STORYBOARD.md"), "frames": [f["file"] for f in rec["frames"]],
-                      "pace": rec["pace"], "changes": rec["changes_since_previous"]}
+            only = [x.strip() for x in args.only.split(",")] if args.only else None
+            if args.changed and not only:
+                st = E.status(args.edit, E.load(args.edit))
+                if st["scope"] == "none":
+                    print(json.dumps({"scope": "none", "message": "Nothing changed since the owner's approval"}, indent=2))
+                    return 0
+                only = st["changed_clips"] if st["scope"] == "part" else None
+            rec = E.storyboard(args.edit, 2 if args.two else 1, only)
+            name = "part/PART.md" if only else "STORYBOARD.md"
+            result = {"scope": rec["scope"], "storyboard": str(Path(args.edit) / "storyboard" / name),
+                      "frames": [f["file"] for f in rec["frames"]], "pace": rec["pace"], "changes": rec["changes_since_previous"]}
+        elif cmd == "preview-part":
+            result = R.preview_part(args.edit, [x.strip() for x in args.clips.split(",")])
         elif cmd == "approve":
-            result = E.approve(args.edit, args.words, kind="final" if args.final else "storyboard")
+            clips = [x.strip() for x in args.clips.split(",")] if args.clips else None
+            result = E.approve(args.edit, args.words, kind="final" if args.final else "storyboard", clips=clips)
         elif cmd == "render":
             result = R.render(args.edit, preview=not args.no_preview)
         elif cmd == "qc":

@@ -173,5 +173,5 @@ def publish(workdir, styles_root, slug):
     dest.mkdir(parents=True, exist_ok=True)
     (dest / "STYLE_SHEET.md").write_text(text.replace("Status: **draft**", "Status: **learned**"), encoding="utf-8")
     slim = {k: v for k, v in analysis.items() if k not in ("shots", "frames")}
-    write_json(dest / "style.json", {"slug": slug, "targets": targets(analysis), "analysis": slim})
+    write_json(dest / "style.json", {"slug": slug, "measured": True, "targets": targets(analysis), "analysis": slim})
     return dest

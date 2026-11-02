@@ -1,0 +1,30 @@
+{
+  "slug": "podcast-clip",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.5,
+    "cuts_per_10s": 4,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "transition": "cut",
+    "zoom_every": 4,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0.45,
+    "music_db": -28,
+    "captions": {
+      "max_words": 4,
+      "position": "bottom",
+      "size": 0.055,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}

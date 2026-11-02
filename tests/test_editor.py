@@ -217,3 +217,172 @@ class EditorStaticTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+CATALOG = REPO / "editor" / "styles" / "catalog.json"
+
+
+class CatalogTest(unittest.TestCase):
+    def test_fifty_styles_are_complete_and_engine_ready(self):
+        data = read_json(CATALOG)
+        styles = data["styles"]
+        self.assertEqual(len(styles), 50)
+        self.assertEqual(len({s["slug"] for s in styles}), 50)
+        self.assertEqual({s["family"] for s in styles}, set(data["families"]))
+        text_fields = ["name", "best_for", "aspect", "duration", "hook", "structure", "cutting", "camera", "transitions",
+                       "type", "mg", "colour", "sound", "vfx"]
+        for s in styles:
+            with self.subTest(style=s["slug"]):
+                for f in text_fields:
+                    self.assertTrue(isinstance(s[f], str) and s[f].strip(), f)
+                self.assertGreaterEqual(len(s["signature"]), 3)
+                self.assertTrue(s["avoid"] and s["twists"] and s["known_from"])
+                self.assertIn(s["fit"]["speech"], {"high", "low", "any"})
+                self.assertIn(s["fit"]["motion"], {"low", "mid", "high", "any"})
+                e = s["edl"]
+                self.assertIn(e["grade"], E.GRADES)
+                self.assertIn(e.get("transition", "cut"), E.TRANSITIONS)
+                for fx in list((e.get("fx_every") or {})) + (e.get("fx_all") or []) + (e.get("fx_last") or []):
+                    self.assertIn(fx, E.FX)
+                if e.get("captions"):
+                    self.assertIn(e["captions"]["color"], E.SUB_COLOURS)
+                    self.assertIn(e["captions"]["position"], E.TEXT_POSITIONS)
+                sheet = REPO / "editor" / "styles" / s["slug"] / "STYLE_SHEET.md"
+                self.assertTrue(sheet.exists(), "run python3 editor/styles/build_styles.py")
+                self.assertIn(s["hook"], sheet.read_text(encoding="utf-8"))
+                self.assertEqual(read_json(sheet.parent / "style.json")["targets"]["average_shot_seconds"], s["pace"]["avg_shot"])
+        index = (REPO / "editor" / "styles" / "INDEX.md").read_text(encoding="utf-8")
+        for s in styles:
+            self.assertIn("`{}`".format(s["slug"]), index)
+
+
+@unittest.skipUnless(HAS_FFMPEG, "FFmpeg is required for media tests")
+class EngineCase(unittest.TestCase):
+    """SYNTHETIC fixtures: a flat-colour 'talking' clip with a gated tone, two moving test
+    patterns as B-roll, a 120 BPM click track as music, pink noise as an SFX."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fixtures = Path(tempfile.mkdtemp(prefix="mann-engine-"))
+        f = cls.fixtures
+        ff("-f", "lavfi", "-i", "color=c=0x806050:s=320x180:r=30:d=9", "-f", "lavfi",
+           "-i", "sine=f=220:d=9,volume='if(lt(mod(t,3),2.2),1,0)':eval=frame", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+           "-c:a", "aac", "-shortest", f / "talk.mp4")
+        ff("-f", "lavfi", "-i", "testsrc2=s=320x180:r=30:d=6", "-c:v", "libx264", "-pix_fmt", "yuv420p", f / "broll1.mp4")
+        ff("-f", "lavfi", "-i", "mandelbrot=s=320x180:r=30,trim=duration=5", "-c:v", "libx264", "-pix_fmt", "yuv420p", f / "broll2.mp4")
+        ff("-f", "lavfi", "-i", "sine=f=1000:d=20,volume='if(lt(mod(t,0.5),0.05),1,0)':eval=frame", "-f", "lavfi", "-i", "sine=f=110:d=20",
+           "-filter_complex", "[0][1]amix=inputs=2:weights=1 0.3", f / "music120.wav")
+        ff("-f", "lavfi", "-i", "anoisesrc=d=0.3:c=pink", f / "whoosh.wav")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.fixtures, ignore_errors=True)
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.edit = Path(self.temp.name) / "edit"
+        T.ingest(self.edit, sorted(self.fixtures.iterdir()))
+        (self.edit / "BRIEF.md").write_text("Synthetic fixture brief: travel recap\n", encoding="utf-8")
+
+    def test_assets_beats_and_suggestions(self):
+        from aifilm.editor import engine as G
+        items = {a["file"]: a for a in G.assets(self.edit)}
+        self.assertEqual(items["raw/music120.wav"]["kind"], "music")
+        self.assertEqual(items["raw/whoosh.wav"]["kind"], "sfx")
+        self.assertEqual(items["raw/talk.mp4"]["label"], "talking")
+        self.assertAlmostEqual(items["raw/music120.wav"]["bpm"], 120, delta=3)
+        r = G.suggest(self.edit, "9:16")
+        self.assertEqual(len(r["recommended"]), 3)
+        fams = {s["slug"]: s["family"] for s in G.catalog()}
+        self.assertNotEqual(fams[r["experiment"]["styles"][0]], fams[r["experiment"]["styles"][1]])
+        self.assertTrue(any("reframe" in p for p in r["problems"]))
+        self.assertTrue(r["unique_ideas"])
+        self.assertIn("Recommended styles", (self.edit / "SUGGESTIONS.md").read_text(encoding="utf-8"))
+
+    def test_autocut_makes_a_valid_draft_in_every_style(self):
+        from aifilm.editor import engine as G
+        for s in G.catalog():
+            with self.subTest(style=s["slug"]):
+                out = G.autocut(self.edit, s["slug"], seconds=8)
+                edl = read_json(self.edit / "edl.json")
+                E.validate(self.edit, edl)
+                self.assertEqual(edl["style"], s["slug"])
+                self.assertGreater(out["seconds"], 1.0)
+                self.assertEqual(edl["grade"]["preset"], s["edl"]["grade"])
+
+    def test_owner_decisions_gate_the_storyboard(self):
+        from aifilm.editor import engine as G
+        G.autocut(self.edit, "interview-broll-doc", seconds=6)
+        with self.assertRaisesRegex(ProductionError, "not finalised"):
+            E.storyboard(self.edit)
+        E.approve_style(self.edit, "interview-broll-doc", "synthetic fixture pick")
+        (self.edit / "SCRIPT.md").write_text("Synthetic locked script line\n", encoding="utf-8")
+        edl = read_json(self.edit / "edl.json")
+        edl["script"] = "SCRIPT.md"
+        write_json(self.edit / "edl.json", edl)
+        with self.assertRaisesRegex(ProductionError, "not locked"):
+            E.storyboard(self.edit)
+        E.lock_script(self.edit, "SCRIPT.md", "synthetic lock")
+        E.storyboard(self.edit)
+        (self.edit / "SCRIPT.md").write_text("Changed after lock\n", encoding="utf-8")
+        with self.assertRaisesRegex(ProductionError, "not locked"):
+            E.storyboard(self.edit)
+
+    def test_part_correction_touches_only_that_part(self):
+        from aifilm.editor import engine as G
+        G.autocut(self.edit, "beat-sync-montage", seconds=6)
+        E.approve_style(self.edit, "beat-sync-montage", "synthetic fixture pick")
+        E.storyboard(self.edit)
+        E.approve(self.edit, "synthetic whole approval")
+        self.assertEqual(E.status(self.edit, E.load(self.edit))["scope"], "none")
+        edl = read_json(self.edit / "edl.json")
+        target = edl["clips"][1]["id"]
+        edl["clips"][1]["grade"] = "cool-night"
+        write_json(self.edit / "edl.json", edl)
+        st = E.status(self.edit, E.load(self.edit))
+        self.assertEqual((st["scope"], st["changed_clips"]), ("part", [target]))
+        with self.assertRaisesRegex(ProductionError, "changed part"):
+            R.render(self.edit, preview=False)
+        with self.assertRaisesRegex(ProductionError, "No part storyboard|changed after"):
+            E.approve(self.edit, "too early", clips=[target])
+        part = E.storyboard(self.edit, only=[target])
+        self.assertEqual([f["clip"] for f in part["frames"]], [target])
+        self.assertTrue(any(target in line and "cool-night" in line for line in part["changes_since_previous"]))
+        preview = R.preview_part(self.edit, [target])
+        self.assertIn(target, preview["clips"])
+        self.assertGreater(media.probe(preview["file"])["duration"], 0.5)
+        E.approve(self.edit, "synthetic part approval", clips=[target])
+        self.assertEqual(E.status(self.edit, E.load(self.edit))["scope"], "none")
+        R.render(self.edit, preview=False)
+        edl = read_json(self.edit / "edl.json")
+        edl["grade"]["preset"] = "bw-contrast"
+        write_json(self.edit / "edl.json", edl)
+        self.assertEqual(E.status(self.edit, E.load(self.edit))["scope"], "whole")
+        with self.assertRaisesRegex(ProductionError, "whole storyboard"):
+            E.approve(self.edit, "part only", clips=[target])
+
+    def test_every_fx_renders_through_the_graph(self):
+        clips = [{"id": "X{}".format(i), "source": "T", "in": 0.0, "out": 0.6, "fx": [fx]} for i, fx in enumerate(sorted(E.FX))]
+        clips[-1]["freeze"] = 0.3
+        clips[1]["inserts"] = [{"source": "B", "in": 0.0, "out": 0.4, "at": 0.1}]
+        (self.edit / "caps.srt").write_text("1\n00:00:00,000 --> 00:00:01,000\nsynthetic caption\n", encoding="utf-8")
+        write_json(self.edit / "edl.json", {"version": 1, "format": {"width": 180, "height": 320, "fps": 30},
+                                            "sources": {"T": "raw/talk.mp4", "B": "raw/broll1.mp4"}, "clips": clips,
+                                            "subtitles": {"file": "caps.srt", "uppercase": True, "color": "yellow", "box": True, "position": "center"}})
+        rec = E.storyboard(self.edit)
+        self.assertEqual(len(rec["frames"]), len(E.FX))
+        staged = E.stage_subtitles(self.edit, E.load(self.edit))
+        self.assertIn("SYNTHETIC CAPTION", staged.read_text(encoding="utf-8"))
+
+    def test_sub_edl_retimes_the_part(self):
+        edl = {"version": 1, "format": {"width": 180, "height": 320, "fps": 30}, "sources": {"T": "raw/talk.mp4"},
+               "clips": [{"id": "A", "source": "T", "in": 0, "out": 2}, {"id": "B", "source": "T", "in": 2, "out": 4},
+                         {"id": "C", "source": "T", "in": 4, "out": 6}, {"id": "D", "source": "T", "in": 6, "out": 8}],
+               "audio": {"music": {"file": "raw/music120.wav", "start": 1.0}, "sfx": [{"file": "raw/whoosh.wav", "at": 0.5}, {"file": "raw/whoosh.wav", "at": 4.5}]}}
+        part, offset, length = E.sub_edl(edl, ["C"])
+        self.assertEqual([c["id"] for c in part["clips"]], ["B", "C", "D"])
+        self.assertEqual((offset, length), (2.0, 6.0))
+        self.assertEqual(part["audio"]["music"]["start"], 3.0)
+        self.assertEqual([s["at"] for s in part["audio"]["sfx"]], [2.5])
+        self.assertIn("00:00:01,500", E.shift_srt("00:00:03,500 --> 00:00:04,000", 2.0))

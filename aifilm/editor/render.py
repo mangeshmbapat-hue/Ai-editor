@@ -27,7 +27,7 @@ def atempo(speed):
     return parts
 
 
-def build_graph(root, edl, probes, textfiles):
+def build_graph(root, edl, probes, textfiles, sub_shift=0.0):
     """Return (ffmpeg input args, filter_complex, video label, audio label, total seconds)."""
     inputs, graph = [], []
     rows, total = E.timeline(edl)
@@ -59,6 +59,15 @@ def build_graph(root, edl, probes, textfiles):
         v, a = nv, na
     n_inputs = len(edl["clips"])
     fmt = edl["format"]
+    for i, clip in enumerate(edl["clips"]):
+        for k, ins in enumerate(clip.get("inserts", [])):
+            span = ins["out"] - ins["in"]
+            at = rows[i]["start"] + float(ins.get("at", 0))
+            inputs += ["-ss", "{:.3f}".format(ins["in"]), "-t", "{:.3f}".format(span), "-i", str(inside(root, edl["sources"][ins["source"]]))]
+            graph.append("[{}:v]{}[ins{}_{}]".format(n_inputs, E.insert_chain(root, edl, clip, ins, at), i, k))
+            graph.append("[{}][ins{}_{}]overlay=eof_action=pass:enable='between(t,{:.3f},{:.3f})'[vi{}_{}]".format(v, i, k, at, at + span, i, k))
+            v = "vi{}_{}".format(i, k)
+            n_inputs += 1
     for k, ov in enumerate(edl.get("overlays", [])):
         inputs += ["-i", str(inside(root, ov["file"]))]
         at = float(ov.get("at", 0))
@@ -68,12 +77,9 @@ def build_graph(root, edl, probes, textfiles):
         n_inputs += 1
     subs = edl.get("subtitles")
     if subs and subs.get("burn", True):
-        staged = Path(root) / ".mann-subs.srt"
-        shutil.copyfile(inside(root, subs["file"]), staged)
+        staged = E.stage_subtitles(root, edl, sub_shift)
         textfiles.append(str(staged))
-        style = subs.get("force_style", "Fontname=Noto Sans,Fontsize=14,Bold=1,Outline=2,Shadow=0,MarginV={}".format(
-            int(subs.get("margin_v", 70 if fmt["height"] > fmt["width"] else 30))))
-        graph.append("[{}]subtitles=filename='{}':force_style='{}'[vs]".format(v, E.esc(staged), style))
+        graph.append("[{}]subtitles=filename='{}':force_style='{}'[vs]".format(v, E.esc(staged), E.esc(E.subtitle_style(edl))))
         v = "vs"
     graph.append("[{}]format=yuv420p[vout]".format(v))
     # Audio: dialogue/source bed, music (looped, ducked), SFX.
@@ -116,6 +122,7 @@ def render(root, preview=True):
     media.need("ffmpeg")
     with project_lock(root):
         edl = E.load(root)
+        E.require_decisions(root, edl)
         E.require_approval(root, edl)
         probes = E.validate(root, edl)
         out = root / "renders"
@@ -160,6 +167,32 @@ def render(root, preview=True):
         write_json(out / "render.json", {"edl_fingerprint": E.edit_fingerprint(root, edl), "rendered": now(),
                                          "expected_seconds": total, "file": "renders/master.mp4"})
         return {"master": str(master), "expected_seconds": total}
+
+
+def preview_part(root, ids, context=1):
+    """Render only the corrected part (plus one neighbour each side) as a quick 720p check copy
+    for the owner. It is a preview, not the film: the full render still needs the approvals."""
+    root = Path(root)
+    media.need("ffmpeg")
+    edl = E.load(root)
+    part, offset, length = E.sub_edl(edl, ids, context)
+    probes = E.validate(root, part)
+    out = root / "renders" / "parts"
+    out.mkdir(parents=True, exist_ok=True)
+    target = out / "part-{}.mp4".format("-".join(ids))
+    textfiles = []
+    try:
+        inputs, graph, v, a, total = build_graph(root, part, probes, textfiles, sub_shift=offset)
+        scale = "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)'"
+        graph += ";[{}]{}[pv];[{}]loudnorm=I=-14:TP=-1.5[pa]".format(v, scale, a)
+        media.run(["ffmpeg", "-hide_banner", "-y"] + inputs + ["-filter_complex", graph, "-map", "[pv]", "-map", "[pa]",
+                   "-c:v", "libx264", "-preset", "veryfast", "-crf", "24", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
+                   "-t", "{:.3f}".format(total), str(target)])
+    finally:
+        for f in textfiles:
+            Path(f).unlink(missing_ok=True)
+    return {"file": str(target), "covers": "{}-{} of the film".format(E.tc(offset), E.tc(offset + length)),
+            "clips": [c["id"] for c in part["clips"]]}
 
 
 def load_rules():

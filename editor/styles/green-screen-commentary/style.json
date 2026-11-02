@@ -1,0 +1,30 @@
+{
+  "slug": "green-screen-commentary",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.5,
+    "cuts_per_10s": 4,
+    "first_cut_seconds": 1.0,
+    "grade_preset": "neutral"
+  },
+  "edl_defaults": {
+    "grade": "neutral",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.12
+    ],
+    "silence_cut": 0.25,
+    "music_db": -26,
+    "captions": {
+      "max_words": 3,
+      "position": "center",
+      "size": 0.06,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}

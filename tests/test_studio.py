@@ -88,7 +88,7 @@ class StudioTest(unittest.TestCase):
 
     def test_mann_storyboard_gate_and_learning(self):
         mann = (AGENTS / "mann.md").read_text(encoding="utf-8")
-        for needle in ["Storyboard gate (mandatory)", "approve --words", "editor/rules.json", "mann-style-lab", "/studio-learn",
+        for needle in ["storyboard (gate, mandatory)", "approve --clips", "approve-style", "lock-script", "approve --words", "editor/rules.json", "mann-style-lab", "/studio-learn",
                        "Never post", "experiment"]:
             self.assertIn(needle, mann)
         learn = (SKILLS / "studio-learn" / "SKILL.md").read_text(encoding="utf-8")

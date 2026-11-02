@@ -1,0 +1,31 @@
+{
+  "slug": "history-short",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.0,
+    "cuts_per_10s": 5,
+    "first_cut_seconds": 1.0,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "grain": 6,
+    "transition": "cut",
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.14
+    ],
+    "silence_cut": 0.3,
+    "music_db": -18,
+    "captions": {
+      "max_words": 3,
+      "position": "center",
+      "size": 0.06,
+      "uppercase": false,
+      "color": "yellow",
+      "box": false
+    }
+  }
+}

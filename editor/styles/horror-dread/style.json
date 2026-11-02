@@ -1,0 +1,24 @@
+{
+  "slug": "horror-dread",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16 or 16:9",
+    "average_shot_seconds": 3.0,
+    "cuts_per_10s": 3.3,
+    "first_cut_seconds": 3.0,
+    "grade_preset": "cool-night"
+  },
+  "edl_defaults": {
+    "grade": "cool-night",
+    "vignette": true,
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.08
+    ],
+    "silence_cut": 0,
+    "music_db": -16,
+    "captions": null
+  }
+}

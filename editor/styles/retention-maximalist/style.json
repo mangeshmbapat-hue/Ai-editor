@@ -1,0 +1,35 @@
+{
+  "slug": "retention-maximalist",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 1.2,
+    "cuts_per_10s": 8,
+    "first_cut_seconds": 0.6,
+    "grade_preset": "bright-clean"
+  },
+  "edl_defaults": {
+    "grade": "bright-clean",
+    "transition": "zoomin",
+    "transition_every": 6,
+    "transition_s": 0.25,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.15
+    ],
+    "silence_cut": 0.2,
+    "music_db": -18,
+    "fx_every": {
+      "shake": 7
+    },
+    "captions": {
+      "max_words": 3,
+      "position": "center",
+      "size": 0.065,
+      "uppercase": true,
+      "color": "white",
+      "box": false
+    }
+  }
+}
