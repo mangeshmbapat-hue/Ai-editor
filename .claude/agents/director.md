@@ -101,6 +101,12 @@ Return numbered, concrete fixes on:
       - The picture must be **textless** when the film burns in subtitles: render once more with the captions off. Put the master's finishing pass (grain) in `picture_filter`.
       - Run `python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor`. Add `--media-root <the owner's folder>` when the owner has said where the package will live.
 
+    Send the owner exactly **2 files** (owner rule, 2026-11-02):
+    - the final video
+    - one zip with everything else
+
+    Run `python3 studio/deliver.py projects/<slug>/final --video projects/<slug>/final/<slug>.mp4` and send the two files it prints. It refuses a file over 400 MiB; for a long film, build the editor package with `--crf 18`.
+
     Then ask the orchestrator for the social agent's publishing kit.
 
 ## Phase D: revisions

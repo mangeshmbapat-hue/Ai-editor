@@ -78,4 +78,6 @@ Tell the owner, in Hinglish:
 - the publishing kit
 - the learnings that were recorded
 
-Send the preview and the cover with SendUserFile.
+Send exactly 2 files with SendUserFile (owner rule, 2026-11-02), the ones `studio/deliver.py` prints:
+- the final video
+- one zip with everything else: the editor package, subtitles, cover, credits and the QC note

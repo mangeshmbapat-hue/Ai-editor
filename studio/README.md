@@ -55,6 +55,7 @@ Every finished film comes with `final/editor/`, a timeline the owner opens in **
   - `--codec prores` gives ProRes 422 HQ instead of H.264.
   - `--crf 18` (instead of the default 16) is still visually lossless and about a third smaller. Use it when the package must fit a 400 MB upload.
   - `--media-root <folder>` writes the owner's own media path, so nothing needs relinking.
+- **Delivery is always 2 files** (owner rule): the final video, and one zip with everything else. `python3 studio/deliver.py projects/<slug>/final --video <final video>` makes them and refuses a file over 400 MiB.
 - Limits:
   - there are no handles beyond the shot edges
   - the animation is baked into the picture

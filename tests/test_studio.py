@@ -95,7 +95,8 @@ class StudioTest(unittest.TestCase):
 
     def test_director_delivers_an_editor_package(self):
         director = (AGENTS / "director.md").read_text(encoding="utf-8")
-        for needle in ["studio/editor_package.py", "editor.json", "post-fader, pre-master", "editor package", "textless"]:
+        for needle in ["studio/editor_package.py", "editor.json", "post-fader, pre-master", "editor package", "textless",
+                       "studio/deliver.py", "2 files"]:
             self.assertIn(needle, director)
         self.assertIn("editor package", (SKILLS / "viral-studio" / "SKILL.md").read_text(encoding="utf-8"))
         template = json.loads((STUDIO / "templates" / "editor.json").read_text(encoding="utf-8"))
