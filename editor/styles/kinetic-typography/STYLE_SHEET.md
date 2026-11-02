@@ -76,4 +76,4 @@ Speech high, motion low, orientation any, footage: talking, screen.
 - Zoom: none
 - Silence cut: gaps over 0.25s removed
 - Music at -18 dB
-- Captions: 1 word(s) per caption, 10% of frame height, center, white, uppercase
+- Captions: 1 word(s) per caption, 10% of frame height, center, white, uppercase, animated `word` (white highlight)

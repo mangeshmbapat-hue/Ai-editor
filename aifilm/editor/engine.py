@@ -528,8 +528,15 @@ def autocut(root, slug, seconds=None, aspect=None, title=None):
             limit = min(E.clip_duration(c), E.clip_duration(clips[i - 1])) * 0.8
             if c["transition_in"]["duration"] >= limit:
                 c["transition_in"] = {"type": "cut"}
+    from . import reframe as RF
+    vertical_target = H > W
+    mismatch = any((v["probe"]["height"] > v["probe"]["width"]) != vertical_target for v in videos)
+    if mismatch:
+        notes.append("Footage and target orientation differ: {}.".format(
+            "face-aware reframing (`reframe: auto`) keeps the subject in frame" if RF.available()
+            else "install OpenCV (opencv-python-headless==4.10.0.84) for face-aware reframing; centre crop used"))
     edl = {"version": 1, "title": title or brief_title(root) or "Autocut draft", "style": slug,
-           "format": {"width": W, "height": H, "fps": 30, "fit": "cover"}, "sources": sources, "clips": clips,
+           "format": dict({"width": W, "height": H, "fps": 30, "fit": "cover"}, **({"reframe": "auto"} if mismatch and RF.available() else {})), "sources": sources, "clips": clips,
            "grade": {k: v for k, v in {"preset": cfg["grade"], "grain": cfg.get("grain"), "vignette": cfg.get("vignette")}.items() if v},
            "audio": {"keep_source": speech_led or not music, "source_gain_db": 0},
            "master": {"lufs": -14, "true_peak": -1},
@@ -543,6 +550,8 @@ def autocut(root, slug, seconds=None, aspect=None, title=None):
     cue_count = write_captions(root, edl, words_by_source, caps) if caps else 0
     if caps and cue_count:
         edl["subtitles"] = {"file": "captions.srt", "burn": True, **{k: caps[k] for k in ("size", "position", "uppercase", "color", "box")}}
+        if caps.get("animate"):
+            edl["subtitles"].update(animate=caps["animate"], highlight_color=caps.get("highlight_color", "yellow"), words="captions.words.json")
     elif caps:
         edl["notes"].append("Style uses captions but there is no transcript; captions are added after `transcribe`.")
     total = E.timeline(edl)[1]
@@ -566,10 +575,13 @@ def write_captions(root, edl, words_by_source, caps):
     """Map source word timings onto the cut's timeline and write captions.srt."""
     from .tools import srt_time
     rows, _ = E.timeline(edl)
-    cues, n = [], int(caps.get("max_words", 3))
+    cues, n, timeline_words = [], int(caps.get("max_words", 3)), []
     for row, clip in zip(rows, edl["clips"]):
         words = [w for w in words_by_source.get(clip["source"], []) if w["start"] >= clip["in"] - 0.02 and w["end"] <= clip["out"] + 0.02]
         speed = clip.get("speed", 1.0)
+        for w in words:
+            timeline_words.append({"start": round(row["start"] + (w["start"] - clip["in"]) / speed, 3),
+                                   "end": round(row["start"] + (w["end"] - clip["in"]) / speed, 3), "word": w["word"].strip()})
         for k in range(0, len(words), n):
             chunk_ = words[k:k + n]
             a = row["start"] + (chunk_[0]["start"] - clip["in"]) / speed
@@ -579,6 +591,7 @@ def write_captions(root, edl, words_by_source, caps):
         return 0
     body = "\n".join("{}\n{} --> {}\n{}\n".format(i, srt_time(a), srt_time(b), t) for i, (a, b, t) in enumerate(cues, 1))
     (Path(root) / "captions.srt").write_text(body, encoding="utf-8")
+    write_json(Path(root) / "captions.words.json", timeline_words)
     return len(cues)
 
 

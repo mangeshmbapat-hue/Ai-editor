@@ -36,6 +36,7 @@ def doctor():
         "hyperframes": version(["hyperframes", "--version"]) or (version(["npx", "--no-install", "hyperframes", "--version"]) if shutil.which("npx") else None),
         "fc-match": bool(shutil.which("fc-match")),
         "fonttools": has("fontTools"),
+        "opencv_faces": __import__("aifilm.editor.reframe", fromlist=["available"]).available(),
     }
     node = report["node"] or ""
     m = re.match(r"v(\d+)", node)

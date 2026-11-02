@@ -451,9 +451,18 @@
           "name": "Reframing 16:9 to 9:16",
           "what": "Vertical crops keep about a third of a 16:9 frame.",
           "when": "Every horizontal source in a vertical film.",
-          "how": "Check each storyboard frame for cut-off heads, hands and text; split-screen or `fit: contain` when two subjects matter.",
+          "how": "Set `reframe: auto` (clip or `format`): the crop follows the tracked face smoothly. Check each storyboard frame for cut-off hands and text; split-screen or `fit: contain` when two subjects matter.",
           "avoid": "Centre-cropping by default when the subject is off-centre.",
           "check": "manual"
+        },
+        {
+          "id": "subject-in-frame",
+          "name": "Subject in frame after reframing",
+          "what": "After a 16:9 to 9:16 (or any) reframe, the main face stays inside the frame, near the upper third, and clear of the captions.",
+          "when": "Every clip with `reframe: auto`.",
+          "how": "Face tracking (OpenCV) moves the crop; craft-check measures where the tracked face lands: centre between 20 % and 80 % of the width, 15 % and 55 % of the height, and above the caption band.",
+          "avoid": "Centre crops that cut the speaker out; faces under the captions.",
+          "check": "auto"
         }
       ]
     },

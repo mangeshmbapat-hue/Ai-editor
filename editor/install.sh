@@ -16,8 +16,10 @@ if ! command -v ffmpeg >/dev/null; then
 fi
 ffmpeg -version | head -1
 
-say "yt-dlp + faster-whisper"
+say "yt-dlp, faster-whisper, fontTools, OpenCV"
 python3 -m pip install --upgrade yt-dlp faster-whisper fonttools
+# OpenCV 4.x ships the Haar face cascades used for face-aware reframing (OpenCV 5 dropped them)
+python3 -m pip install "opencv-python-headless==4.10.0.84"
 
 say "Hyperframes"
 if command -v node >/dev/null && [ "$(node -p 'process.versions.node.split(".")[0]')" -ge 22 ]; then

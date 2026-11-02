@@ -533,3 +533,141 @@ class CraftCheckCase(unittest.TestCase):
         self.assertIn("shaping=complex", graph)
         self.assertNotIn("drawtext", graph)
         self.assertNotIn("subtitles=", graph)
+
+
+@unittest.skipUnless(HAS_FFMPEG, "FFmpeg is required for media tests")
+class ReframeCase(unittest.TestCase):
+    """SYNTHETIC fixture: a white square ('the subject') moving right to left on a dark 16:9
+    frame. A stand-in detector finds the square, so the crop logic is tested without faces."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fixtures = Path(tempfile.mkdtemp(prefix="mann-reframe-"))
+        ff("-f", "lavfi", "-i", "color=c=0x202020:s=640x360:r=30:d=4", "-f", "lavfi", "-i", "color=c=white:s=60x60:r=30:d=4",
+           "-filter_complex", "[0][1]overlay=x='520-100*t':y=80", "-c:v", "libx264", "-pix_fmt", "yuv420p", cls.fixtures / "moving.mp4")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.fixtures, ignore_errors=True)
+
+    def setUp(self):
+        from aifilm.editor import reframe as RF
+        try:
+            import numpy  # noqa: F401
+        except ImportError:
+            self.skipTest("numpy is required for reframing")
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.edit = Path(self.temp.name) / "edit"
+        T.ingest(self.edit, [self.fixtures / "moving.mp4"])
+
+        def bright_box(gray):
+            import numpy as np
+            ys, xs = np.nonzero(gray > 200)
+            if not len(xs):
+                return []
+            return [(int(xs.min()), int(ys.min()), int(xs.max() - xs.min() + 1), int(ys.max() - ys.min() + 1))]
+        original = RF.detect
+        RF.detect = bright_box
+        self.addCleanup(setattr, RF, "detect", original)
+
+    def test_crop_follows_the_subject(self):
+        from aifilm.editor import reframe as RF
+        tr = RF.track(self.edit, "raw/moving.mp4")
+        self.assertGreater(tr["detected_share"], 0.9)
+        p = RF.plan(tr, 0, 4, 1.0, 360, 640)
+        self.assertEqual((p["w"], p["h"]), (202, 360))
+        self.assertLess(RF.evaluate(p["x"], 3.5), RF.evaluate(p["x"], 0.5))
+        edl = {"version": 1, "format": {"width": 360, "height": 640, "fps": 30, "reframe": "auto"}, "sources": {"A": "raw/moving.mp4"},
+               "clips": [{"id": "C01", "source": "A", "in": 0, "out": 4}]}
+        write_json(self.edit / "edl.json", edl)
+        edl = E.load(self.edit)
+        xs = [f["x"] for f in RF.framing(self.edit, edl, edl["clips"][0], 4)]
+        self.assertTrue(all(0.3 <= x <= 0.7 for x in xs[2:-2]), xs)
+        from aifilm.editor import craft as C
+        found = {f["check"]: f["result"] for f in C.check(self.edit, edl, sample_contrast=False)}
+        self.assertEqual(found.get("subject in frame"), "pass")
+        rec = E.storyboard(self.edit, 2)
+        self.assertEqual(len(rec["frames"]), 2)
+
+    def test_piecewise_expression_and_simplify(self):
+        from aifilm.editor import reframe as RF
+        pts = [(0, 100.0), (1, 110.0), (2, 120.0), (3, 120.5), (4, 60.0)]
+        simple = RF.simplify(pts, 2.0)
+        self.assertEqual([p[0] for p in simple], [0, 2, 3, 4])
+        expr = RF.piecewise(simple)
+        self.assertAlmostEqual(RF.evaluate(expr, 1.5), 115.0, delta=1.0)
+        self.assertAlmostEqual(RF.evaluate(expr, 4.0), 60.0, delta=0.5)
+        self.assertEqual(RF.piecewise([(0, 50.0), (2, 50.2)]), "50.0")
+
+
+class AnimatedCaptionTest(unittest.TestCase):
+    """Text-only checks of the ASS events for animated captions (no media needed)."""
+
+    cue = {"start": 1.0, "end": 2.0, "lines": ["एक दो", "तीन"]}
+
+    def test_estimated_and_measured_word_timings(self):
+        ws, measured = E.cue_words(self.cue, [])
+        self.assertFalse(measured)
+        self.assertEqual([w["word"] for w in ws], ["एक", "दो", "तीन"])
+        self.assertAlmostEqual(ws[-1]["end"], 2.0, places=3)
+        timed = [{"start": 1.0, "end": 1.2, "word": "a"}, {"start": 1.3, "end": 1.5, "word": "b"}, {"start": 1.6, "end": 1.9, "word": "c"}]
+        ws, measured = E.cue_words(self.cue, timed)
+        self.assertTrue(measured)
+        self.assertEqual([(w["start"], w["word"]) for w in ws], [(1.0, "एक"), (1.3, "दो"), (1.6, "तीन")])
+
+    def test_modes(self):
+        subs = {"highlight_color": "yellow", "color": "white"}
+        hl = E.animated_events(self.cue, [], "highlight", subs)
+        self.assertEqual(len(hl), 3)
+        self.assertIn("{\\c&H0000F0FF}दो{\\r}", hl[1][3])
+        self.assertEqual(hl[-1][1], 2.0)
+        pop = E.animated_events(self.cue, [], "pop", subs)
+        self.assertIn("\\t(0,100,\\fscx100\\fscy100)", pop[0][3])
+        word = E.animated_events(self.cue, [], "word", subs)
+        self.assertTrue(word[2][3].endswith("तीन"))
+        kar = E.animated_events(self.cue, [], "karaoke", subs)
+        self.assertEqual(len(kar), 1)
+        self.assertEqual(kar[0][3].count("\\kf"), 3)
+
+
+@unittest.skipUnless(HAS_FFMPEG, "FFmpeg is required for media tests")
+class ClipCacheCase(unittest.TestCase):
+    """SYNTHETIC fixtures: a test pattern with a tone and a colour field."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        base = Path(self.temp.name)
+        ff("-f", "lavfi", "-i", "testsrc2=s=320x180:r=30:d=4", "-f", "lavfi", "-i", "sine=f=300:d=4", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+           "-c:a", "aac", "-shortest", base / "a.mp4")
+        ff("-f", "lavfi", "-i", "color=c=0x406080:s=320x180:r=30:d=4", "-c:v", "libx264", "-pix_fmt", "yuv420p", base / "b.mp4")
+        self.edit = base / "edit"
+        T.ingest(self.edit, [base / "a.mp4", base / "b.mp4"])
+        write_json(self.edit / "edl.json", {
+            "version": 1, "format": {"width": 180, "height": 320, "fps": 30}, "sources": {"A": "raw/a.mp4", "B": "raw/b.mp4"},
+            "clips": [{"id": "C01", "source": "A", "in": 0, "out": 1.5, "text": {"value": "one", "role": "title", "position": "top"}},
+                      {"id": "C02", "source": "B", "in": 0, "out": 1.0, "zoom": {"from": 1.0, "to": 1.2}},
+                      {"id": "C03", "source": "A", "in": 2.0, "out": 3.0, "zoom": {"from": 1.25, "to": 1.25}}]})
+        E.storyboard(self.edit)
+        E.approve(self.edit, "synthetic fixture approval")
+
+    def change(self, mutate, cid):
+        edl = read_json(self.edit / "edl.json")
+        mutate(edl)
+        write_json(self.edit / "edl.json", edl)
+        E.storyboard(self.edit, only=[cid])
+        E.approve(self.edit, "synthetic part approval", clips=[cid])
+        return R.render(self.edit, preview=False, quality="draft")
+
+    def test_only_changed_clips_are_rerendered(self):
+        first = R.render(self.edit, preview=False, quality="draft")
+        self.assertEqual((first["clips_rendered"], first["clips_reused"]), (3, 0))
+        graded = self.change(lambda d: d["clips"][1].update(grade="cool-night"), "C02")
+        self.assertEqual((graded["clips_rendered"], graded["clips_reused"]), (1, 2))
+        text = self.change(lambda d: d["clips"][0]["text"].update(value="two"), "C01")
+        self.assertEqual((text["clips_rendered"], text["clips_reused"]), (0, 3))
+        self.assertAlmostEqual(media.probe(text["master"])["duration"], text["expected_seconds"], delta=0.07)
+        self.assertEqual(len(list((self.edit / "renders" / "cache").glob("*.mkv"))), 3)
+        with self.assertRaisesRegex(ProductionError, "quality"):
+            R.render(self.edit, quality="ultra")

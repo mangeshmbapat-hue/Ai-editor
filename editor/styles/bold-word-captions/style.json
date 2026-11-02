@@ -23,8 +23,10 @@
       "position": "center",
       "size": 0.075,
       "uppercase": true,
-      "color": "yellow",
-      "box": false
+      "color": "white",
+      "box": false,
+      "animate": "highlight",
+      "highlight_color": "yellow"
     }
   }
 }

@@ -30,6 +30,12 @@ The full rulebook is `editor/craft/CRAFT.md` (`python3 -m aifilm.editor craft --
 
 **Colour.** Correct first, then grade: 15 presets in `aifilm/editor/edl.py` (`GRADES`) or a `.cube` LUT, with exposure/contrast/saturation/temperature, grain and vignette. Protect skin tones.
 
+**Reframing.** For horizontal footage in a vertical film (or any aspect change), set `reframe: auto` (on `format` or a clip): OpenCV face tracking moves the crop smoothly with the speaker, keeping the face centred with the eyes near the upper third. Autocut sets it when orientations differ. `craft-check` measures where the face lands and warns when it is off-position, under the captions, or not found (then the crop stays centred, so check those frames).
+
+**Animated captions.** `subtitles.animate`: `highlight` (current word coloured), `pop` (coloured and popping), `word` (one word at a time) or `karaoke` (fill sweep), with `highlight_color`. Word timings come from `captions.words.json` (autocut writes it from the Whisper transcript); without it the timing is estimated from word length, so say so.
+
+**Speed.** Every clip's processed pixels and sound are cached (`renders/cache/`, keyed by the clip's own settings and source hash) and rendered in parallel; a correction re-renders only the clips it touched, and text, inserts, transitions, overlays and captions never force a clip re-render. `render --quality draft|standard|best` trades encode time for size.
+
 **VFX.** Speed ramps (`speed`, `slowmo`), punch-ins and Ken Burns (`zoom`), freeze frames (`freeze`), B-roll picture inserts over a running voice (`inserts`), per-clip `fx` (`shake`, `flash`, `fade_in`, `rgb_split`, `letterbox`, `step_print`, `vhs`, `stop_motion`, `glow`, `bw`), xfade transitions and Hyperframes alpha overlays. No effect without a reason.
 
 ## The process (owner's rule: owner decides style, script, storyboard; Mann does the rest)

@@ -27,22 +27,99 @@ def atempo(speed):
     return parts
 
 
-def build_graph(root, edl, probes, textfiles, sub_shift=0.0):
-    """Return (ffmpeg input args, filter_complex, video label, audio label, total seconds)."""
+CACHE_VERSION = 1
+
+
+def clip_audio_chain(edl, clip, probes):
+    """Audio filters for one clip, or None when the clip is silent (filled with anullsrc)."""
+    keep = edl.get("audio", {}).get("keep_source", True)
+    if not (keep and clip.get("audio", True) and probes[clip["source"]]["has_audio"]):
+        return None
+    return ",".join(["asetpts=PTS-STARTPTS"] + atempo(clip.get("speed", 1.0)) + [
+        "aresample=48000", "aformat=sample_fmts=fltp:channel_layouts=stereo", "apad", "atrim=0:{:.4f}".format(E.clip_duration(clip))])
+
+
+def clip_cache_key(root, edl, clip, probes):
+    """Everything that shapes a clip's own pixels and sound. Text, inserts, transitions and
+    overlays are applied at assembly, so changing them never re-renders the clip."""
+    from ..core import fingerprint
+    from . import reframe
+    own = {k: v for k, v in clip.items() if k not in ("id", "text", "inserts", "transition_in", "beat")}
+    files = {"src": E.hashed(root, edl["sources"][clip["source"]])}
+    if edl.get("grade", {}).get("lut"):
+        files["lut"] = E.hashed(root, edl["grade"]["lut"])
+    return fingerprint({"v": CACHE_VERSION, "clip": own, "files": files, "format": edl["format"], "grade": edl.get("grade", {}),
+                        "audio": clip_audio_chain(edl, clip, probes) is not None, "reframe": reframe.VERSION})
+
+
+def cache_dir(root):
+    return Path(root) / "renders" / "cache"
+
+
+def render_clip(root, edl, clip, probes, target):
+    src = inside(root, edl["sources"][clip["source"]])
+    span = clip["out"] - clip["in"]
+    dur = E.clip_duration(clip)
+    textfiles = []
+    vchain = E.clip_video_chain(root, edl, clip, textfiles)
+    achain = clip_audio_chain(edl, clip, probes)
+    graph = "[0:v]{}[v];".format(vchain) + ("[0:a]{}[a]".format(achain) if achain else
+                                           "anullsrc=r=48000:cl=stereo,atrim=0:{:.4f},aformat=sample_fmts=fltp[a]".format(dur))
+    tmp = target.with_name(".tmp-" + target.name)
+    media.run(["ffmpeg", "-hide_banner", "-y", "-ss", "{:.3f}".format(clip["in"]), "-t", "{:.3f}".format(span), "-i", str(src),
+               "-filter_complex", graph, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "12",
+               "-pix_fmt", "yuv420p", "-c:a", "pcm_s16le", "-t", "{:.3f}".format(dur), str(tmp)])
+    tmp.replace(target)
+
+
+def cached_clips(root, edl, probes, build=False, workers=None):
+    """Map clip id -> cached render. With build=True, render missing clips (in parallel)."""
+    import os
+    from concurrent.futures import ThreadPoolExecutor
+    folder = cache_dir(root)
+    folder.mkdir(parents=True, exist_ok=True)
+    want = {c["id"]: (c, folder / (clip_cache_key(root, edl, c, probes)[:24] + ".mkv")) for c in edl["clips"]}
+    have = {cid: path for cid, (c, path) in want.items() if path.exists()}
+    missing = [(c, path) for cid, (c, path) in want.items() if cid not in have]
+    stats = {"cached": len(have), "rendered": 0}
+    if build and missing:
+        with ThreadPoolExecutor(max_workers=workers or min(4, os.cpu_count() or 2)) as pool:
+            list(pool.map(lambda cp: render_clip(root, edl, cp[0], probes, cp[1]), missing))
+        for c, path in missing:
+            have[c["id"]] = path
+        stats["rendered"] = len(missing)
+    return have, stats
+
+
+def prune_cache(root, keep):
+    keep = {Path(p).name for p in keep}
+    for f in cache_dir(root).glob("*.mkv"):
+        if f.name not in keep:
+            f.unlink()
+
+
+def build_graph(root, edl, probes, textfiles, sub_shift=0.0, cache=None):
+    """Return (ffmpeg input args, filter_complex, video label, audio label, total seconds).
+    Clips found in `cache` (id -> processed file) are used as-is instead of re-processing."""
     inputs, graph = [], []
     rows, total = E.timeline(edl)
     audio_cfg = edl.get("audio", {})
     keep = audio_cfg.get("keep_source", True)
+    cache = cache or {}
     for i, clip in enumerate(edl["clips"]):
+        dur = E.clip_duration(clip)
+        if clip["id"] in cache:
+            inputs += ["-i", str(cache[clip["id"]])]
+            graph.append("[{}:v]setpts=PTS-STARTPTS,settb=AVTB[v{}]".format(i, i))
+            graph.append("[{}:a]asetpts=PTS-STARTPTS,atrim=0:{:.4f}[a{}]".format(i, dur, i))
+            continue
         src = inside(root, edl["sources"][clip["source"]])
         span = clip["out"] - clip["in"]
         inputs += ["-ss", "{:.3f}".format(clip["in"]), "-t", "{:.3f}".format(span), "-i", str(src)]
         graph.append("[{}:v]{}[v{}]".format(i, E.clip_video_chain(root, edl, clip, textfiles), i))
-        dur = E.clip_duration(clip)
-        if keep and clip.get("audio", True) and probes[clip["source"]]["has_audio"]:
-            chain = ["asetpts=PTS-STARTPTS"] + atempo(clip.get("speed", 1.0)) + [
-                "aresample=48000", "aformat=sample_fmts=fltp:channel_layouts=stereo", "apad", "atrim=0:{:.4f}".format(dur)]
-            graph.append("[{}:a]{}[a{}]".format(i, ",".join(chain), i))
+        achain = clip_audio_chain(edl, clip, probes)
+        if achain:
+            graph.append("[{}:a]{}[a{}]".format(i, achain, i))
         else:
             graph.append("anullsrc=r=48000:cl=stereo,atrim=0:{:.4f},aformat=sample_fmts=fltp[a{}]".format(dur, i))
     v, a, length = "v0", "a0", E.clip_duration(edl["clips"][0])
@@ -118,9 +195,13 @@ def build_graph(root, edl, probes, textfiles, sub_shift=0.0):
     return inputs, ";".join(graph), "vout", "aout", total
 
 
-def render(root, preview=True):
+QUALITY = {"draft": ("veryfast", "20"), "standard": ("faster", "18"), "best": ("slow", "16")}
+
+
+def render(root, preview=True, quality="standard"):
     root = Path(root)
     media.need("ffmpeg")
+    require(quality in QUALITY, "quality must be one of {}".format(sorted(QUALITY)))
     with project_lock(root):
         edl = E.load(root)
         E.require_decisions(root, edl)
@@ -129,11 +210,13 @@ def render(root, preview=True):
         out = root / "renders"
         out.mkdir(parents=True, exist_ok=True)
         stage, master = out / ".stage.mkv", out / "master.mp4"
+        cache, stats = cached_clips(root, edl, probes, build=True)
         textfiles = []
         try:
-            inputs, graph, v, a, total = build_graph(root, edl, probes, textfiles)
+            inputs, graph, v, a, total = build_graph(root, edl, probes, textfiles, cache=cache)
             media.run(["ffmpeg", "-hide_banner", "-y"] + inputs + ["-filter_complex", graph, "-map", "[" + v + "]", "-map", "[" + a + "]",
-                       "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", str(edl["format"].get("fps", 30)),
+                       "-c:v", "libx264", "-preset", QUALITY[quality][0], "-crf", QUALITY[quality][1], "-pix_fmt", "yuv420p",
+                       "-r", str(edl["format"].get("fps", 30)),
                        "-c:a", "pcm_s16le", "-t", "{:.3f}".format(total), str(stage)])
         finally:
             for f in textfiles:
@@ -165,9 +248,10 @@ def render(root, preview=True):
         if preview:
             media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(master), "-vf", "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)'",
                        "-c:v", "libx264", "-crf", "26", "-preset", "veryfast", "-c:a", "aac", "-b:a", "128k", str(out / "preview_720p.mp4")])
+        prune_cache(root, cache.values())
         write_json(out / "render.json", {"edl_fingerprint": E.edit_fingerprint(root, edl), "rendered": now(),
-                                         "expected_seconds": total, "file": "renders/master.mp4"})
-        return {"master": str(master), "expected_seconds": total}
+                                         "expected_seconds": total, "file": "renders/master.mp4", "clips": stats})
+        return {"master": str(master), "expected_seconds": total, "clips_reused": stats["cached"], "clips_rendered": stats["rendered"]}
 
 
 def preview_part(root, ids, context=1):
@@ -183,7 +267,8 @@ def preview_part(root, ids, context=1):
     target = out / "part-{}.mp4".format("-".join(ids))
     textfiles = []
     try:
-        inputs, graph, v, a, total = build_graph(root, part, probes, textfiles, sub_shift=offset)
+        cache, _ = cached_clips(root, part, probes)
+        inputs, graph, v, a, total = build_graph(root, part, probes, textfiles, sub_shift=offset, cache=cache)
         scale = "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)'"
         graph += ";[{}]{}[pv];[{}]loudnorm=I=-14:TP=-1.5[pa]".format(v, scale, a)
         media.run(["ffmpeg", "-hide_banner", "-y"] + inputs + ["-filter_complex", graph, "-map", "[pv]", "-map", "[pa]",

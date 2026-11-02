@@ -22,6 +22,7 @@ Mann is the studio's editor agent (`.claude/agents/mann.md`). Give it raw footag
 |---|---|---|
 | [FFmpeg](https://ffmpeg.org) | trim, speed, crop/reframe, grade, LUTs, transitions (xfade), titles (drawtext with Devanagari shaping), burned subtitles (libass), music ducking, SFX, two-pass loudness, QC measurements | system package |
 | [faster-whisper](https://github.com/SYSTRAN/faster-whisper) (or openai-whisper) | transcripts, word-timed phone captions | `pip install faster-whisper` |
+| [OpenCV](https://opencv.org) 4.x (headless) | face tracking for reframing (bundled Haar cascades) | `pip install opencv-python-headless==4.10.0.84` |
 | [fontTools](https://github.com/fonttools/fonttools) + [Fontsource](https://fontsource.org) | merging open-licensed Google Fonts (Latin + Devanagari) into TTFs for FFmpeg/libass | `pip install fonttools`; fonts via npm |
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | downloading reference videos for the style lab | `pip install yt-dlp` |
 | [Hyperframes](https://github.com/heygen-com/hyperframes) | HTML + GSAP motion graphics rendered to ProRes 4444 with alpha, laid over the cut | `npm i -g hyperframes@0.8.230` (Node ≥ 22) |
@@ -50,6 +51,7 @@ Mann is the studio's editor agent (`.claude/agents/mann.md`). Give it raw footag
 | `pairings`, `themes` | Font pairings (Devanagari verified) and colour themes |
 | `fonts-install --pairing <id>` / `fonts-install <Family>…` | Fetch open-licensed fonts from npm (@fontsource), merge Latin + Devanagari into one TTF per weight, install to `~/.local/share/fonts/mann` (`MANN_FONTS` overrides) |
 | `validate <edit>` | Check `edl.json`, print the timeline and pace |
+| `render <edit> --quality draft\|standard\|best` | Encoder speed vs size; clips come from the per-clip cache (`renders/cache/`) and only changed clips are re-processed |
 | `storyboard <edit> [--two] [--changed] [--only C04]` | Numbered frames from the full edit graph + `STORYBOARD.md` (pace, sound plan, changes); `--changed` makes a part storyboard when only some clips changed |
 | `approve <edit> --words "…" [--clips C04] [--final]` | Record the owner's exact approval; approvals are per clip plus one for the whole-video settings, tied to file hashes |
 | `render <edit>` | Refuses unless the style, script lock and every clip's storyboard are approved; writes `renders/master.mp4` (−14 LUFS, two-pass) and `preview_720p.mp4` |
@@ -90,6 +92,8 @@ See `edl.example.json`. Fields:
 - `subtitles`: `file` (.srt), `burn`, `size` (fraction of height), `position` (top/center/bottom), `color` (white/yellow/green/red/cyan), `uppercase`, `box`, or a raw `force_style`; `margin_v`.
 - `script`: the locked script file; the storyboard refuses if it changed after the lock.
 - `typography`: `pairing` (font pairing id) and `theme` (colour theme id); text items take a `role` (`title`, `headline`, `body`, `caption`, `label`) that sets size and font from the type scale and pairing. All burned text is rendered through one ASS script with complex shaping (correct Devanagari).
+- `reframe`: `auto` (on `format` or a clip) makes the crop follow the tracked face (OpenCV Haar cascades, smoothed path); `center` or omitted keeps a centre crop.
+- `subtitles.animate`: `highlight`, `pop`, `word` or `karaoke`, with `highlight_color` and `words` (timeline word timings JSON, written by autocut; estimated from word length when missing).
 - `style`: a slug in `editor/styles/`. `deliberate_silences`: timeline seconds where silence is intended. `master`: `lufs`, `true_peak`.
 
 ## What is verified and what is not

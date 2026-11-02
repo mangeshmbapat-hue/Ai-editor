@@ -78,4 +78,4 @@ Speech high, motion low, orientation horizontal, footage: talking.
 - Zoom: every 4 clip(s), 1.0 -> 1.1
 - Silence cut: gaps over 0.45s removed
 - Music at -28 dB
-- Captions: 4 word(s) per caption, 6% of frame height, bottom, white, boxed
+- Captions: 4 word(s) per caption, 6% of frame height, bottom, white, boxed, animated `karaoke` (yellow highlight)

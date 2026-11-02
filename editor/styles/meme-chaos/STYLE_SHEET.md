@@ -76,6 +76,6 @@ Speech any, motion any, orientation vertical, footage: action, talking.
 - Zoom: every 1 clip(s), 1.0 -> 1.35
 - Silence cut: gaps over 0.2s removed
 - Music at -18 dB
-- Captions: 2 word(s) per caption, 8% of frame height, center, white, uppercase
+- Captions: 2 word(s) per caption, 8% of frame height, center, white, uppercase, animated `word` (white highlight)
 - FX every N clips: shake /3, rgb_split /5
 - freeze last clip (s): 0.6

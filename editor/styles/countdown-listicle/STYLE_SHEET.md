@@ -75,4 +75,4 @@ Speech any, motion mid, orientation any, footage: broll, talking, stills.
 - Zoom: every 3 clip(s), 1.0 -> 1.1
 - Silence cut: gaps over 0.3s removed
 - Music at -20 dB
-- Captions: 3 word(s) per caption, 6% of frame height, center, white, uppercase
+- Captions: 3 word(s) per caption, 6% of frame height, center, white, uppercase, animated `pop` (yellow highlight)

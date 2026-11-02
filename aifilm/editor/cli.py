@@ -93,6 +93,8 @@ def parser():
     p = c.add_parser("render", help="Render the approved EDL to renders/master.mp4 (+ 720p preview)")
     p.add_argument("edit")
     p.add_argument("--no-preview", action="store_true")
+    p.add_argument("--quality", choices=["draft", "standard", "best"], default="standard",
+                   help="Encoder speed/quality: draft (fastest), standard (default), best (slowest, smallest files)")
     p = c.add_parser("qc", help="Measure the master against the EDL, editor/rules.json and the style target")
     p.add_argument("edit")
     p.add_argument("--frames", type=float, default=1.5, help="Also export QC frames every N seconds (0 = none)")
@@ -192,7 +194,7 @@ def main(argv=None):
             clips = [x.strip() for x in args.clips.split(",")] if args.clips else None
             result = E.approve(args.edit, args.words, kind="final" if args.final else "storyboard", clips=clips)
         elif cmd == "render":
-            result = R.render(args.edit, preview=not args.no_preview)
+            result = R.render(args.edit, preview=not args.no_preview, quality=args.quality)
         elif cmd == "qc":
             rec = R.qc(args.edit)
             frames = R.contact_frames(args.edit, args.frames) if args.frames else []

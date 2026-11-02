@@ -76,4 +76,4 @@ Speech high, motion low, orientation vertical, footage: stills, broll.
 - Zoom: every 1 clip(s), 1.0 -> 1.14
 - Silence cut: gaps over 0.3s removed
 - Music at -18 dB
-- Captions: 3 word(s) per caption, 6% of frame height, center, yellow
+- Captions: 3 word(s) per caption, 6% of frame height, center, white, animated `highlight` (yellow highlight)

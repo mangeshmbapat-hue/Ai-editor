@@ -1,6 +1,6 @@
 # Mann's craft rulebook
 
-95 rules in 15 domains; 27 are checked automatically by `craft-check` (also run by `storyboard` and `qc`), the rest are Mann's frame-by-frame checklist. Thresholds live in `editor/rules.json`; owner corrections change them there.
+96 rules in 15 domains; 28 are checked automatically by `craft-check` (also run by `storyboard` and `qc`), the rest are Mann's frame-by-frame checklist. Thresholds live in `editor/rules.json`; owner corrections change them there.
 
 Contents: [Cuts](#cuts) · [Transitions](#transitions) · [Continuity](#continuity) · [Eyelines and eye-trace](#eyelines-and-eye-trace) · [Shot composition](#shot-composition) · [Shot sizes, angles and moves](#shot-sizes-angles-and-moves) · [Pacing and rhythm](#pacing-and-rhythm) · [Typography hierarchy](#typography-hierarchy) · [Colour](#colour) · [Safe zones and grids](#safe-zones-and-grids) · [Sound](#sound) · [Motion graphics](#motion-graphics) · [VFX and effects](#vfx-and-effects) · [Story structure for short video](#story-structure-for-short-video) · [Accessibility](#accessibility) · [Safe zones](#safe-zone-profiles) · [Type scale](#type-scale) · [Font pairings](#font-pairings) · [Colour themes](#colour-themes) · [Sources](#sources)
 
@@ -333,8 +333,15 @@ Contents: [Cuts](#cuts) · [Transitions](#transitions) · [Continuity](#continui
 
 - **What:** Vertical crops keep about a third of a 16:9 frame.
 - **When:** Every horizontal source in a vertical film.
-- **How (Mann):** Check each storyboard frame for cut-off heads, hands and text; split-screen or `fit: contain` when two subjects matter.
+- **How (Mann):** Set `reframe: auto` (clip or `format`): the crop follows the tracked face smoothly. Check each storyboard frame for cut-off hands and text; split-screen or `fit: contain` when two subjects matter.
 - **Avoid:** Centre-cropping by default when the subject is off-centre.
+
+### Subject in frame after reframing `subject-in-frame` · auto-checked
+
+- **What:** After a 16:9 to 9:16 (or any) reframe, the main face stays inside the frame, near the upper third, and clear of the captions.
+- **When:** Every clip with `reframe: auto`.
+- **How (Mann):** Face tracking (OpenCV) moves the crop; craft-check measures where the tracked face lands: centre between 20 % and 80 % of the width, 15 % and 55 % of the height, and above the caption band.
+- **Avoid:** Centre crops that cut the speaker out; faces under the captions.
 
 ## Shot sizes, angles and moves
 

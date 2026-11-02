@@ -16,7 +16,7 @@ def sheet(s):
     caps = e.get("captions")
     cap_line = ("{} word(s) per caption, {} of frame height, {}, {}{}{}".format(
         caps["max_words"], "{:.0%}".format(caps["size"]), caps["position"], caps["color"],
-        ", uppercase" if caps.get("uppercase") else "", ", boxed" if caps.get("box") else "") if caps else "no burned captions by default")
+        ", uppercase" if caps.get("uppercase") else "", ", boxed" if caps.get("box") else "") + (", animated `{}` ({} highlight)".format(caps["animate"], caps.get("highlight_color", "yellow")) if caps.get("animate") else "") if caps else "no burned captions by default")
     engine = [
         "- Grade preset `{}`{}{}".format(e["grade"], ", grain {}".format(e["grain"]) if e.get("grain") else "", ", vignette" if e.get("vignette") else ""),
         "- Transition `{}`{}".format(e.get("transition", "cut"), " every {} cuts, {}s".format(e["transition_every"], e.get("transition_s", 0.3)) if e.get("transition_every") else ""),

@@ -108,6 +108,33 @@ def text_width(value, size, font_file=None):
     return len(visible) * size * (0.62 if E.DEVANAGARI.search(value) else 0.55)
 
 
+def rendered_bbox(edl, item):
+    """Exact box of a text item, measured by rendering it alone with the same ASS renderer
+    (complex shaping, real font, outline) on a black frame. None when FFmpeg is unavailable."""
+    import shutil
+    import tempfile
+    if not shutil.which("ffmpeg"):
+        return None
+    fmt = edl["format"]
+    W, H = fmt["width"], fmt["height"]
+    probe_edl = {"version": 1, "format": fmt, "typography": edl.get("typography"),
+                 "clips": [{"id": "X", "source": "_", "in": 0, "out": 1, "text": dict(item, start=0, end=1)}]}
+    with tempfile.TemporaryDirectory() as tmp:
+        script = E.ass_script(tmp, probe_edl)
+        from .fonts import font_dir
+        fdir = ":fontsdir='{}'".format(E.esc(font_dir())) if font_dir().exists() else ""
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=c=black:s={}x{}:d=1".format(W, H), "-frames:v", "1",
+                              "-vf", "ass=filename='{}'{}:shaping=complex,format=gray".format(E.esc(script), fdir),
+                              "-f", "rawvideo", "-"], capture_output=True, timeout=60).stdout
+    if len(raw) < W * H:
+        return None
+    rows = [y for y in range(H) if max(raw[y * W:(y + 1) * W]) > 40]
+    if not rows:
+        return None
+    cols = [x for x in range(W) if any(raw[y * W + x] > 40 for y in range(rows[0], rows[-1] + 1, 2))]
+    return {"x0": float(cols[0]), "x1": float(cols[-1] + 1), "y0": float(rows[0]), "y1": float(rows[-1] + 1)}
+
+
 def text_bbox(fmt, value, size, position, font_file=None):
     W, H = fmt["width"], fmt["height"]
     lines = value.split("\n")
@@ -247,7 +274,7 @@ def check(root, edl, sample_contrast=True):
         add("type hierarchy", "type-scale", min(ratios) >= R["type_scale_min_ratio"],
             "sizes {} px, closest step x{:.2f} (min x{})".format(sizes, min(ratios), R["type_scale_min_ratio"]))
     for row, clip, item, size, file, family in texts:
-        bb = text_bbox(fmt, item["value"], size, item.get("position", "bottom"), file)
+        bb = rendered_bbox(edl, item) or text_bbox(fmt, item["value"], size, item.get("position", "bottom"), file)
         add("text safe zone {}".format(clip["id"]), "vertical-safe" if aspect == "9:16" else "title-safe", inside_box(bb, box),
             "'{}' spans y {:.0%}-{:.0%}, x {:.0%}-{:.0%}".format(item["value"][:24], bb["y0"] / H, bb["y1"] / H, bb["x0"] / W, bb["x1"] / W), "fail")
         start = float(item.get("start", 0))
@@ -289,6 +316,22 @@ def check(root, edl, sample_contrast=True):
                     worst = c if worst is None else min(worst, c)
             if worst is not None:
                 add("caption contrast", "contrast", worst >= R["text_contrast_min_outlined"], "lowest {:.1f}:1 behind captions".format(worst))
+    # Subject framing after face-aware reframing.
+    from . import reframe as RF
+    reframed = [(row, c) for row, c in zip(rows, edl["clips"]) if c.get("reframe", fmt.get("reframe")) == "auto"]
+    if reframed and RF.available():
+        cap_top = subtitle_bbox(fmt, subs)["y0"] / H if subs else 1.0
+        bad, lost = [], []
+        for row, c in reframed:
+            pts = RF.framing(root, edl, c, row["duration"])
+            if not pts:
+                lost.append(c["id"])
+                continue
+            if any(not (0.2 <= p["x"] <= 0.8 and 0.15 <= p["y"] <= 0.55 and p["y"] + p["size"] / 2 < cap_top) for p in pts):
+                bad.append(c["id"])
+        add("subject in frame", "subject-in-frame", not bad, "face off-position in {}".format(", ".join(bad)) if bad else "face placed well in every reframed clip")
+        if lost:
+            add("face found", "subject-in-frame", False, "no face tracked in {} (crop stays centred)".format(", ".join(lost)))
     # Cuts and continuity.
     clips = edl["clips"]
     style_jump = False

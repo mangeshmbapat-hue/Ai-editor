@@ -101,6 +101,7 @@ def validate(root, edl):
     for key in ("width", "height"):
         require(isinstance(fmt.get(key), int) and fmt[key] >= 16 and fmt[key] % 2 == 0, "format.{} must be an even integer".format(key))
     num(fmt.get("fps", 30), "format.fps", 1, 120)
+    require(fmt.get("reframe") in (None, "auto", "center"), "format.reframe must be auto or center")
     sources = edl.get("sources")
     require(isinstance(sources, dict) and sources, "sources must map ids to files in the edit folder")
     probes = {}
@@ -123,6 +124,7 @@ def validate(root, edl):
         require(end <= dur + 0.05, "{}: out {:.2f}s is past the end of {} ({:.2f}s)".format(cid, end, clip["source"], dur))
         num(clip.get("speed", 1.0), cid + ".speed", 0.25, 4.0)
         num(clip.get("freeze", 0), cid + ".freeze", 0, 10)
+        require(clip.get("reframe") in (None, "auto", "center"), cid + ": reframe must be auto or center")
         kind, tdur = transition(clip)
         require(kind in TRANSITIONS, "{}: unknown transition {!r}".format(cid, kind))
         require(i > 0 or kind == "cut", cid + ": the first clip cannot have a transition in")
@@ -166,6 +168,9 @@ def validate(root, edl):
         require(inside(root, subs["file"]).is_file(), "Subtitle file missing: " + subs["file"])
         require(subs.get("position", "bottom") in TEXT_POSITIONS, "subtitles.position must be top/center/bottom")
         require(subs.get("color", "white") in SUB_COLOURS, "subtitles.color must be one of {}".format(sorted(SUB_COLOURS)))
+        require(subs.get("animate") in (None,) + ANIMATIONS, "subtitles.animate must be one of {}".format(list(ANIMATIONS)))
+        if subs.get("words"):
+            require(inside(root, subs["words"]).is_file(), "Caption word timings missing: " + subs["words"])
     if edl.get("script"):
         require(inside(root, edl["script"]).is_file(), "Script file missing: " + edl["script"])
     typo = edl.get("typography") or {}
@@ -258,7 +263,8 @@ def clip_video_chain(root, edl, clip, textfiles, t0=0.0):
     speed = clip.get("speed", 1.0)
     dur = clip_duration(clip)
     chain = ["setpts=(PTS-STARTPTS)/{}".format(speed)] if speed != 1.0 else ["setpts=PTS-STARTPTS"]
-    chain += frame_chain(edl, W, H)
+    from . import reframe
+    chain += reframe.chain(root, edl, clip) or frame_chain(edl, W, H)
     zoom = clip.get("zoom")
     if zoom and (zoom.get("from", 1.0) != 1.0 or zoom.get("to", 1.0) != 1.0):
         z0, z1 = float(zoom.get("from", 1.0)), float(zoom.get("to", 1.0))
@@ -278,7 +284,9 @@ def clip_video_chain(root, edl, clip, textfiles, t0=0.0):
 
 def insert_chain(root, edl, clip, ins, at):
     fmt = edl["format"]
-    chain = ["setpts=PTS-STARTPTS+{:.3f}/TB".format(at)] + frame_chain(edl, fmt["width"], fmt["height"])
+    from . import reframe
+    framed = reframe.chain(root, edl, clip, src=edl["sources"][ins["source"]], clip_in=ins["in"], clip_out=ins["out"], speed=1.0)
+    chain = ["setpts=PTS-STARTPTS"] + (framed or frame_chain(edl, fmt["width"], fmt["height"])) + ["setpts=PTS+{:.3f}/TB".format(at)]
     graded = grade_chain(root, edl, clip)
     if graded:
         chain.append(graded)
@@ -312,6 +320,72 @@ def family_of(font_file):
         if out:
             return out.splitlines()[0].split(",")[0]
     return "Noto Sans"
+
+
+ANIMATIONS = ("highlight", "pop", "word", "karaoke")
+
+
+def load_words(root, subs, shift=0.0):
+    """Timeline word timings for animated captions ([{start, end, word}]), or [] to estimate."""
+    if not subs.get("words"):
+        return []
+    path = inside(root, subs["words"])
+    if not path.exists():
+        return []
+    words = json.loads(path.read_text(encoding="utf-8"))
+    upper = subs.get("uppercase")
+    return [{"start": w["start"] - shift, "end": w["end"] - shift, "word": w["word"].strip().upper() if upper else w["word"].strip()}
+            for w in words if w.get("word", "").strip()]
+
+
+def cue_words(cue, words):
+    """Words of one caption cue with timings: measured ones when they match the cue text,
+    otherwise the cue's time split in proportion to word length (an estimate)."""
+    tokens = " ".join(cue["lines"]).split()
+    inside_ = [w for w in words if cue["start"] - 0.05 <= w["start"] < cue["end"] + 0.05]
+    if inside_ and len(inside_) == len(tokens):
+        return [dict(w, word=tok) for w, tok in zip(inside_, tokens)], True
+    total = sum(len(tok) + 1 for tok in tokens) or 1
+    out, t = [], cue["start"]
+    for tok in tokens:
+        d = (cue["end"] - cue["start"]) * (len(tok) + 1) / float(total)
+        out.append({"start": t, "end": t + d, "word": tok})
+        t += d
+    return out, False
+
+
+def animated_events(cue, words, mode, subs):
+    """ASS events for one cue: `highlight` (current word coloured), `pop` (current word coloured
+    and popping), `word` (one word at a time, popping) or `karaoke` (fill sweeps word by word)."""
+    hl = ass_colour(subs.get("highlight_color", "yellow"))
+    base = ass_colour(subs.get("color", "white"))
+    ws, _ = cue_words(cue, words)
+    if not ws:
+        return []
+    if mode == "karaoke":
+        parts = ["{{\\1c{}\\2c{}}}".format(hl, base)]
+        for w in ws:
+            parts.append("{{\\kf{}}}{} ".format(max(1, int(round((w["end"] - w["start"]) * 100))), ass_text(w["word"])))
+        return [(cue["start"], cue["end"], "Cap", "".join(parts).rstrip())]
+    out = []
+    for i, w in enumerate(ws):
+        a = w["start"]
+        b = ws[i + 1]["start"] if i + 1 < len(ws) else cue["end"]
+        if b - a < 0.02:
+            continue
+        if mode == "word":
+            text = "{\\fscx130\\fscy130\\t(0,110,\\fscx100\\fscy100)}" + ass_text(w["word"])
+        else:
+            pop = "\\fscx125\\fscy125\\t(0,100,\\fscx100\\fscy100)" if mode == "pop" else ""
+            pieces = []
+            for j, other in enumerate(ws):
+                if j == i:
+                    pieces.append("{{\\c{}{}}}{}{{\\r}}".format(hl, pop, ass_text(other["word"])))
+                else:
+                    pieces.append(ass_text(other["word"]))
+            text = " ".join(pieces)
+        out.append((a, b, "Cap", text))
+    return out
 
 
 def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
@@ -356,8 +430,13 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
             3 if box else 1, max(2, size // 12) if not box else max(4, size // 5), align, m["l"], m["r"], margin_v)
         from .craft import parse_srt
         text = stage_subtitles(root, edl, shift).read_text(encoding="utf-8")
+        animate = subs.get("animate")
+        words = load_words(root, subs, shift) if animate else []
         for c in parse_srt(text):
-            events.append((c["start"], c["end"], "Cap", ass_text("\n".join(c["lines"]))))
+            if animate:
+                events += animated_events(c, words, animate, subs)
+            else:
+                events.append((c["start"], c["end"], "Cap", ass_text("\n".join(c["lines"]))))
         (Path(root) / ".mann-subs.srt").unlink(missing_ok=True)
     if not events:
         return None
@@ -422,6 +501,7 @@ def global_files(edl):
     files = ([audio["music"]["file"]] if audio.get("music") else []) + [s["file"] for s in audio.get("sfx", [])]
     files += [o["file"] for o in edl.get("overlays", [])]
     files += ([edl["subtitles"]["file"]] if edl.get("subtitles") else []) + ([edl["grade"]["lut"]] if edl.get("grade", {}).get("lut") else [])
+    files += [edl["subtitles"]["words"]] if (edl.get("subtitles") or {}).get("words") else []
     files += [edl["script"]] if edl.get("script") else []
     return sorted(set(files))
 
@@ -580,7 +660,9 @@ def still_frames(root, edl, indices, out):
     probes = validate(root, edl)
     textfiles = []
     try:
-        inputs, graph, v, a, total = build_graph(root, edl, probes, textfiles)
+        from .render import cached_clips
+        cache, _ = cached_clips(root, edl, probes)
+        inputs, graph, v, a, total = build_graph(root, edl, probes, textfiles, cache=cache)
         select = "+".join("eq(n\\,{})".format(i) for i in sorted(set(indices)))
         graph += ";[{}]select='{}'[sb];[{}]anullsink".format(v, select, a)
         media.run(["ffmpeg", "-hide_banner", "-y"] + inputs + ["-filter_complex", graph, "-map", "[sb]", "-fps_mode", "passthrough",

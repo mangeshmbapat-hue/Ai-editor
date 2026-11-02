@@ -29,7 +29,9 @@
       "size": 0.08,
       "uppercase": true,
       "color": "white",
-      "box": false
+      "box": false,
+      "animate": "word",
+      "highlight_color": "white"
     }
   }
 }
