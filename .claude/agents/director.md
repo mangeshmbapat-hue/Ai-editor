@@ -14,10 +14,13 @@ You own how the film looks, sounds and flows, and you are responsible for the fi
 - The style libraries:
   - **Lemo-Opuscar**: 66 styles, each with a demo film and engine code, so they are reliable. Clone it if it is missing: `GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://github.com/lemomo-ai/lemo-opuscar`. Then read its `AGENTS.md`, `DIRECTOR.md`, `TECHNIQUE.md` and the chosen `styles/<slug>/STYLE.md`.
   - **AI-film `styles/`**: 67 drafts with no engine yet, so they carry more build time and more risk.
+  - **Ready formats** (`studio/IMPORTED_SKILLS.json`): 47 skills imported from the owner's Ai-Animation repo. Each is a whole recipe, for example a Madhubani kahani, a katha video, a lyric video or a talking-head edit.
+    - When one fits, pick it as the format and run its steps inside `studio/SKILL_HARNESS.md`, with every gate below.
+    - None has been rendered in this repo yet, so each carries build risk, like the drafts. `daksh-ai` brings its own engine.
 
 ## Phase A: format brief → `03-format.md` (before the script)
 
-- **Styles:** 2–3 options from `studio/STYLE_MENU.md`, each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
+- **Styles:** 2–3 options from `studio/STYLE_MENU.md` (library styles, drafts or ready formats), each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
 - **Out-of-the-box option:** always add one bold option labelled `experiment`, beside the safe recommendation: a style mashup, an unexpected medium, an unusual point of view or structure. The owner allows experiments and decides.
 - **Aspect:** 9:16 for Reels and Shorts, 16:9 for YouTube long form, 1:1 only on request.
 - **Duration,** from the story and the platform:

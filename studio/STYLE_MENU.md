@@ -4,6 +4,7 @@ Every style the studio can pick from, in one place, for the social agent's style
 
 - **Library styles (66)**, from [Lemo-Opuscar](https://github.com/lemomo-ai/lemo-opuscar) `styles/<slug>/`. Each has a demo film and engine code, so these are the reliable, faster picks.
 - **Draft styles (67)**, from this repo's [`styles/`](../styles/README.md). Each has a written `STYLE.md` but no engine yet, so it needs more build time and an owner-approved preview.
+- **Ready formats (47)**, imported skills from the owner's Ai-Animation repo (`studio/IMPORTED_SKILLS.json`). Each is a whole recipe, run as `/<name>` or picked as the format in a studio run, inside `studio/SKILL_HARNESS.md`. They have not been rendered in this repo yet.
 
 Rebuild this file with `python3 studio/build_style_menu.py --lemo <lemo-opuscar clone>` when either library changes.
 
@@ -230,3 +231,85 @@ Rebuild this file with `python3 studio/build_style_menu.py --lemo <lemo-opuscar 
 |---|---|---|---|---|
 | 70s Grindhouse | 70s ग्राइंडहाउस | `grindhouse-70s` | A worn 1970s colour release print run through a tired projector at a double-feature house: faded, scratched and spliced, cut with crash zooms, split screens … | Comedy & parody, Retro ads, Event promos |
 | Film Noir | फ़िल्म नोयर | `film-noir` | Black-and-white crime-film lighting built in code: one hard light per shot, shadows sharper and larger than the people who cast them, wet streets that mirror… | Mystery & drama, Brand storytelling, Music videos |
+
+## Ready formats (47, imported skills)
+
+Kind says where the words come from and which gate applies (see `studio/SKILL_HARNESS.md`).
+
+
+### Animated videos (with engine)
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Daksh AI (starter edition) — by Daksh AI | `/daksh-ai` | a voice recording (MP3), and the exact script if you have one | voice | facts |
+
+### Animated videos
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Anime reel | `/anime-reel` | a script and the voice MP3s for each line | script | original-characters |
+| Blueprint explainer | `/blueprint-explainer` | a long voiceover MP3 (3–10 minutes) and the facts or numbers it covers | voice | facts |
+| Comic book reel | `/comic-reel` | the scene's dialogue audio (MP3) | third-party-audio | - |
+| Crayon lyric video | `/lyric-video` | a song MP3 and its lyrics, one sung line per row | song | - |
+| Hindi lyric video | `/hindi-lyric-video` | a Hindi song MP3 and its lyrics in Devanagari, one line per row | song | - |
+| Katha video | `/katha-video` | a 60–90 second pravachan MP3 | third-party-audio | - |
+| Kinetic lyrics | `/kinetic-lyrics` | a song MP3 and its lyrics | song | - |
+| Latent-style roast reel | `/latent-reel` | a show clip (MP3) with the guest and host talking | third-party-audio | brands |
+| Madhubani kahani | `/madhubani-kahani` | a Hindi story voiceover MP3 | voice | - |
+| Personal explainer | `/personal-explainer` | your voiceover MP3, the topic, and any source links | voice | facts, third-party-footage |
+| Podcast explainer | `/podcast-explainer` | a 45–90 second podcast clip (MP3) | third-party-audio | facts |
+| Pusho reel | `/pusho-reel` | a Puneet Superstar audio clip (MP3) | third-party-audio | - |
+| Sketch music video | `/sketch-music-video` | a song MP3 and its lyrics, one sung line per row | song | - |
+| Sketch to motion graphic | `/sketch-to-motion` | 8–10 photos of your sketches, plus your product photos and stock clips | assets | - |
+| Talking-head edit | `/talking-head-edit` | a 9:16 talking-head clip | clip | - |
+| Tech news report | `/news-report` | a news topic or 2–3 article links | written | facts, brands, third-party-footage |
+| Titan anime episode | `/titan-anime` | a script and the voice MP3s for each line | script | original-characters |
+| Watercolor map journey | `/watercolor-map` | two places, like “Bengaluru → California” | visual | - |
+
+### Reel formats
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Business short-form reel | `/business-short-form-reels` | a 9:16 talking-head clip | clip | - |
+| Depth UI reel | `/depth-ui-reel` | a 9:16 talking-head clip | clip | - |
+| Educational YouTube editor | `/educational-youtube-editor` | a long 16:9 lesson recording | clip | - |
+| Personal B-roll library | `/personal-broll-library` | a folder of my B-roll clips | clip | - |
+| Personal short-form reel | `/personal-short-form-reels` | a 9:16 talking-head clip | clip | - |
+| Ranking / tier list | `/ranking-format` | a 9:16 talking-head clip | clip | - |
+| YouTube clips | `/youtube-clips` | a long 16:9 video or a YouTube link | clip | own-footage-only |
+
+### Edit styles
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Dark red timeline | `/dark-red-timeline-motion-graphics` | a 9:16 talking-head clip | clip | - |
+| Hindi pastel reel | `/hindi-pastel-reel-edit` | a 9:16 talking-head clip | clip | - |
+| Instagram UI (Hinglish) | `/instagram-ui-hinglish` | a 9:16 talking-head clip | clip | brands |
+| Kinetic talking head | `/kinetic-talking-head-edit` | a 9:16 talking-head clip | clip | - |
+| Podcast reel edit | `/podcast-reel-edit` | a 9:16 talking-head clip | clip | - |
+| Red kinetic collage | `/red-kinetic-collage-edit` | a 9:16 talking-head clip | clip | - |
+| iPhone style | `/iphone-style-by-daksh-ai` | a 9:16 talking-head clip | clip | brands |
+
+### Motion effects
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Glass stat card | `/glass-stat-card` | a 9:16 talking-head clip | clip | facts |
+| LED matrix text | `/led-matrix-text` | a 9:16 talking-head clip | clip | - |
+| Match cut | `/match-cut` | a 9:16 talking-head clip | clip | - |
+| Particle chart | `/particle-chart` | a 9:16 talking-head clip | clip | facts |
+| Particle text | `/particle-text` | a 9:16 talking-head clip | clip | - |
+| Price-tag zoom | `/price-tag-zoom` | a 9:16 talking-head clip | clip | facts |
+| Shutter stack | `/shutter-stack` | a 9:16 talking-head clip | clip | - |
+
+### Looks
+
+| Format | Skill | Owner gives | Kind | Checks |
+|---|---|---|---|---|
+| Breaking news | `/breaking-news` | a 9:16 talking-head clip | clip | brands |
+| Cinema scope | `/cinema-scope` | a 9:16 talking-head clip | clip | - |
+| Comic halftone | `/comic-halftone` | a 9:16 talking-head clip | clip | - |
+| Magazine cover | `/magazine-cover` | a 9:16 talking-head clip | clip | brands |
+| Neon outline | `/neon-outline` | a 9:16 talking-head clip | clip | - |
+| RGB glitch live | `/rgb-glitch-live` | a 9:16 talking-head clip | clip | brands |
+| Triptych timecode | `/triptych-timecode` | three clips | clip | - |

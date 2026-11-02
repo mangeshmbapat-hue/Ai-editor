@@ -50,6 +50,9 @@ Then **stop**. Silence or a question about the packet is not approval. On notes,
   - the writer writes the music cues
   - the director writes a music brief, makes a music sketch for Gate 3, and checks every sync point in the final score
 - **Out-of-the-box experiments are allowed.** Every format brief and script packet carries one bold option labelled `experiment` beside the safe recommendation; the owner decides.
+- **Ready formats.** The 47 skills imported from the owner's Ai-Animation repo (`studio/IMPORTED_SKILLS.json`, listed under "Ready formats" in `studio/STYLE_MENU.md`) are formats like any style. Examples are `/madhubani-kahani`, `/katha-video`, `/lyric-video` and `/talking-head-edit`.
+  - When the director or the social agent picks one, it runs inside `studio/SKILL_HARNESS.md`, with every gate above.
+  - The owner can also call one directly; it still runs inside the harness.
 - **The nightly scan** (`studio/NIGHTLY.md`) runs automatically every night and suggests 10 topics with a style for each. When the owner replies with a pick ("/viral-studio #N"), start at stage 2 with that topic.
 
 ## How to run each agent
