@@ -13,7 +13,7 @@ argument-hint: "[your voiceover MP3, the topic, and any source links]"
 > - **Preview (Gate 3):** before the full render, send 3 numbered frames at 3 timecodes (the hook, the middle, the end), plus a 20–30 s music sketch when the skill adds music, and wait for the owner's OK. This replaces any contact sheet, stills or snapshot step below. For a canvas page, `node studio/render_canvas.cjs <page> <prefix> --stills 1,6,11` makes the frames, and the same script renders the video locally.
 > - **Facts:** every number, price or claim shown or said needs a sourced row in `FACTS.md` (researcher) before the render.
 > - **Footage:** real footage or screenshots only when licensed for this use or quoted briefly with credit; credit each one on screen and in `CREDITS`.
-> - **Word timing:** never guess. When the doctor shows alignment or Whisper blocked, use a route from `studio/SKILL_HARNESS.md` and say which one you used.
+> - **Word timing:** never guess. For known words (a script, lyrics, the locked dialogue), `studio/word_timing.py` aligns them offline. For unknown words, the doctor shows whether Whisper or alignment can run; if not, ask the owner for a transcript. Say which route you used.
 > - **Deliver:** to `projects/<slug>/final/`, then send exactly 2 files with `studio/deliver.py`: the final video, and one zip with everything else. Keep any WhatsApp copy in `final/` unless the owner asks for it.
 
 An explainer in your own voice, like “How will the Tesla fly?”: real footage with credit, clean diagrams that build step by step, numbers that pop, and you as the narrator.

@@ -76,7 +76,7 @@ The owner's Ai-Animation repo brought 47 format skills, listed in `studio/IMPORT
   - the 2-file delivery
 - **Before a production:** `python3 studio/check_env.py` shows what works in the session.
 - **Rendering:** `node studio/render_canvas.cjs` renders any canvas page locally, and its `--stills` option makes the Gate 3 preview frames. `daksh-ai`'s template rendered end to end with it on 2026-11-02.
-- **Word timing:** in the cloud session the skills' own word alignment is blocked until the owner allows its host. The harness lists that host and the routes that work meanwhile.
+- **Word timing:** `studio/word_timing.py` aligns known words (a script, lyrics, the locked dialogue) offline. On Kokoro speech, line starts were within 20 ms and 90 % of word starts within 17 ms (2026-11-02). Transcribing unknown speech still needs the owner to allow the Whisper or alignment hosts (see the harness).
 
 ## Rules that never bend
 - No production before the owner approves the script (Gate 2), and none before the owner approves 3 timecode frames and the music sketch (Gate 3).

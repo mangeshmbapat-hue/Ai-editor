@@ -14,7 +14,7 @@ argument-hint: "[a news topic or 2–3 article links]"
 > - **Facts:** every number, price or claim shown or said needs a sourced row in `FACTS.md` (researcher) before the render.
 > - **Brands:** no real logos, mastheads, app or channel branding; build a generic look that only evokes the style. A news look must never present opinion, satire or fiction as real news.
 > - **Footage:** real footage or screenshots only when licensed for this use or quoted briefly with credit; credit each one on screen and in `CREDITS`.
-> - **Word timing:** never guess. When the doctor shows alignment or Whisper blocked, use a route from `studio/SKILL_HARNESS.md` and say which one you used.
+> - **Word timing:** never guess. For known words (a script, lyrics, the locked dialogue), `studio/word_timing.py` aligns them offline. For unknown words, the doctor shows whether Whisper or alignment can run; if not, ask the owner for a transcript. Say which route you used.
 > - **Deliver:** to `projects/<slug>/final/`, then send exactly 2 files with `studio/deliver.py`: the final video, and one zip with everything else. Keep any WhatsApp copy in `final/` unless the owner asks for it.
 
 A Hinglish tech-news report in Fireship style: flat dark background, screenshot cards with red boxes and highlights, memes, and a hard cut every two seconds, with you as the anchor.

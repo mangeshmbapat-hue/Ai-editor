@@ -20,6 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 CHROMIUM = Path("/opt/pw-browsers")
+KOKORO = Path(os.environ.get("KOKORO_DIR") or Path(__file__).resolve().parents[2] / "lemomo-ai/lemo-opuscar/core/tts")
 HOSTS = {
     "dl.fbaipublicfiles.com": "https://dl.fbaipublicfiles.com/mms/torchaudio/ctc_alignment_mling_uroman/model.pt",
     "openaipublic.azureedge.net": "https://openaipublic.azureedge.net/main/whisper/models/"
@@ -34,8 +35,10 @@ CAPABILITIES = [
     ("Canvas render (Playwright Chromium + FFmpeg, studio/render_canvas.cjs)", ["node", "ffmpeg", "chromium"], [], [], [],
      "daksh-ai and every canvas-drawn imported skill"),
     ("Editor package and 2-file delivery", ["ffmpeg", "ffprobe"], [], [], [], "every finished film"),
+    ("Word timing for known words, offline (studio/word_timing.py)", ["ffmpeg", "kokoro"], [], [], [],
+     "captions from a script, lyrics or the locked dialogue"),
     ("Word timing: torchaudio MMS_FA forced alignment", ["python3"], ["dl.fbaipublicfiles.com", "pypi.org"], [], [],
-     "the imported skills that align words to a voice or a song"),
+     "the imported skills' own alignment step"),
     ("Transcription: Whisper", ["python3"], ["pypi.org"], ["openaipublic.azureedge.net", "huggingface.co"], [],
      "skills that start from a recording with no script (talking-head edits, katha, podcasts)"),
     ("ElevenLabs voice and SFX", [], ["api.elevenlabs.io"], [], ["ELEVENLABS_API_KEY"], "the director's voice and SFX"),
@@ -47,6 +50,8 @@ CAPABILITIES = [
 def probe_tool(name: str) -> bool:
     if name == "chromium":
         return CHROMIUM.is_dir() and any(CHROMIUM.glob("chromium*"))
+    if name == "kokoro":  # the offline voice model, with a Python that can run it (the Lemo-Opuscar venv)
+        return (KOKORO / "kokoro-v1.0.onnx").exists() and (KOKORO / "voices-v1.0.bin").exists()
     return shutil.which(name) is not None
 
 
@@ -81,7 +86,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Report what works in this environment for the studio.")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
-    tools = {t: probe_tool(t) for t in ("node", "ffmpeg", "ffprobe", "python3", "chromium")}
+    tools = {t: probe_tool(t) for t in ("node", "ffmpeg", "ffprobe", "python3", "chromium", "kokoro")}
     with ThreadPoolExecutor(len(HOSTS)) as pool:
         hosts = dict(zip(HOSTS, pool.map(probe_host, HOSTS.values())))
     env = {"ELEVENLABS_API_KEY": bool(os.environ.get("ELEVENLABS_API_KEY"))}

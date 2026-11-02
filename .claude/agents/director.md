@@ -79,7 +79,7 @@ Return numbered, concrete fixes on:
    - no dead air longer than 1 s unless the silence is deliberate
    - a loop ending as a match cut when the script asks for one
 8. **Phone-first legibility:**
-   - Burn in large subtitles.
+   - Burn in large subtitles. For word-by-word captions, time the locked words with `studio/word_timing.py` (offline; see `studio/SKILL_HARNESS.md`).
    - For 9:16, keep text between 15 % and 75 % of the frame height, away from the right 15 % (the platform icons) and the bottom 20 % (the caption UI).
 9. **Mix and master:** −14 LUFS, true peak at or below −1 dB. At the mix, also write **post-fader, pre-master stems** for the editor package:
    - each VO line as its own clip, each music stem, SFX/foley and ambience

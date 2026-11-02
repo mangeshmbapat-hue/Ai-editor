@@ -47,6 +47,8 @@ class ImportedSkillsTest(unittest.TestCase):
                 self.assertIn(needle, head, e["name"])
             for flag in e["flags"]:
                 self.assertIn(IS.FLAG_LINES[flag], head, e["name"])
+            if e["kind"] != "visual":
+                self.assertIn("studio/word_timing.py", head, e["name"])
             if e["name"] != IS.ENGINE:
                 self.assertIn("From [aanshai.vercel.app/skills]", text, e["name"])  # the original text is kept
             self.assertFalse(SECRET.search(text), e["name"])

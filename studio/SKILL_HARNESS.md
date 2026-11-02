@@ -62,9 +62,14 @@ Run `python3 studio/check_env.py` at the start of every production, and put its 
 
   So the skills' own transcription and forced alignment cannot run here unless the owner provides the model file.
 - **Word timing**, in this order:
-  1. timings the studio already has, from its own voice lines and cue map
-  2. a transcript or alignment file the owner provides, for example made on their Mac with whisper-cpp as `daksh-ai` describes
-  3. a model file the owner uploads
+  1. **Known words** (a script, lyrics, the locked dialogue): `studio/word_timing.py` works offline. Run it with the Lemo-Opuscar venv's Python: `<lemo-opuscar>/.venv/bin/python studio/word_timing.py voice.wav words.txt words.json --js assets/words.js --srt lines.srt`.
+     - **How:** it speaks every word with Kokoro, male or female by the speaker's pitch, and warps that voice's spectrum to fit the speaker. Then it matches the reference and the recording with slope-limited DTW: first over the whole recording, then line by line.
+     - **Measured on 2026-11-02, on Kokoro speech only:** in the other-voice word tests, word starts were within 17 ms for 90 % of words, worst 38–62 ms. On the Ramayana VO (continuous speech with room reverb), line starts were within 20 ms.
+     - **Not measured yet:** human recordings, and sung vocals over music. For a song, use the vocal stem if there is one.
+     - **Pauses:** a pause of over about 0.3 s inside a line with no punctuation can shift a word, so put a comma there. Look at any line the output marks `check`.
+  2. Timings the studio already has, from its own voice lines and cue map.
+  3. A transcript or alignment file the owner provides.
+  4. **Unknown words** (a talking-head clip with no script) need transcription. That means Whisper or MMS_FA, which work only once the owner allows their hosts (below), or a transcript from the owner.
 
   Never guess timings. Say which route was used, in `06-qc.md`.
 - **ElevenLabs** only when it is reachable and the key is in `ELEVENLABS_API_KEY` (see `LEARNINGS.md`).

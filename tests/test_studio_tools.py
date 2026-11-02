@@ -14,7 +14,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "studio"))
 import check_env as C  # noqa: E402
 
-ALL_TOOLS = {"node": True, "ffmpeg": True, "ffprobe": True, "python3": True, "chromium": True}
+ALL_TOOLS = {"node": True, "ffmpeg": True, "ffprobe": True, "python3": True, "chromium": True, "kokoro": True}
 
 
 def has_playwright() -> bool:
@@ -29,7 +29,10 @@ class DoctorTest(unittest.TestCase):
         rows = {r["capability"].split(" (")[0].split(":")[0]: r for r in C.assess(ALL_TOOLS, hosts, {})}
         self.assertTrue(rows["Canvas render"]["ready"])
         self.assertTrue(rows["Editor package and 2-file delivery"]["ready"])
+        self.assertTrue(rows["Word timing for known words, offline"]["ready"])
         self.assertEqual(rows["Word timing"]["missing"], ["dl.fbaipublicfiles.com"])
+        no_model = [r for r in C.assess(ALL_TOOLS | {"kokoro": False}, hosts, {}) if "known words" in r["capability"]][0]
+        self.assertEqual(no_model["missing"], ["kokoro"])
         self.assertEqual(rows["Transcription"]["missing"], ["openaipublic.azureedge.net or huggingface.co"])
         self.assertEqual(rows["ElevenLabs voice and SFX"]["missing"], ["api.elevenlabs.io", "$ELEVENLABS_API_KEY not set"])
         open_hosts = {h: "200" for h in C.HOSTS}
