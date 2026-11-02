@@ -1,0 +1,22 @@
+{
+  "slug": "chapter-title-cards",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9",
+    "average_shot_seconds": 4.5,
+    "cuts_per_10s": 2.2,
+    "first_cut_seconds": 3.0,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "grain": 5,
+    "transition": "fadeblack",
+    "transition_every": 6,
+    "transition_s": 0.5,
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -18,
+    "captions": null
+  }
+}

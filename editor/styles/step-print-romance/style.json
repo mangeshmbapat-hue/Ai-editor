@@ -1,0 +1,22 @@
+{
+  "slug": "step-print-romance",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 2.8,
+    "cuts_per_10s": 3.5,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "neon-night"
+  },
+  "edl_defaults": {
+    "grade": "neon-night",
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -14,
+    "fx_all": [
+      "step_print"
+    ],
+    "captions": null
+  }
+}

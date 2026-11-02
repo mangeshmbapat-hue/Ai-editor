@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "title": "Example: 3-shot vertical edit (paths are placeholders)",
+  "style": null,
+  "format": {"width": 1080, "height": 1920, "fps": 30, "fit": "cover"},
+  "sources": {"A": "raw/interview.mp4", "B": "raw/broll-street.mp4"},
+  "clips": [
+    {"id": "C01", "source": "B", "in": 4.2, "out": 5.6, "beat": "hook: the strongest image first",
+     "zoom": {"from": 1.0, "to": 1.15},
+     "text": {"value": "किसी ने नहीं बताया…", "position": "top", "size": 86, "box": true, "start": 0.1, "end": 1.4}},
+    {"id": "C02", "source": "A", "in": 12.0, "out": 14.6, "beat": "the claim, on the word 'kabhi'",
+     "transition_in": {"type": "cut"}},
+    {"id": "C03", "source": "B", "in": 20.0, "out": 22.0, "speed": 1.5, "grade": "teal-orange", "audio": false,
+     "beat": "payoff, speed ramp", "transition_in": {"type": "dissolve", "duration": 0.3}}
+  ],
+  "grade": {"preset": "punchy-social", "contrast": 1.05, "saturation": 1.1, "grain": 4, "vignette": true, "lut": null},
+  "audio": {
+    "keep_source": true,
+    "source_gain_db": 0,
+    "music": {"file": "raw/music.mp3", "gain_db": -16, "start": 0, "duck": true, "fade_out": 1.2},
+    "sfx": [{"file": "raw/whoosh.wav", "at": 3.8, "gain_db": -8}]
+  },
+  "overlays": [{"file": "mg/lower-third.mov", "at": 1.6}],
+  "subtitles": {"file": "transcripts/interview.captions.srt", "burn": true},
+  "deliberate_silences": [],
+  "master": {"lufs": -14, "true_peak": -1}
+}

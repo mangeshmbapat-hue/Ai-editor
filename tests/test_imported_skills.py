@@ -25,7 +25,9 @@ class ImportedSkillsTest(unittest.TestCase):
         self.assertEqual(len(names), 47)
         self.assertEqual(len(set(names)), len(names))
         on_disk = {p.name for p in SKILLS.iterdir() if (p / "SKILL.md").exists()}
-        self.assertEqual(on_disk - {"viral-studio", "studio-learn"}, set(names))
+        self.assertTrue(set(names) <= on_disk, set(names) - on_disk)
+        for other in sorted(on_disk - set(names)):  # the studio's own skills: no stale imported copy among them
+            self.assertNotIn(MARK, (SKILLS / other / "SKILL.md").read_text(encoding="utf-8"), other)
         agents = {p.stem for p in (REPO / ".claude" / "agents").glob("*.md")}
         self.assertFalse(agents & set(names))
         for e in REGISTRY:

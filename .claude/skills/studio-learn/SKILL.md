@@ -1,6 +1,6 @@
 ---
 name: studio-learn
-description: Record the owner's feedback, preferences, corrections, approvals and shared performance results as dated, scoped rules in studio/LEARNINGS.md, so the social, researcher, writer and director agents follow them next time. Use whenever the owner says something like "aisa mat karo", "ye pasand aaya", "hamesha...", "kabhi bhi...", "ye bekar hai", approves or rejects a direction, or shares views/retention numbers.
+description: Record the owner's feedback, preferences, corrections, approvals and shared performance results as dated, scoped rules in studio/LEARNINGS.md, so the social, researcher, writer, director and Mann (editor) agents follow them next time. Use whenever the owner says something like "aisa mat karo", "ye pasand aaya", "hamesha...", "kabhi bhi...", "ye bekar hai", approves or rejects a direction, or shares views/retention numbers.
 ---
 
 # Studio learning: keep the agents updated
@@ -16,6 +16,7 @@ The owner's instruction (2026-11-01): "jo jo chije batata jau usko update krte j
    - **Research**
    - **Writer**
    - **Director**
+   - **Editor** (Mann: cutting, motion graphics, sound design, colour, VFX, style sheets)
    - **Production** (voice, music, SFX, render)
    - **Project: <slug>**, for anything that only holds for one film
 
@@ -29,8 +30,9 @@ The owner's instruction (2026-11-01): "jo jo chije batata jau usko update krte j
    Agent proposals without owner backing do not go in; they stay in the project's `STATUS.md`.
 6. **Write** the entry under its section in `studio/LEARNINGS.md`:
    `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (project)`
-7. **Save it.** Run `python3 -m unittest tests.test_studio`. Then commit only `studio/LEARNINGS.md`, with the message `studio: learn - <short rule>`, and push the current working branch.
-8. **Confirm** to the owner in one line which rule was recorded, then continue the task with the new rule applied.
+7. **Editor rules that can be measured** (loudness, dead air, shot length, hook timing, subtitles, pace) also go into `editor/rules.json`: change or add the threshold under `rules` and append a `history` entry `{date, rule, value, kind, source}` quoting the owner. Mann's `qc` enforces these from the next render. If a style sheet was wrong, fix `editor/styles/<slug>/STYLE_SHEET.md` too.
+8. **Save it.** Run `python3 -m unittest tests.test_studio tests.test_editor`. Then commit only `studio/LEARNINGS.md` (and `editor/rules.json` or the style sheet when they changed), with the message `studio: learn - <short rule>`, and push the current working branch.
+9. **Confirm** to the owner in one line which rule was recorded, then continue the task with the new rule applied.
 
 ## Never
 - Never record secrets, API keys, private numbers or personal data in the ledger.

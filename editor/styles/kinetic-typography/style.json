@@ -1,0 +1,28 @@
+{
+  "slug": "kinetic-typography",
+  "measured": false,
+  "targets": {
+    "aspect": "any",
+    "average_shot_seconds": 1.0,
+    "cuts_per_10s": 10,
+    "first_cut_seconds": 0.5,
+    "grade_preset": "neutral"
+  },
+  "edl_defaults": {
+    "grade": "neutral",
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0.25,
+    "music_db": -18,
+    "captions": {
+      "max_words": 1,
+      "position": "center",
+      "size": 0.1,
+      "uppercase": true,
+      "color": "white",
+      "box": false,
+      "animate": "word",
+      "highlight_color": "white"
+    }
+  }
+}

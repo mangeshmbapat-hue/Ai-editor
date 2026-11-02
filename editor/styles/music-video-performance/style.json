@@ -1,0 +1,24 @@
+{
+  "slug": "music-video-performance",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 1.5,
+    "cuts_per_10s": 6.5,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "neon-night"
+  },
+  "edl_defaults": {
+    "grade": "neon-night",
+    "transition": "cut",
+    "zoom_every": 4,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0,
+    "music_db": -8,
+    "beat_sync": true,
+    "captions": null
+  }
+}

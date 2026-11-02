@@ -1,0 +1,29 @@
+{
+  "slug": "collage-mixed-media",
+  "measured": false,
+  "targets": {
+    "aspect": "any",
+    "average_shot_seconds": 1.5,
+    "cuts_per_10s": 6.5,
+    "first_cut_seconds": 1.0,
+    "grade_preset": "faded-vintage"
+  },
+  "edl_defaults": {
+    "grade": "faded-vintage",
+    "grain": 6,
+    "transition": "wipeleft",
+    "transition_every": 3,
+    "transition_s": 0.25,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.08
+    ],
+    "silence_cut": 0.3,
+    "music_db": -16,
+    "fx_all": [
+      "stop_motion"
+    ],
+    "captions": null
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "ai-cinematic-shorts",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16 or 16:9",
+    "average_shot_seconds": 2.2,
+    "cuts_per_10s": 4.5,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "teal-orange"
+  },
+  "edl_defaults": {
+    "grade": "teal-orange",
+    "grain": 5,
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -14,
+    "max_clip": 3.0,
+    "fx_all": [
+      "letterbox"
+    ],
+    "captions": null
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "interview-broll-doc",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.5,
+    "cuts_per_10s": 2.8,
+    "first_cut_seconds": 3.0,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0.5,
+    "music_db": -20,
+    "broll_every": 2,
+    "captions": {
+      "max_words": 5,
+      "position": "bottom",
+      "size": 0.045,
+      "uppercase": false,
+      "color": "white",
+      "box": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "noir-voiceover",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.5,
+    "cuts_per_10s": 2.8,
+    "first_cut_seconds": 3.0,
+    "grade_preset": "bw-contrast"
+  },
+  "edl_defaults": {
+    "grade": "bw-contrast",
+    "grain": 8,
+    "vignette": true,
+    "transition": "dissolve",
+    "transition_every": 3,
+    "transition_s": 0.6,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.08
+    ],
+    "silence_cut": 0,
+    "music_db": -18,
+    "captions": null
+  }
+}

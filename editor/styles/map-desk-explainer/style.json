@@ -1,0 +1,26 @@
+{
+  "slug": "map-desk-explainer",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9",
+    "average_shot_seconds": 2.5,
+    "cuts_per_10s": 4,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "grain": 5,
+    "transition": "zoomin",
+    "transition_every": 6,
+    "transition_s": 0.4,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.15
+    ],
+    "silence_cut": 0.3,
+    "music_db": -22,
+    "captions": null
+  }
+}

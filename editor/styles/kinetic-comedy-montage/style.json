@@ -1,0 +1,25 @@
+{
+  "slug": "kinetic-comedy-montage",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 0.7,
+    "cuts_per_10s": 14,
+    "first_cut_seconds": 0.5,
+    "grade_preset": "punchy-social"
+  },
+  "edl_defaults": {
+    "grade": "punchy-social",
+    "transition": "smoothleft",
+    "transition_every": 8,
+    "transition_s": 0.15,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.25
+    ],
+    "silence_cut": 0,
+    "music_db": -16,
+    "captions": null
+  }
+}

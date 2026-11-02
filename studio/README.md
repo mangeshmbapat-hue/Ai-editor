@@ -1,6 +1,6 @@
 # Viral studio
 
-A team of four agents that finds what people want to watch, researches it, writes a script built to hold attention, and makes the film. Each agent is defined in `.claude/agents/`; the pipeline and the gates are in `.claude/skills/viral-studio/SKILL.md`.
+A team of four agents (plus Mann, the editor) that finds what people want to watch, researches it, writes a script built to hold attention, and makes the film. Each agent is defined in `.claude/agents/`; the pipeline and the gates are in `.claude/skills/viral-studio/SKILL.md`.
 
 | Agent | Kaam (job) | Writes |
 |---|---|---|
@@ -8,6 +8,7 @@ A team of four agents that finds what people want to watch, researches it, write
 | **researcher** | Unique angle aur detailing: verified facts, wow details, era-accurate visual and sound details, myth vs record | `02-research.md`, `FACTS.md` |
 | **writer** | Viral script: hooks, holds, open loops, suspense, cliffhangers, loop endings, A/B hooks, retention map | `04-script/SCRIPT_vN.md`, `dialogue-lock.md` |
 | **director** | Style, aspect, duration, flow; then production from style frame to edit, mix, QC and final files | `03-format.md`, the film, `06-qc.md`, `final/` |
+| **mann** | Editor for the owner's raw footage: storyboard first, then cut, motion graphics, sound design, colour, VFX, QC; style lab and learned rules (`/mann-edit`, `/mann-style-lab`) | `edit/edl.json`, `edit/storyboard/`, `edit/renders/`, `editor/styles/` |
 
 The orchestrator (the main session, running `/viral-studio`) runs the agents, passes the files between them and stops at the owner's gates.
 

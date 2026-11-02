@@ -1,0 +1,19 @@
+{
+  "slug": "poetic-nature",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9",
+    "average_shot_seconds": 3.2,
+    "cuts_per_10s": 3,
+    "first_cut_seconds": 3.0,
+    "grade_preset": "golden-hour"
+  },
+  "edl_defaults": {
+    "grade": "golden-hour",
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -14,
+    "captions": null
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "glitch-datamosh",
+  "measured": false,
+  "targets": {
+    "aspect": "any",
+    "average_shot_seconds": 1.1,
+    "cuts_per_10s": 9,
+    "first_cut_seconds": 0.6,
+    "grade_preset": "neon-night"
+  },
+  "edl_defaults": {
+    "grade": "neon-night",
+    "transition": "pixelize",
+    "transition_every": 3,
+    "transition_s": 0.3,
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0.2,
+    "music_db": -12,
+    "fx_every": {
+      "rgb_split": 2
+    },
+    "captions": null
+  }
+}
