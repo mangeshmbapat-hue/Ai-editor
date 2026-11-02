@@ -21,6 +21,10 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
   - Reachable: pypi.org, registry.npmjs.org and raw.githubusercontent.com.
   - Run `python3 studio/check_env.py` for the current state before a production. (studio)
 - 2026-11-02 · observed · The session's auto-mode classifier refuses to run npm packages with `npx` ("Code from External"), for example HyperFrames. Render canvas pages with `node studio/render_canvas.cjs` instead: local Chromium and FFmpeg. The `daksh-ai` template rendered end to end with it. (studio)
+- 2026-11-02 · observed · Known words (a script, lyrics, the locked dialogue) can now be timed offline with `studio/word_timing.py`, with no model download.
+  - On Kokoro speech: line starts on the Ramayana VO were within 20 ms, and 90 % of word starts in the other-voice tests were within 17 ms.
+  - Not yet measured on human recordings or sung vocals.
+  - Unknown speech still needs the Whisper or MMS_FA hosts allowed. (studio)
 
 ## Social
 - 2026-11-01 · owner · Every night (a scheduled task, about 10:40 PM IST) find 10 topics with viral potential, suggest the best style for each from `studio/STYLE_MENU.md` (plus one experiment), and send them to the owner, following `studio/NIGHTLY.md`. Source: "roj raat 11 bje automatically 10 topics dundne or mujhe suggest krne h or unpr konsa style acha rhega vo bhi. virality match krte hue" (studio)
