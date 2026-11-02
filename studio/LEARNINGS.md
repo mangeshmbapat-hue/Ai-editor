@@ -16,6 +16,11 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · observed · Start a fresh session for each new film or big batch: everything the studio needs is committed in the repo. Why: this long session hit the owner's 5-hour usage limit a second time while only two agents were running, because every step re-reads the whole conversation. (studio)
 - 2026-11-01 · observed · In the cloud environment, `api.elevenlabs.io`, Hugging Face (Whisper models), Microsoft edge-tts and en.wikipedia.org (WebFetch) are blocked unless the owner allows them in the environment's network settings. WebSearch works. (all)
 - 2026-11-02 · observed · The forced-alignment model the imported format skills use (torchaudio MMS_FA, from `dl.fbaipublicfiles.com`) cannot be downloaded in the cloud environment, like Hugging Face's Whisper models; the npm registry and PyPI work. Word timing for those skills follows the routes in `studio/SKILL_HARNESS.md`. (studio)
+- 2026-11-02 · observed · Hosts checked on 2026-11-02:
+  - Also blocked: openaipublic.azureedge.net (Whisper weights), download.pytorch.org, alphacephei.com (Vosk) and cdn.jsdelivr.net.
+  - Reachable: pypi.org, registry.npmjs.org and raw.githubusercontent.com.
+  - Run `python3 studio/check_env.py` for the current state before a production. (studio)
+- 2026-11-02 · observed · The session's auto-mode classifier refuses to run npm packages with `npx` ("Code from External"), for example HyperFrames. Render canvas pages with `node studio/render_canvas.cjs` instead: local Chromium and FFmpeg. The `daksh-ai` template rendered end to end with it. (studio)
 
 ## Social
 - 2026-11-01 · owner · Every night (a scheduled task, about 10:40 PM IST) find 10 topics with viral potential, suggest the best style for each from `studio/STYLE_MENU.md` (plus one experiment), and send them to the owner, following `studio/NIGHTLY.md`. Source: "roj raat 11 bje automatically 10 topics dundne or mujhe suggest krne h or unpr konsa style acha rhega vo bhi. virality match krte hue" (studio)
