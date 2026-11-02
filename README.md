@@ -62,8 +62,13 @@ For image references, manual video import and review commands, follow the [walkt
 - **researcher** finds the unique angle and verified detail
 - **writer** writes hook-driven scripts
 - **director** decides the style, format and duration, then makes the film
+- **mann** edits the owner's raw footage (storyboard first), and learns styles and corrections
 
 The owner approves the script before any production starts, and agents never post anything. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
+
+## Mann: AI video editor
+
+[`editor/`](editor/README.md) adds **Mann**, an editor agent for the owner's own footage (`/mann-edit`). A smart engine analyses the footage and suggests styles, unique edits, hooks and problems; the owner only finalises the style, locks the script and approves the storyboard (corrections are re-shown for the whole video or just the changed part). `autocut` drafts the cut in any of **50 catalogued editing styles** ([`editor/styles/INDEX.md`](editor/styles/INDEX.md)); then Whisper transcripts, a **storyboard of numbered frames that must be approved before the render**, and FFmpeg assembly with transitions, speed ramps, punch-ins, colour presets/LUTs, titles, burned Hindi/English subtitles, Hyperframes motion graphics (alpha overlays), ducked music, SFX, −14 LUFS mastering and measured QC. A craft rulebook ([`editor/craft/CRAFT.md`](editor/craft/CRAFT.md): cuts, continuity, eyelines, composition, typography hierarchy, font pairings, colour themes, safe zones, sound) is applied to every cut, with 27 measurable rules checked automatically. `/mann-style-lab` breaks down reference videos (yt-dlp) into style sheets in `editor/styles/`, and the owner's corrections tighten `editor/rules.json`, which QC enforces. Tools: `bash editor/install.sh`; `python3 -m aifilm.editor doctor`.
 
 ## Next implementation stages
 

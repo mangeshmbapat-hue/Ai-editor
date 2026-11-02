@@ -1,0 +1,23 @@
+{
+  "slug": "transformation-reveal",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 0.9,
+    "cuts_per_10s": 10,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "punchy-social"
+  },
+  "edl_defaults": {
+    "grade": "punchy-social",
+    "transition": "cut",
+    "zoom_every": 0,
+    "speed_montage": 2.0,
+    "silence_cut": 0.3,
+    "music_db": -14,
+    "fx_last": [
+      "flash"
+    ],
+    "captions": null
+  }
+}

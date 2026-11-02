@@ -1,0 +1,28 @@
+{
+  "slug": "mass-elevation",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 1.0,
+    "cuts_per_10s": 9,
+    "first_cut_seconds": 0.8,
+    "grade_preset": "moody-dark"
+  },
+  "edl_defaults": {
+    "grade": "moody-dark",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.2
+    ],
+    "silence_cut": 0,
+    "music_db": -10,
+    "slowmo_last": 0.5,
+    "fx_every": {
+      "shake": 3,
+      "flash": 4
+    },
+    "captions": null
+  }
+}

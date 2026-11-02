@@ -1,0 +1,34 @@
+{
+  "slug": "countdown-listicle",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16 or 16:9",
+    "average_shot_seconds": 2.2,
+    "cuts_per_10s": 4.5,
+    "first_cut_seconds": 1.0,
+    "grade_preset": "punchy-social"
+  },
+  "edl_defaults": {
+    "grade": "punchy-social",
+    "transition": "slideleft",
+    "transition_every": 3,
+    "transition_s": 0.3,
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0.3,
+    "music_db": -20,
+    "captions": {
+      "max_words": 3,
+      "position": "center",
+      "size": 0.06,
+      "uppercase": true,
+      "color": "white",
+      "box": false,
+      "animate": "pop",
+      "highlight_color": "yellow"
+    }
+  }
+}

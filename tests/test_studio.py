@@ -9,7 +9,7 @@ AGENTS = REPO / ".claude" / "agents"
 SKILLS = REPO / ".claude" / "skills"
 STUDIO = REPO / "studio"
 TOOLS = {"Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"}
-SECTIONS = ["Global", "Social", "Research", "Writer", "Director", "Production"]
+SECTIONS = ["Global", "Social", "Research", "Writer", "Director", "Editor", "Production"]
 SECRET = re.compile(r"\b[0-9a-f]{40,}\b|sk_[A-Za-z0-9]{16,}|xi-api-key\s*[:=]\s*\S{8,}", re.I)
 
 
@@ -24,7 +24,7 @@ def frontmatter(path):
 class StudioTest(unittest.TestCase):
     def test_agents(self):
         names = sorted(p.stem for p in AGENTS.glob("*.md"))
-        self.assertEqual(names, ["director", "researcher", "social", "writer"])
+        self.assertEqual(names, ["director", "mann", "researcher", "social", "writer"])
         for p in AGENTS.glob("*.md"):
             with self.subTest(agent=p.stem):
                 fields, body = frontmatter(p)
@@ -43,7 +43,7 @@ class StudioTest(unittest.TestCase):
         self.assertIn("only after the owner approves the script", director)
 
     def test_skills(self):
-        for name in ["viral-studio", "studio-learn"]:
+        for name in ["viral-studio", "studio-learn", "mann-edit", "mann-style-lab"]:
             with self.subTest(skill=name):
                 fields, body = frontmatter(SKILLS / name / "SKILL.md")
                 self.assertEqual(fields.get("name"), name)
@@ -85,6 +85,15 @@ class StudioTest(unittest.TestCase):
         self.assertGreaterEqual(len(rows), 133)
         for slug in [p.parent.name for p in (REPO / "styles").glob("*/style.json")]:
             self.assertIn(f"`{slug}`", menu)
+
+    def test_mann_storyboard_gate_and_learning(self):
+        mann = (AGENTS / "mann.md").read_text(encoding="utf-8")
+        for needle in ["storyboard (gate, mandatory)", "approve --clips", "approve-style", "lock-script", "approve --words", "editor/rules.json", "mann-style-lab", "/studio-learn",
+                       "Never post", "experiment"]:
+            self.assertIn(needle, mann)
+        learn = (SKILLS / "studio-learn" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("editor/rules.json", learn)
+        self.assertIn("**Editor**", learn)
 
     def test_director_preview_gate_and_music(self):
         director = (AGENTS / "director.md").read_text(encoding="utf-8")

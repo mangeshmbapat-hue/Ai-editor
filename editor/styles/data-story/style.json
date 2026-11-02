@@ -1,0 +1,30 @@
+{
+  "slug": "data-story",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 2.8,
+    "cuts_per_10s": 3.5,
+    "first_cut_seconds": 1.5,
+    "grade_preset": "bright-clean"
+  },
+  "edl_defaults": {
+    "grade": "bright-clean",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0.3,
+    "music_db": -22,
+    "captions": {
+      "max_words": 4,
+      "position": "bottom",
+      "size": 0.05,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}

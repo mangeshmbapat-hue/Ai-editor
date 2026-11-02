@@ -1,0 +1,30 @@
+{
+  "slug": "annotated-explainer",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.0,
+    "cuts_per_10s": 3.3,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "desat-doc"
+  },
+  "edl_defaults": {
+    "grade": "desat-doc",
+    "transition": "cut",
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0.35,
+    "music_db": -22,
+    "captions": {
+      "max_words": 5,
+      "position": "bottom",
+      "size": 0.045,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}
