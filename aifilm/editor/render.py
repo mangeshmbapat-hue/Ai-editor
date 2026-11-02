@@ -75,11 +75,12 @@ def build_graph(root, edl, probes, textfiles, sub_shift=0.0):
         graph.append("[{}][ov{}]overlay=eof_action=pass:format=auto[vo{}]".format(v, k, k))
         v = "vo{}".format(k)
         n_inputs += 1
-    subs = edl.get("subtitles")
-    if subs and subs.get("burn", True):
-        staged = E.stage_subtitles(root, edl, sub_shift)
-        textfiles.append(str(staged))
-        graph.append("[{}]subtitles=filename='{}':force_style='{}'[vs]".format(v, E.esc(staged), E.esc(E.subtitle_style(edl))))
+    script = E.ass_script(root, edl, sub_shift)
+    if script:
+        textfiles.append(str(script))
+        from .fonts import font_dir
+        fdir = ":fontsdir='{}'".format(E.esc(font_dir())) if font_dir().exists() else ""
+        graph.append("[{}]ass=filename='{}'{}:shaping=complex[vs]".format(v, E.esc(script), fdir))
         v = "vs"
     graph.append("[{}]format=yuv420p[vout]".format(v))
     # Audio: dialogue/source bed, music (looped, ducked), SFX.
@@ -257,6 +258,10 @@ def qc(root):
         tol = rules["style_pace_tolerance"]
         check("style pace ({})".format(edl["style"]), abs(stats["average_shot_seconds"] - want) <= want * tol,
               "average shot {}s vs style {}s (±{:.0%})".format(stats["average_shot_seconds"], want, tol), "warn")
+    from . import craft
+    for f in craft.check(root, edl, sample_contrast=False):
+        if f["result"] != "pass":
+            checks.append({"check": "craft: " + f["check"], "result": f["result"], "detail": "{} (rule `{}`)".format(f["detail"], f["rule"])})
     failed = [c for c in checks if c["result"] == "fail"]
     record = {"edl_fingerprint": E.edit_fingerprint(root, edl), "checked": now(), "passed": not failed, "checks": checks,
               "measured": {"probe": info, "loudness": loud, "pace": stats},

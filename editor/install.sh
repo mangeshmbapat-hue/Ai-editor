@@ -17,7 +17,7 @@ fi
 ffmpeg -version | head -1
 
 say "yt-dlp + faster-whisper"
-python3 -m pip install --upgrade yt-dlp faster-whisper
+python3 -m pip install --upgrade yt-dlp faster-whisper fonttools
 
 say "Hyperframes"
 if command -v node >/dev/null && [ "$(node -p 'process.versions.node.split(".")[0]')" -ge 22 ]; then
@@ -25,6 +25,9 @@ if command -v node >/dev/null && [ "$(node -p 'process.versions.node.split(".")[
 else
   echo "Node.js >= 22 is required for Hyperframes (https://nodejs.org). Motion graphics stay unavailable until then."
 fi
+
+say "Fonts (open-licensed, Latin + Devanagari merged)"
+python3 -m aifilm.editor fonts-install --pairing poppins-hind || echo "Font install failed; captions fall back to system fonts"
 
 say "Whisper model (first transcription downloads it; needs huggingface.co)"
 echo "Pre-download with: python3 -c \"from faster_whisper import WhisperModel; WhisperModel('small')\""

@@ -35,6 +35,7 @@ def doctor():
         "node": version(["node", "--version"]),
         "hyperframes": version(["hyperframes", "--version"]) or (version(["npx", "--no-install", "hyperframes", "--version"]) if shutil.which("npx") else None),
         "fc-match": bool(shutil.which("fc-match")),
+        "fonttools": has("fontTools"),
     }
     node = report["node"] or ""
     m = re.match(r"v(\d+)", node)
@@ -160,7 +161,28 @@ def mg_new(edit_root, name, resolution="portrait"):
                             cwd=dest, capture_output=True, text=True, timeout=600, env=env)
     require(result.returncode == 0, "hyperframes init failed: " + (result.stderr or result.stdout)[-400:])
     vendor_gsap(dest / name)
+    apply_design(edit_root, dest / name)
     return str(dest / name)
+
+
+def apply_design(edit_root, project):
+    """Put the EDL's colour theme and font pairing into the composition's :root tokens."""
+    edl_path = Path(edit_root) / "edl.json"
+    if not edl_path.exists():
+        return
+    from ..core import read_json
+    from . import craft
+    typo = (read_json(edl_path).get("typography") or {})
+    html = Path(project) / "index.html"
+    text = html.read_text(encoding="utf-8")
+    if typo.get("theme"):
+        colours = craft.theme(typo["theme"])["colours"]
+        text = text.replace("--ground: #000;", "--ground: {};".format(colours[0])).replace("--ink: #ffffff;", "--ink: {};".format(colours[3]))
+        text = text.replace(":root {", ":root {\n        --accent: " + colours[-1] + ";", 1)
+    if typo.get("pairing"):
+        p = craft.pairing(typo["pairing"])
+        text = text.replace("--font-display: sans-serif;", "--font-display: '{}', sans-serif;\n        --font-text: '{}', sans-serif;".format(p["display"], p["text"]))
+    html.write_text(text, encoding="utf-8")
 
 
 def mg_render(edit_root, name, alpha=True):

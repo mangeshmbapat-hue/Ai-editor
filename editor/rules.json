@@ -13,11 +13,53 @@
     "hook_first_cut_max_seconds": 2.5,
     "short_form_requires_subtitles": true,
     "min_shot_seconds": 0.25,
-    "style_pace_tolerance": 0.3
+    "style_pace_tolerance": 0.3,
+    "safe_zone_profile": "standard",
+    "caption_max_cps": 17,
+    "caption_min_seconds": 0.83,
+    "caption_max_chars_line": 42,
+    "caption_max_chars_line_vertical": 32,
+    "caption_max_lines": 2,
+    "text_min_height_ratio": 0.03,
+    "type_scale_min_ratio": 1.2,
+    "max_font_families": 2,
+    "text_contrast_min_outlined": 3.0,
+    "text_hold_words_per_second": 3,
+    "jump_cut_min_zoom_change": 0.2,
+    "transition_max_share": 0.3,
+    "max_grades_per_film": 2,
+    "max_same_framing_run": 4,
+    "flash_max_per_second": 3,
+    "music_under_voice_db": 10
   },
   "history": [
-    {"date": "2026-11-01", "rule": "loudness_lufs, true_peak_max_db", "value": "-14 LUFS, -1 dBTP", "kind": "owner", "source": "director mix standard in .claude/agents/director.md"},
-    {"date": "2026-11-01", "rule": "max_dead_air_seconds, short_form_max_shot_seconds", "value": "1.0 s, 3.0 s", "kind": "owner", "source": "director edit-for-retention rules (visual change every 1.5-3 s in Shorts, no dead air over 1 s)"},
-    {"date": "2026-11-02", "rule": "all others", "value": "starting defaults", "kind": "observed", "source": "Mann v1 defaults; change only from owner feedback or real results"}
+    {
+      "date": "2026-11-01",
+      "rule": "loudness_lufs, true_peak_max_db",
+      "value": "-14 LUFS, -1 dBTP",
+      "kind": "owner",
+      "source": "director mix standard in .claude/agents/director.md"
+    },
+    {
+      "date": "2026-11-01",
+      "rule": "max_dead_air_seconds, short_form_max_shot_seconds",
+      "value": "1.0 s, 3.0 s",
+      "kind": "owner",
+      "source": "director edit-for-retention rules (visual change every 1.5-3 s in Shorts, no dead air over 1 s)"
+    },
+    {
+      "date": "2026-11-02",
+      "rule": "all others",
+      "value": "starting defaults",
+      "kind": "observed",
+      "source": "Mann v1 defaults; change only from owner feedback or real results"
+    },
+    {
+      "date": "2026-11-02",
+      "rule": "craft rules (captions, safe zone, typography, contrast, cuts, flashes, music under voice)",
+      "value": "see editor/craft/craft.json sources",
+      "kind": "owner",
+      "source": "owner asked Mann to learn and harness the craft rulebook; values from SMPTE ST 2046-1, Netflix timed-text guides, WCAG 2.x, or labelled defaults"
+    }
   ]
 }

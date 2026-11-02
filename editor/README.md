@@ -22,6 +22,7 @@ Mann is the studio's editor agent (`.claude/agents/mann.md`). Give it raw footag
 |---|---|---|
 | [FFmpeg](https://ffmpeg.org) | trim, speed, crop/reframe, grade, LUTs, transitions (xfade), titles (drawtext with Devanagari shaping), burned subtitles (libass), music ducking, SFX, two-pass loudness, QC measurements | system package |
 | [faster-whisper](https://github.com/SYSTRAN/faster-whisper) (or openai-whisper) | transcripts, word-timed phone captions | `pip install faster-whisper` |
+| [fontTools](https://github.com/fonttools/fonttools) + [Fontsource](https://fontsource.org) | merging open-licensed Google Fonts (Latin + Devanagari) into TTFs for FFmpeg/libass | `pip install fonttools`; fonts via npm |
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | downloading reference videos for the style lab | `pip install yt-dlp` |
 | [Hyperframes](https://github.com/heygen-com/hyperframes) | HTML + GSAP motion graphics rendered to ProRes 4444 with alpha, laid over the cut | `npm i -g hyperframes@0.8.230` (Node ≥ 22) |
 
@@ -44,6 +45,10 @@ Mann is the studio's editor agent (`.claude/agents/mann.md`). Give it raw footag
 | `library-scan <folder>` | Index a reusable music/SFX/LUT/overlay library (`mann-library.json`) |
 | `status <edit>` | What needs the owner: `none`, `part` (which clips) or `whole` |
 | `preview-part <edit> --clips C04` | Quick 720p video of just the corrected part (plus neighbours) |
+| `craft [--domain cuts]` | The craft rulebook (also `editor/craft/CRAFT.md`) |
+| `craft-check <edit>` | Automatic craft checks (safe zones, captions, type hierarchy, fonts/Devanagari, text contrast, 30-degree rule, transitions, grades, variety, flash safety, music under voice); exit 1 on a FAIL; also part of `storyboard` and `qc` |
+| `pairings`, `themes` | Font pairings (Devanagari verified) and colour themes |
+| `fonts-install --pairing <id>` / `fonts-install <Family>…` | Fetch open-licensed fonts from npm (@fontsource), merge Latin + Devanagari into one TTF per weight, install to `~/.local/share/fonts/mann` (`MANN_FONTS` overrides) |
 | `validate <edit>` | Check `edl.json`, print the timeline and pace |
 | `storyboard <edit> [--two] [--changed] [--only C04]` | Numbered frames from the full edit graph + `STORYBOARD.md` (pace, sound plan, changes); `--changed` makes a part storyboard when only some clips changed |
 | `approve <edit> --words "…" [--clips C04] [--final]` | Record the owner's exact approval; approvals are per clip plus one for the whole-video settings, tied to file hashes |
@@ -84,6 +89,7 @@ See `edl.example.json`. Fields:
 - `overlays[]`: `file` (Hyperframes .mov with alpha, or any video), `at`.
 - `subtitles`: `file` (.srt), `burn`, `size` (fraction of height), `position` (top/center/bottom), `color` (white/yellow/green/red/cyan), `uppercase`, `box`, or a raw `force_style`; `margin_v`.
 - `script`: the locked script file; the storyboard refuses if it changed after the lock.
+- `typography`: `pairing` (font pairing id) and `theme` (colour theme id); text items take a `role` (`title`, `headline`, `body`, `caption`, `label`) that sets size and font from the type scale and pairing. All burned text is rendered through one ASS script with complex shaping (correct Devanagari).
 - `style`: a slug in `editor/styles/`. `deliberate_silences`: timeline seconds where silence is intended. `master`: `lufs`, `true_peak`.
 
 ## What is verified and what is not

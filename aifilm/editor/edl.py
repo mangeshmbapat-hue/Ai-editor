@@ -22,7 +22,6 @@ import json
 import re
 import shutil
 import subprocess
-import tempfile
 from pathlib import Path
 
 from ..core import ProductionError, file_hash, fingerprint, inside, now, project_lock, read_json, require, write_json
@@ -141,6 +140,7 @@ def validate(root, edl):
         for text in as_list(clip.get("text")):
             require(isinstance(text.get("value"), str) and text["value"].strip(), cid + ": text needs a value")
             require(text.get("position", "bottom") in TEXT_POSITIONS, cid + ": text position must be top/center/bottom")
+            require(text.get("role") in (None, "title", "headline", "body", "caption", "label"), cid + ": text role must be title/headline/body/caption/label")
         for ins in clip.get("inserts", []):
             require(ins.get("source") in sources, "{}: insert has unknown source {!r}".format(cid, ins.get("source")))
             a, b = num(ins.get("in"), cid + ".insert.in", 0), num(ins.get("out"), cid + ".insert.out", 0)
@@ -168,6 +168,13 @@ def validate(root, edl):
         require(subs.get("color", "white") in SUB_COLOURS, "subtitles.color must be one of {}".format(sorted(SUB_COLOURS)))
     if edl.get("script"):
         require(inside(root, edl["script"]).is_file(), "Script file missing: " + edl["script"])
+    typo = edl.get("typography") or {}
+    if typo:
+        from . import craft
+        if typo.get("pairing"):
+            craft.pairing(typo["pairing"])
+        if typo.get("theme"):
+            craft.theme(typo["theme"])
     return probes
 
 
@@ -265,23 +272,6 @@ def clip_video_chain(root, edl, clip, textfiles, t0=0.0):
         chain.append(graded)
     for fx in as_list(clip.get("fx")):
         chain.append(FX[fx].format(W=W, H=H))
-    for item in as_list(clip.get("text")):
-        handle = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
-        handle.write(item["value"])
-        handle.close()
-        textfiles.append(handle.name)
-        font = font_for(item["value"], item.get("font"))
-        size = int(item.get("size", round(H * 0.045)))
-        start, end = float(item.get("start", 0)), float(item.get("end", dur))
-        opts = ["textfile='{}'".format(esc(handle.name)), "fontsize={}".format(size), "fontcolor={}".format(item.get("color", "white")),
-                "x=(w-text_w)/2", "y={}".format(TEXT_POSITIONS[item.get("position", "bottom")]),
-                "borderw={}".format(max(2, size // 14)), "bordercolor=black@0.85",
-                "enable='between(t+{t0},{s},{e})'".format(t0=t0, s=start, e=end)]
-        if item.get("box"):
-            opts += ["box=1", "boxcolor=black@0.55", "boxborderw={}".format(size // 3)]
-        if font:
-            opts.insert(0, "fontfile='{}'".format(esc(font)))
-        chain.append("drawtext=" + ":".join(opts))
     chain += ["fps={}".format(fps), "format=yuv420p", "setsar=1", "settb=AVTB"]
     return ",".join(chain)
 
@@ -296,20 +286,94 @@ def insert_chain(root, edl, clip, ins, at):
     return ",".join(chain)
 
 
-def subtitle_style(edl):
-    subs = edl["subtitles"]
+def ass_colour(name, alpha=0):
+    from .craft import NAMED
+    name = str(name or "white").lower()
+    if re.fullmatch(r"#?[0-9a-f]{6}", name):
+        h = name.lstrip("#")
+        rgb = (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+    else:
+        rgb = NAMED.get(name, (255, 255, 255))
+    return "&H{:02X}{:02X}{:02X}{:02X}".format(alpha, rgb[2], rgb[1], rgb[0])
+
+
+def ass_time(t):
+    cs = int(round(max(t, 0) * 100))
+    return "{}:{:02d}:{:02d}.{:02d}".format(cs // 360000, cs // 6000 % 60, cs // 100 % 60, cs % 100)
+
+
+def ass_text(value):
+    return value.replace("\\", "\\\\").replace("{", "\\{").replace("}", "\\}").replace("\n", "\\N")
+
+
+def family_of(font_file):
+    if font_file and shutil.which("fc-scan"):
+        out = subprocess.run(["fc-scan", "--format", "%{family}\n", font_file], capture_output=True, text=True).stdout.strip()
+        if out:
+            return out.splitlines()[0].split(",")[0]
+    return "Noto Sans"
+
+
+def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
+    """All burned text in one ASS script: on-screen text items (timeline-mapped) and subtitles.
+    Rendered by FFmpeg's `ass` filter with complex shaping, so Devanagari reorders correctly
+    (pre-base matras, conjuncts, anusvara); drawtext and the subtitles filter do not."""
+    from . import craft
     fmt = edl["format"]
-    if subs.get("force_style"):
-        return subs["force_style"]
-    # libass scales against a 288-line play resolution by default.
-    size = int(round(288 * float(subs.get("size", 0.05))))
-    pos = subs.get("position", "bottom")
-    align = {"bottom": 2, "center": 5, "top": 8}[pos]
-    margin = int(subs.get("margin_v", (70 if fmt["height"] > fmt["width"] else 30) if pos == "bottom" else 40))
-    style = ["Fontname=Noto Sans", "Fontsize={}".format(size), "Bold=1", "PrimaryColour={}".format(SUB_COLOURS[subs.get("color", "white")]),
-             "Alignment={}".format(align), "MarginV={}".format(margin)]
-    style += ["BorderStyle=3", "Outline=6", "BackColour=&H80000000", "OutlineColour=&H80000000", "Shadow=0"] if subs.get("box") else ["Outline=2", "Shadow=0"]
-    return ",".join(style)
+    W, H = fmt["width"], fmt["height"]
+    rows, _ = timeline(edl)
+    events = []
+    for row, clip in zip(rows, edl["clips"]):
+        for item in as_list(clip.get("text")):
+            size, file_, family = craft.resolve_text(edl, item)
+            family = family if (family and file_) else family_of(file_ or font_for(item["value"], item.get("font")))
+            weight = 700 if item.get("role") in (None, "title", "headline", "caption") else 500
+            pos = item.get("position", "bottom")
+            an, y = {"top": (8, H * 0.18), "center": (5, H / 2.0), "bottom": (8, H * 0.66)}[pos]
+            a = row["start"] + float(item.get("start", 0))
+            b = row["start"] + float(item.get("end", row["duration"]))
+            tags = "{{\\an{}\\pos({},{})\\fn{}\\fs{}\\b{}\\c{}\\bord{}}}".format(
+                an, int(W / 2), int(y), family, size, weight, ass_colour(item.get("color", "white")), max(2, size // 14))
+            events.append((a, b, "TxtBox" if item.get("box") else "Txt", tags + ass_text(item["value"])))
+    subs = edl.get("subtitles")
+    cap = None
+    if subs and subs.get("burn", True):
+        size = int(round(float(subs.get("size", 0.05)) * H))
+        family = "Noto Sans"
+        pid = (edl.get("typography") or {}).get("pairing")
+        if pid:
+            from . import fonts
+            p = craft.pairing(pid)
+            if fonts.resolve(p["text"], p.get("text_weight", 600)):
+                family = p["text"]
+        m = craft.subtitle_margins(fmt)
+        pos = subs.get("position", "bottom")
+        align = {"bottom": 2, "center": 5, "top": 8}[pos]
+        margin_v = int(subs.get("margin_v_px", m["bottom"] if pos == "bottom" else m["top"]))
+        box = bool(subs.get("box"))
+        cap = "Style: Cap,{},{},{},&H000000FF,{},{},-1,0,0,0,100,100,0,0,{},{},0,{},{},{},{},1".format(
+            family, size, ass_colour(subs.get("color", "white")), "&H80000000" if box else "&H00000000", "&H80000000",
+            3 if box else 1, max(2, size // 12) if not box else max(4, size // 5), align, m["l"], m["r"], margin_v)
+        from .craft import parse_srt
+        text = stage_subtitles(root, edl, shift).read_text(encoding="utf-8")
+        for c in parse_srt(text):
+            events.append((c["start"], c["end"], "Cap", ass_text("\n".join(c["lines"]))))
+        (Path(root) / ".mann-subs.srt").unlink(missing_ok=True)
+    if not events:
+        return None
+    lines = ["[Script Info]", "ScriptType: v4.00+", "PlayResX: {}".format(W), "PlayResY: {}".format(H), "WrapStyle: 0",
+             "ScaledBorderAndShadow: yes", "", "[V4+ Styles]",
+             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, "
+             "ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
+             "Style: Txt,Noto Sans,48,&H00FFFFFF,&H000000FF,&H26000000,&H00000000,-1,0,0,0,100,100,0,0,1,3,0,8,0,0,0,1",
+             "Style: TxtBox,Noto Sans,48,&H00FFFFFF,&H000000FF,&H73000000,&H73000000,-1,0,0,0,100,100,0,0,3,12,0,8,0,0,0,1"]
+    if cap:
+        lines.append(cap)
+    lines += ["", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
+    lines += ["Dialogue: 0,{},{},{},,0,0,0,,{}".format(ass_time(a), ass_time(b), st, txt) for a, b, st, txt in sorted(events)]
+    path = Path(root) / name
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return path
 
 
 def stage_subtitles(root, edl, shift=0.0, name=".mann-subs.srt"):
@@ -574,12 +638,15 @@ def storyboard(root, frames_per_clip=1, only=None):
                "clip_fingerprints": {c: clip_fps[c] for c in (only or ids)}, "created": now(), "frames": frames,
                "clips": summaries, "globals": globals_now, "pace": pace(edl), "changes_since_previous": changes,
                "scope": "part" if only else "whole", "only": only or []}
+        from . import craft
+        rec["craft"] = craft.check(root, edl)
+        craft_md = craft.markdown(rec["craft"], craft.manual_checklist(edl))
         if only:
             write_json(out / "part.json", rec)
-            (out / "PART.md").write_text(storyboard_markdown(edl, rec, total), encoding="utf-8")
+            (out / "PART.md").write_text(storyboard_markdown(edl, rec, total) + "\n" + craft_md, encoding="utf-8")
         else:
             write_json(out / "storyboard.json", rec)
-            (out / "STORYBOARD.md").write_text(storyboard_markdown(edl, rec, total), encoding="utf-8")
+            (out / "STORYBOARD.md").write_text(storyboard_markdown(edl, rec, total) + "\n" + craft_md, encoding="utf-8")
         return rec
 
 

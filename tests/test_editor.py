@@ -386,3 +386,150 @@ class EngineCase(unittest.TestCase):
         self.assertEqual(part["audio"]["music"]["start"], 3.0)
         self.assertEqual([s["at"] for s in part["audio"]["sfx"]], [2.5])
         self.assertIn("00:00:01,500", E.shift_srt("00:00:03,500 --> 00:00:04,000", 2.0))
+
+
+class CraftStaticTest(unittest.TestCase):
+    def test_rulebook_is_complete_and_built(self):
+        from aifilm.editor import craft as C
+        d = C.data()
+        ids = [r["id"] for r in C.rules()]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertGreaterEqual(len(ids), 80)
+        domains = {dom["id"] for dom in d["domains"]}
+        for needed in ["cuts", "transitions", "continuity", "eyelines", "composition", "shots", "pacing", "typography", "colour",
+                       "safe-zones", "sound", "motion", "vfx", "story", "accessibility"]:
+            self.assertIn(needed, domains)
+        for r in C.rules():
+            with self.subTest(rule=r["id"]):
+                for f in ("name", "what", "when", "how", "avoid"):
+                    self.assertTrue(r[f].strip())
+                self.assertIn(r["check"], {"auto", "manual"})
+        latin_only = {"Inter", "Montserrat", "Bebas Neue", "Playfair Display", "Anton"}
+        for p in d["font_pairings"]:
+            if p["devanagari"]:
+                self.assertFalse({p["display"], p["text"]} & latin_only, p["id"])
+        for t in d["colour_themes"]:
+            self.assertIn(t["grade"], E.GRADES)
+            for c in t["colours"]:
+                self.assertRegex(c, r"^#[0-9a-f]{6}$")
+        for aspect in ("9:16", "16:9", "1:1", "4:5"):
+            self.assertEqual(set(d["safe_zones"][aspect]), {"standard", "strict"})
+        md = (REPO / "editor" / "craft" / "CRAFT.md").read_text(encoding="utf-8")
+        for i in ids:
+            self.assertIn("`{}`".format(i), md, "run python3 editor/craft/build_craft.py")
+        rules = read_json(REPO / "editor" / "rules.json")["rules"]
+        import re as _re
+        used = set(_re.findall(r'R\["([a-z_0-9]+)"\]', (REPO / "aifilm" / "editor" / "craft.py").read_text(encoding="utf-8")))
+        self.assertLessEqual(used, set(rules))
+
+    def test_contrast_width_and_font_resolve(self):
+        from aifilm.editor import craft as C, fonts as F
+        self.assertAlmostEqual(C.contrast((255, 255, 255), (0, 0, 0)), 21.0, places=1)
+        self.assertAlmostEqual(C.text_width("कि", 100), C.text_width("क", 100), places=3)
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            old = os.environ.get("MANN_FONTS")
+            os.environ["MANN_FONTS"] = tmp
+            try:
+                for w in (400, 700):
+                    (Path(tmp) / "Poppins-{}.ttf".format(w)).write_bytes(b"synthetic placeholder")
+                self.assertTrue(F.resolve("Poppins", 600).endswith("Poppins-700.ttf"))
+                self.assertTrue(F.resolve("Poppins", 450).endswith("Poppins-400.ttf"))
+                self.assertIsNone(F.resolve("Hind", 400))
+            finally:
+                if old is None:
+                    os.environ.pop("MANN_FONTS")
+                else:
+                    os.environ["MANN_FONTS"] = old
+
+
+@unittest.skipUnless(HAS_FFMPEG, "FFmpeg is required for media tests")
+class CraftCheckCase(unittest.TestCase):
+    """SYNTHETIC fixtures only: a flat-colour clip with a tone, and a test pattern."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fixtures = Path(tempfile.mkdtemp(prefix="mann-craft-"))
+        ff("-f", "lavfi", "-i", "color=c=0x806050:s=320x180:r=30:d=6", "-f", "lavfi", "-i", "sine=f=220:d=6",
+           "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", cls.fixtures / "talk.mp4")
+        ff("-f", "lavfi", "-i", "testsrc2=s=320x180:r=30:d=6", "-c:v", "libx264", "-pix_fmt", "yuv420p", cls.fixtures / "broll.mp4")
+        ff("-f", "lavfi", "-i", "sine=f=110:d=6", cls.fixtures / "music.wav")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.fixtures, ignore_errors=True)
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.edit = Path(self.temp.name) / "edit"
+        T.ingest(self.edit, sorted(self.fixtures.iterdir()))
+
+    def write(self, edl):
+        write_json(self.edit / "edl.json", edl)
+        return E.load(self.edit)
+
+    def results(self, edl):
+        from aifilm.editor import craft as C
+        out = {}
+        for f in C.check(self.edit, edl):
+            out.setdefault(f["check"].split(" C0")[0], []).append(f["result"])
+        return out
+
+    def test_flawed_cut_is_caught(self):
+        (self.edit / "caps.srt").write_text("1\n00:00:00,000 --> 00:00:00,500\nThis caption is far too long and far too fast to read on a phone\n",
+                                            encoding="utf-8")
+        edl = self.write({
+            "version": 1, "format": {"width": 360, "height": 640, "fps": 30}, "sources": {"T": "raw/talk.mp4", "B": "raw/broll.mp4"},
+            "clips": [{"id": "C01", "source": "T", "in": 0, "out": 1.5,
+                       "text": {"value": "एक बहुत लंबा शीर्षक जो किनारे तक जाता है", "role": "title", "position": "top", "end": 0.4}},
+                      {"id": "C02", "source": "T", "in": 1.6, "out": 2.4},
+                      {"id": "C03", "source": "B", "in": 0, "out": 0.3, "fx": ["flash"]}, {"id": "C04", "source": "B", "in": 1, "out": 1.3, "fx": ["flash"]},
+                      {"id": "C05", "source": "B", "in": 2, "out": 2.3, "fx": ["flash"]}, {"id": "C06", "source": "B", "in": 3, "out": 3.3, "fx": ["flash"]}],
+            "audio": {"music": {"file": "raw/music.wav", "gain_db": -4}}, "subtitles": {"file": "caps.srt"}})
+        r = self.results(edl)
+        self.assertIn("fail", r["flash safety"])
+        self.assertIn("fail", r["text safe zone"])
+        self.assertIn("warn", r["reading time"])
+        self.assertIn("warn", r["caption reading speed"])
+        self.assertIn("warn", r["caption minimum duration"])
+        self.assertIn("warn", r["caption line length"])
+        self.assertIn("warn", r["30-degree rule / jump cuts"])
+        self.assertIn("warn", r["music under voice"])
+
+    def test_clean_cut_passes_and_storyboard_reports_craft(self):
+        (self.edit / "caps.srt").write_text("1\n00:00:00,000 --> 00:00:01,600\nकिसी ने नहीं बताया\n", encoding="utf-8")
+        edl = self.write({
+            "version": 1, "format": {"width": 360, "height": 640, "fps": 30}, "sources": {"T": "raw/talk.mp4", "B": "raw/broll.mp4"},
+            "clips": [{"id": "C01", "source": "T", "in": 0, "out": 1.5, "text": {"value": "कहानी", "role": "title", "position": "top"}},
+                      {"id": "C02", "source": "B", "in": 0, "out": 1.0},
+                      {"id": "C03", "source": "T", "in": 3.0, "out": 4.2, "zoom": {"from": 1.25, "to": 1.25}}],
+            "audio": {"music": {"file": "raw/music.wav", "gain_db": -16}}, "subtitles": {"file": "caps.srt", "box": True}})
+        r = self.results(edl)
+        for name in ("flash safety", "text safe zone", "caption safe zone", "caption reading speed", "30-degree rule / jump cuts",
+                     "music under voice", "type hierarchy", "font families"):
+            if name in r:
+                self.assertNotIn("fail", r[name], name)
+        self.assertEqual(r["30-degree rule / jump cuts"], ["pass"])
+        rec = E.storyboard(self.edit)
+        self.assertTrue(rec["craft"])
+        md = (self.edit / "storyboard" / "STORYBOARD.md").read_text(encoding="utf-8")
+        self.assertIn("Craft check (automatic)", md)
+        self.assertIn("Craft checklist", md)
+        self.assertIn("`180-rule`", md)
+        self.assertIn("`vertical-reframe`", md)
+
+    def test_text_goes_through_ass_with_complex_shaping(self):
+        (self.edit / "caps.srt").write_text("1\n00:00:00,000 --> 00:00:01,000\n{braces} किसी\n", encoding="utf-8")
+        edl = self.write({"version": 1, "format": {"width": 360, "height": 640, "fps": 30}, "sources": {"T": "raw/talk.mp4"},
+                          "clips": [{"id": "C01", "source": "T", "in": 0, "out": 1.5, "text": {"value": "हिंदी\nदो पंक्ति", "role": "headline"}}],
+                          "subtitles": {"file": "caps.srt", "uppercase": True}})
+        script = E.ass_script(self.edit, edl).read_text(encoding="utf-8")
+        self.assertIn("PlayResY: 640", script)
+        self.assertIn("\\{BRACES\\} किसी", script)
+        self.assertIn("हिंदी\\Nदो पंक्ति", script)
+        textfiles = []
+        _, graph, _, _, _ = R.build_graph(self.edit, edl, E.validate(self.edit, edl), textfiles)
+        self.assertIn("shaping=complex", graph)
+        self.assertNotIn("drawtext", graph)
+        self.assertNotIn("subtitles=", graph)

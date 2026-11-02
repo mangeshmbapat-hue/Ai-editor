@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 from ..core import ProductionError
+from . import craft as C
 from . import edl as E
 from . import engine as G
 from . import media as M
@@ -55,6 +56,17 @@ def parser():
     p.add_argument("folder")
     p = c.add_parser("styles", help="List the 50 catalog styles")
     p.add_argument("--family")
+    p = c.add_parser("craft", help="The craft rulebook: cuts, continuity, eyelines, composition, typography, colour, safe zones, sound...")
+    p.add_argument("--domain")
+    p = c.add_parser("craft-check", help="Automatic craft checks on <edit>/edl.json (also run by storyboard and qc)")
+    p.add_argument("edit")
+    p.add_argument("--no-contrast", action="store_true", help="Skip sampling frames for text contrast")
+    c.add_parser("pairings", help="Font pairings (Devanagari support verified)")
+    c.add_parser("themes", help="Colour themes")
+    p = c.add_parser("fonts-install", help="Fetch open-licensed fonts from npm (@fontsource), merge Latin+Devanagari, install")
+    p.add_argument("families", nargs="*")
+    p.add_argument("--pairing")
+    p.add_argument("--weights", default="400,700")
     p = c.add_parser("approve-style", help="Owner decision 1: record the finalised style")
     p.add_argument("edit")
     p.add_argument("slug")
@@ -138,6 +150,22 @@ def main(argv=None):
         elif cmd == "styles":
             result = [{"slug": s["slug"], "name": s["name"], "family": s["family"], "best_for": s["best_for"]}
                       for s in G.catalog() if not args.family or s["family"] == args.family]
+        elif cmd == "craft":
+            result = [{"id": r["id"], "domain": r["domain"], "name": r["name"], "check": r["check"], "how": r["how"]} for r in C.rules(args.domain)]
+        elif cmd == "craft-check":
+            findings = C.check(args.edit, E.load(args.edit), sample_contrast=not args.no_contrast)
+            print(json.dumps(findings, indent=2, ensure_ascii=False))
+            return 1 if any(f["result"] == "fail" for f in findings) else 0
+        elif cmd == "pairings":
+            result = C.data()["font_pairings"]
+        elif cmd == "themes":
+            result = C.data()["colour_themes"]
+        elif cmd == "fonts-install":
+            from . import fonts as F
+            if args.pairing:
+                result = F.install_pairing(C.pairing(args.pairing))
+            else:
+                result = [f for fam in args.families for f in F.install(fam, [int(w) for w in args.weights.split(",")])]
         elif cmd == "approve-style":
             G.style(args.slug)
             result = E.approve_style(args.edit, args.slug, args.words)
