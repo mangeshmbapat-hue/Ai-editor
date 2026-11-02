@@ -125,14 +125,18 @@ def block(name: str, source: str, commit: str, kind: str, flags: list[str]) -> s
         "the studio. Read `studio/LEARNINGS.md` and [`studio/SKILL_HARNESS.md`](../../../studio/SKILL_HARNESS.md) "
         "first; where they disagree with the steps below, they win.",
         f"> - **Words:** {WORDS[kind]}",
+        "> - **Before you start:** run `python3 studio/check_env.py`. It shows what works in this session: rendering, "
+        "word timing, Whisper and ElevenLabs.",
         "> - **Preview (Gate 3):** before the full render, send 3 numbered frames at 3 timecodes (the hook, the "
         "middle, the end), plus a 20–30 s music sketch when the skill adds music, and wait for the owner's OK. This "
-        "replaces any contact sheet, stills or snapshot step below.",
+        "replaces any contact sheet, stills or snapshot step below. For a canvas page, "
+        "`node studio/render_canvas.cjs <page> <prefix> --stills 1,6,11` makes the frames, and the same script renders "
+        "the video locally.",
         *[f"> - {FLAG_LINES[f]}" for f in flags],
     ]
     if kind != "visual":
-        lines.append("> - **Word timing:** never guess. The alignment and Whisper models cannot be downloaded in the "
-                     "cloud session; use a route from `studio/SKILL_HARNESS.md` and say which one you used.")
+        lines.append("> - **Word timing:** never guess. When the doctor shows alignment or Whisper blocked, use a "
+                     "route from `studio/SKILL_HARNESS.md` and say which one you used.")
     lines.append("> - **Deliver:** to `projects/<slug>/final/`, then send exactly 2 files with `studio/deliver.py`: "
                  "the final video, and one zip with everything else. Keep any WhatsApp copy in `final/` unless the "
                  "owner asks for it.")

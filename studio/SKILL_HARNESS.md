@@ -51,6 +51,7 @@ Each copy keeps its original text, and a short harness block under its title say
 - **Footage and screenshots:** only when licensed for the use or quoted briefly with credit. Credit each one on screen and in `CREDITS`.
 
 ## Tools in the cloud session (checked 2026-11-02)
+Run `python3 studio/check_env.py` at the start of every production, and put its table in `06-qc.md`. The notes below are the state on 2026-11-02.
 - **Available:**
   - Node 22, FFmpeg 6.1, Python 3
   - Playwright Chromium (`/opt/pw-browsers/chromium`)
@@ -67,9 +68,22 @@ Each copy keeps its original text, and a short harness block under its title say
 
   Never guess timings. Say which route was used, in `06-qc.md`.
 - **ElevenLabs** only when it is reachable and the key is in `ELEVENLABS_API_KEY` (see `LEARNINGS.md`).
+- **Rendering:**
+  - `node studio/render_canvas.cjs <page.html> <out.mp4> [--audio voice.mp3]` renders a canvas page frame by frame in the pre-installed Chromium and encodes it with FFmpeg, with nothing from the network. Pages that use `window.FILM.render(ctx, t)` (daksh-ai) or `window.render(t)` (Lemo-Opuscar) work.
+  - `--stills 1,6,11` writes the Gate 3 preview frames.
 - **`daksh-ai`:**
-  - Its stub-canvas harness (`node .claude/skills/daksh-ai/harness.js ...`) runs here and passed on the template on 2026-11-02.
-  - HyperFrames itself was not run here.
+  - Its stub-canvas harness passes on the template.
+  - The template renders end to end with `studio/render_canvas.cjs`: 360 frames, 12.0 s, 1920×1080 at 30 fps (2026-11-02).
+- **HyperFrames:** npm is reachable, but the session's auto-mode classifier refuses to run npm packages with `npx` ("Code from External"). Use `studio/render_canvas.cjs`. If the owner wants HyperFrames itself, they can allow that command in their permission settings.
+- **Reachability (checked 2026-11-02):**
+  - Blocked: huggingface.co, dl.fbaipublicfiles.com, openaipublic.azureedge.net, download.pytorch.org, alphacephei.com (Vosk models), cdn.jsdelivr.net and api.elevenlabs.io.
+  - Reachable: pypi.org, registry.npmjs.org and raw.githubusercontent.com.
+- **To unblock word timing and voice,** the owner allows these hosts under Network access in the environment's settings (https://code.claude.com/docs/en/cloud-environments#network-access):
+  - `dl.fbaipublicfiles.com`: the skills' own MMS_FA alignment
+  - `openaipublic.azureedge.net`: Whisper models, for transcription
+  - `api.elevenlabs.io`: ElevenLabs, together with the `ELEVENLABS_API_KEY` secret
+
+  Then the doctor shows these capabilities as ready.
 
 ## Delivery
 - Output to `projects/<slug>/final/`, with a `06-qc.md` that says what was checked and what could not be checked.

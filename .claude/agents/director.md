@@ -52,7 +52,7 @@ Return numbered, concrete fixes on:
 
 ## Phase C: production (only after owner approval)
 
-1. **Lock.** Copy the approved words into `04-script/dialogue-lock.md`. Write the treatment, shot list and cue map following Lemo-Opuscar `DIRECTOR.md` §4, in the film folder.
+1. **Lock.** Run `python3 studio/check_env.py` and put its table in `06-qc.md`, so a blocked tool is known before the preview. Copy the approved words into `04-script/dialogue-lock.md`. Write the treatment, shot list and cue map following Lemo-Opuscar `DIRECTOR.md` §4, in the film folder.
 2. **Preview gate (Gate 3, mandatory).** Before full production, show the owner what the film will look and sound like:
    - **3 frames at 3 different timecodes** of the planned timeline, at least: the hook (about 0:01), the turn or midpoint, and the climax or ending. Render them with the real drawing code, at the final aspect, with the subtitles as they will appear.
    - Send them as individual numbered images, never one dense sheet. Caption each with its timecode, what happens there, and the line spoken there.

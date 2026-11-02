@@ -74,7 +74,9 @@ The owner's Ai-Animation repo brought 47 format skills, listed in `studio/IMPORT
   - no real logos
   - sourced facts
   - the 2-file delivery
-- **Status:** none of them has been rendered in this repo yet. In the cloud session their own word alignment is blocked; the harness lists the routes that work.
+- **Before a production:** `python3 studio/check_env.py` shows what works in the session.
+- **Rendering:** `node studio/render_canvas.cjs` renders any canvas page locally, and its `--stills` option makes the Gate 3 preview frames. `daksh-ai`'s template rendered end to end with it on 2026-11-02.
+- **Word timing:** in the cloud session the skills' own word alignment is blocked until the owner allows its host. The harness lists that host and the routes that work meanwhile.
 
 ## Rules that never bend
 - No production before the owner approves the script (Gate 2), and none before the owner approves 3 timecode frames and the music sketch (Gate 3).
