@@ -1,0 +1,509 @@
+[
+ {
+  "name": "anime-reel",
+  "title": "Anime reel",
+  "group": "Animated videos",
+  "input": "a script and the voice MP3s for each line",
+  "kind": "script",
+  "flags": [
+   "original-characters"
+  ],
+  "source": "skills/anime-reel/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "blueprint-explainer",
+  "title": "Blueprint explainer",
+  "group": "Animated videos",
+  "input": "a long voiceover MP3 (3–10 minutes) and the facts or numbers it covers",
+  "kind": "voice",
+  "flags": [
+   "facts"
+  ],
+  "source": "skills/blueprint-explainer/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "breaking-news",
+  "title": "Breaking news",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/breaking-news/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "business-short-form-reels",
+  "title": "Business short-form reel",
+  "group": "Reel formats",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/business-short-form-reels/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "cinema-scope",
+  "title": "Cinema scope",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/cinema-scope/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "comic-halftone",
+  "title": "Comic halftone",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/comic-halftone/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "comic-reel",
+  "title": "Comic book reel",
+  "group": "Animated videos",
+  "input": "the scene's dialogue audio (MP3)",
+  "kind": "third-party-audio",
+  "flags": [],
+  "source": "skills/comic-reel/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "daksh-ai",
+  "title": "Daksh AI (starter edition) — by Daksh AI",
+  "group": "Animated videos (with engine)",
+  "input": "a voice recording (MP3), and the exact script if you have one",
+  "kind": "voice",
+  "flags": [
+   "facts"
+  ],
+  "source": "daksh-ai/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "dark-red-timeline-motion-graphics",
+  "title": "Dark red timeline",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/dark-red-timeline-motion-graphics/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "depth-ui-reel",
+  "title": "Depth UI reel",
+  "group": "Reel formats",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/depth-ui-reel/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "educational-youtube-editor",
+  "title": "Educational YouTube editor",
+  "group": "Reel formats",
+  "input": "a long 16:9 lesson recording",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/educational-youtube-editor/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "glass-stat-card",
+  "title": "Glass stat card",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "facts"
+  ],
+  "source": "skills/glass-stat-card/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "hindi-lyric-video",
+  "title": "Hindi lyric video",
+  "group": "Animated videos",
+  "input": "a Hindi song MP3 and its lyrics in Devanagari, one line per row",
+  "kind": "song",
+  "flags": [],
+  "source": "skills/hindi-lyric-video/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "hindi-pastel-reel-edit",
+  "title": "Hindi pastel reel",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/hindi-pastel-reel-edit/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "instagram-ui-hinglish",
+  "title": "Instagram UI (Hinglish)",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/instagram-ui-hinglish/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "iphone-style-by-daksh-ai",
+  "title": "iPhone style",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/iphone-style-by-daksh-ai/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "katha-video",
+  "title": "Katha video",
+  "group": "Animated videos",
+  "input": "a 60–90 second pravachan MP3",
+  "kind": "third-party-audio",
+  "flags": [],
+  "source": "skills/katha-video/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "kinetic-lyrics",
+  "title": "Kinetic lyrics",
+  "group": "Animated videos",
+  "input": "a song MP3 and its lyrics",
+  "kind": "song",
+  "flags": [],
+  "source": "skills/kinetic-lyrics/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "kinetic-talking-head-edit",
+  "title": "Kinetic talking head",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/kinetic-talking-head-edit/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "latent-reel",
+  "title": "Latent-style roast reel",
+  "group": "Animated videos",
+  "input": "a show clip (MP3) with the guest and host talking",
+  "kind": "third-party-audio",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/latent-reel/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "led-matrix-text",
+  "title": "LED matrix text",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/led-matrix-text/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "lyric-video",
+  "title": "Crayon lyric video",
+  "group": "Animated videos",
+  "input": "a song MP3 and its lyrics, one sung line per row",
+  "kind": "song",
+  "flags": [],
+  "source": "skills/lyric-video/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "madhubani-kahani",
+  "title": "Madhubani kahani",
+  "group": "Animated videos",
+  "input": "a Hindi story voiceover MP3",
+  "kind": "voice",
+  "flags": [],
+  "source": "skills/madhubani-kahani/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "magazine-cover",
+  "title": "Magazine cover",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/magazine-cover/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "match-cut",
+  "title": "Match cut",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/match-cut/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "neon-outline",
+  "title": "Neon outline",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/neon-outline/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "news-report",
+  "title": "Tech news report",
+  "group": "Animated videos",
+  "input": "a news topic or 2–3 article links",
+  "kind": "written",
+  "flags": [
+   "facts",
+   "brands",
+   "third-party-footage"
+  ],
+  "source": "skills/news-report/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "particle-chart",
+  "title": "Particle chart",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "facts"
+  ],
+  "source": "skills/particle-chart/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "particle-text",
+  "title": "Particle text",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/particle-text/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "personal-broll-library",
+  "title": "Personal B-roll library",
+  "group": "Reel formats",
+  "input": "a folder of my B-roll clips",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/personal-broll-library/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "personal-explainer",
+  "title": "Personal explainer",
+  "group": "Animated videos",
+  "input": "your voiceover MP3, the topic, and any source links",
+  "kind": "voice",
+  "flags": [
+   "facts",
+   "third-party-footage"
+  ],
+  "source": "skills/personal-explainer/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "personal-short-form-reels",
+  "title": "Personal short-form reel",
+  "group": "Reel formats",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/personal-short-form-reels/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "podcast-explainer",
+  "title": "Podcast explainer",
+  "group": "Animated videos",
+  "input": "a 45–90 second podcast clip (MP3)",
+  "kind": "third-party-audio",
+  "flags": [
+   "facts"
+  ],
+  "source": "skills/podcast-explainer/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "podcast-reel-edit",
+  "title": "Podcast reel edit",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/podcast-reel-edit/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "price-tag-zoom",
+  "title": "Price-tag zoom",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "facts"
+  ],
+  "source": "skills/price-tag-zoom/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "pusho-reel",
+  "title": "Pusho reel",
+  "group": "Animated videos",
+  "input": "a Puneet Superstar audio clip (MP3)",
+  "kind": "third-party-audio",
+  "flags": [],
+  "source": "skills/pusho-reel/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "ranking-format",
+  "title": "Ranking / tier list",
+  "group": "Reel formats",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/ranking-format/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "red-kinetic-collage-edit",
+  "title": "Red kinetic collage",
+  "group": "Edit styles",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/red-kinetic-collage-edit/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "rgb-glitch-live",
+  "title": "RGB glitch live",
+  "group": "Looks",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [
+   "brands"
+  ],
+  "source": "skills/rgb-glitch-live/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "shutter-stack",
+  "title": "Shutter stack",
+  "group": "Motion effects",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/shutter-stack/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "sketch-music-video",
+  "title": "Sketch music video",
+  "group": "Animated videos",
+  "input": "a song MP3 and its lyrics, one sung line per row",
+  "kind": "song",
+  "flags": [],
+  "source": "skills/sketch-music-video/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "sketch-to-motion",
+  "title": "Sketch to motion graphic",
+  "group": "Animated videos",
+  "input": "8–10 photos of your sketches, plus your product photos and stock clips",
+  "kind": "assets",
+  "flags": [],
+  "source": "skills/sketch-to-motion/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "talking-head-edit",
+  "title": "Talking-head edit",
+  "group": "Animated videos",
+  "input": "a 9:16 talking-head clip",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/talking-head-edit/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "titan-anime",
+  "title": "Titan anime episode",
+  "group": "Animated videos",
+  "input": "a script and the voice MP3s for each line",
+  "kind": "script",
+  "flags": [
+   "original-characters"
+  ],
+  "source": "skills/titan-anime/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "triptych-timecode",
+  "title": "Triptych timecode",
+  "group": "Looks",
+  "input": "three clips",
+  "kind": "clip",
+  "flags": [],
+  "source": "skills/triptych-timecode/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "watercolor-map",
+  "title": "Watercolor map journey",
+  "group": "Animated videos",
+  "input": "two places, like “Bengaluru → California”",
+  "kind": "visual",
+  "flags": [],
+  "source": "skills/watercolor-map/SKILL.md",
+  "commit": "f02c89a"
+ },
+ {
+  "name": "youtube-clips",
+  "title": "YouTube clips",
+  "group": "Reel formats",
+  "input": "a long 16:9 video or a YouTube link",
+  "kind": "clip",
+  "flags": [
+   "own-footage-only"
+  ],
+  "source": "skills/youtube-clips/SKILL.md",
+  "commit": "f02c89a"
+ }
+]

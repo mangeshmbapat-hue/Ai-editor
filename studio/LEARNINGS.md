@@ -15,6 +15,16 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · observed · Run at most 3 agents in parallel. Why: seven parallel agents exhausted the owner's 5-hour usage limit. (style library)
 - 2026-11-01 · observed · Start a fresh session for each new film or big batch: everything the studio needs is committed in the repo. Why: this long session hit the owner's 5-hour usage limit a second time while only two agents were running, because every step re-reads the whole conversation. (studio)
 - 2026-11-01 · observed · In the cloud environment, `api.elevenlabs.io`, Hugging Face (Whisper models), Microsoft edge-tts and en.wikipedia.org (WebFetch) are blocked unless the owner allows them in the environment's network settings. WebSearch works. (all)
+- 2026-11-02 · observed · The forced-alignment model the imported format skills use (torchaudio MMS_FA, from `dl.fbaipublicfiles.com`) cannot be downloaded in the cloud environment, like Hugging Face's Whisper models; the npm registry and PyPI work. Word timing for those skills follows the routes in `studio/SKILL_HARNESS.md`. (studio)
+- 2026-11-02 · observed · Hosts checked on 2026-11-02:
+  - Also blocked: openaipublic.azureedge.net (Whisper weights), download.pytorch.org, alphacephei.com (Vosk) and cdn.jsdelivr.net.
+  - Reachable: pypi.org, registry.npmjs.org and raw.githubusercontent.com.
+  - Run `python3 studio/check_env.py` for the current state before a production. (studio)
+- 2026-11-02 · observed · The session's auto-mode classifier refuses to run npm packages with `npx` ("Code from External"), for example HyperFrames. Render canvas pages with `node studio/render_canvas.cjs` instead: local Chromium and FFmpeg. The `daksh-ai` template rendered end to end with it. (studio)
+- 2026-11-02 · observed · Known words (a script, lyrics, the locked dialogue) can now be timed offline with `studio/word_timing.py`, with no model download.
+  - On Kokoro speech: line starts on the Ramayana VO were within 20 ms, and 90 % of word starts in the other-voice tests were within 17 ms.
+  - Not yet measured on human recordings or sung vocals.
+  - Unknown speech still needs the Whisper or MMS_FA hosts allowed. (studio)
 
 ## Social
 - 2026-11-01 · owner · Every night (a scheduled task, about 10:40 PM IST) find 10 topics with viral potential, suggest the best style for each from `studio/STYLE_MENU.md` (plus one experiment), and send them to the owner, following `studio/NIGHTLY.md`. Source: "roj raat 11 bje automatically 10 topics dundne or mujhe suggest krne h or unpr konsa style acha rhega vo bhi. virality match krte hue" (studio)
@@ -31,6 +41,8 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · The director handles the whole creative and art direction and keeps the video in flow, from edit to final product. Source: "ek director agent jo puri video ka creative art direction dekhe ... edit se lekr final product" (studio)
 - 2026-11-01 · owner · For "preview dikhao", show individual numbered frames, not one dense contact sheet. Source: owner's director overrides (all)
 - 2026-11-01 · owner · The owner liked the Tholu Bommalata (Indian leather shadow puppet) look for the Ramayana preview. Source: "badiya h ye to" (ramayana)
+- 2026-11-01 · owner · Deliver every finished film with an NLE editor package as well: a timeline the owner can open in Premiere Pro or DaVinci Resolve, cut at the shot boundaries, with separate stems (each VO line, the music stems, SFX, ambience) and the subtitles, so the owner can make small corrections in their own editor. Why: the owner wants to fix small things without waiting for a re-render. Source: "dekho ek option rkho NLE base editor k liye taki thodi bhut correction kr sku" (all)
+- 2026-11-02 · owner · Send every finished film to the owner as exactly 2 files: the final rendered video on its own, and one zip with everything else (the editor package, subtitles, cover, credits, QC note). Each file must be at most 400 MiB. Why: the owner wants the film itself separate from the working files. Source: "package wale m final video jo render hui h vo alag or baki files alag yani 2 files ho. ye rules set kro" (all)
 
 ## Editor
 - 2026-11-02 · owner · Mann is the AI video editor agent. It edits the owner's raw footage from the owner's script or direction and knows editing, motion graphics, sound design, colour and VFX, using open-source tools (FFmpeg, Whisper, yt-dlp, Hyperframes). Source: "ek ai video editor agent bana jiska naam hoga mann jo video edit krna janta ho, motion graphics, sound designing, colour, vfx sab janta ho ... m tumhe raw data du or script ya direction du tum usko edit kro" (ai-editor)
@@ -50,4 +62,5 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)
 - 2026-11-01 · owner · BGM, voice, SFX and foley must be top quality. Source: "make sure ki ... bgm or voice sfx foiley vo top quality ka ho" (ramayana)
 - 2026-11-01 · owner · Synthetic sound effects felt odd (noise-based crowd, synthesised bells, beeping crickets). Prefer recorded samples; avoid synthetic crowd, insects and beeps. Source: "isme sound effect thode odd h" (azaadi-1947)
+- 2026-11-01 · observed · A file sent to the owner from a cloud session can be at most 400 MiB. For a long editor package, build it with `--crf 18` (still visually lossless) or send the picture separately. Why: the 2-minute Ramayana package zipped to 433 MiB at CRF 16 and could not be sent; at CRF 18 it was 321 MiB. (ramayana)
 - 2026-11-01 · owner · Use ElevenLabs for voice and SFX when it is reachable. The key lives only in the environment variable `ELEVENLABS_API_KEY`, never in chat or files. Source: "isko use krke sound or voice over banaya kro" (all)

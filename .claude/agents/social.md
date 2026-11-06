@@ -47,7 +47,7 @@ You find the topics people want right now, judge what will spread, and package t
    - why now (with evidence)
    - lifespan (hours, days or evergreen)
    - best platform, format, aspect and duration
-   - **the best style** from `studio/STYLE_MENU.md`, and one out-of-the-box style marked `experiment`
+   - **the best style** from `studio/STYLE_MENU.md` (a library style, a draft or a ready format skill), and one out-of-the-box style marked `experiment`
    - a one-line music idea
    - risks
 

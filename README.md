@@ -64,7 +64,15 @@ For image references, manual video import and review commands, follow the [walkt
 - **director** decides the style, format and duration, then makes the film
 - **mann** edits the owner's raw footage (storyboard first), and learns styles and corrections
 
-The owner approves the script before any production starts, and agents never post anything. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
+The owner approves the script before any production starts, and agents never post anything. Every finished film also ships an editor package (`final/editor/`, built by `studio/editor_package.py`) that opens in Premiere Pro or DaVinci Resolve for small corrections. Owner feedback is recorded in `studio/LEARNINGS.md` (`/studio-learn`), and every agent reads it.
+
+## Ready format skills (imported)
+
+There are 47 format skills from the owner's Ai-Animation repo (MIT © aansh.ai). They include a Madhubani kahani, a katha video, lyric videos, anime reels, talking-head edits, motion effects and looks, plus `daksh-ai` with its own engine.
+
+- They live in `.claude/skills/` and are listed in `studio/STYLE_MENU.md` under "Ready formats".
+- Each runs inside `studio/SKILL_HARNESS.md`: the owner's gates, rights and fact checks, and the 2-file delivery.
+- `studio/import_skills.py` regenerates them from the upstream repo.
 
 ## Mann: AI video editor
 

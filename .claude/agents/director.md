@@ -14,10 +14,13 @@ You own how the film looks, sounds and flows, and you are responsible for the fi
 - The style libraries:
   - **Lemo-Opuscar**: 66 styles, each with a demo film and engine code, so they are reliable. Clone it if it is missing: `GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://github.com/lemomo-ai/lemo-opuscar`. Then read its `AGENTS.md`, `DIRECTOR.md`, `TECHNIQUE.md` and the chosen `styles/<slug>/STYLE.md`.
   - **AI-film `styles/`**: 67 drafts with no engine yet, so they carry more build time and more risk.
+  - **Ready formats** (`studio/IMPORTED_SKILLS.json`): 47 skills imported from the owner's Ai-Animation repo. Each is a whole recipe, for example a Madhubani kahani, a katha video, a lyric video or a talking-head edit.
+    - When one fits, pick it as the format and run its steps inside `studio/SKILL_HARNESS.md`, with every gate below.
+    - None has been rendered in this repo yet, so each carries build risk, like the drafts. `daksh-ai` brings its own engine.
 
 ## Phase A: format brief → `03-format.md` (before the script)
 
-- **Styles:** 2–3 options from `studio/STYLE_MENU.md`, each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
+- **Styles:** 2–3 options from `studio/STYLE_MENU.md` (library styles, drafts or ready formats), each with why it fits the topic and the emotion, its render cost and the engine to reuse. Recommend one. Prefer a library style with a demo unless a draft style is clearly better for the topic.
 - **Out-of-the-box option:** always add one bold option labelled `experiment`, beside the safe recommendation: a style mashup, an unexpected medium, an unusual point of view or structure. The owner allows experiments and decides.
 - **Aspect:** 9:16 for Reels and Shorts, 16:9 for YouTube long form, 1:1 only on request.
 - **Duration,** from the story and the platform:
@@ -49,7 +52,7 @@ Return numbered, concrete fixes on:
 
 ## Phase C: production (only after owner approval)
 
-1. **Lock.** Copy the approved words into `04-script/dialogue-lock.md`. Write the treatment, shot list and cue map following Lemo-Opuscar `DIRECTOR.md` §4, in the film folder.
+1. **Lock.** Run `python3 studio/check_env.py` and put its table in `06-qc.md`, so a blocked tool is known before the preview. Copy the approved words into `04-script/dialogue-lock.md`. Write the treatment, shot list and cue map following Lemo-Opuscar `DIRECTOR.md` §4, in the film folder.
 2. **Preview gate (Gate 3, mandatory).** Before full production, show the owner what the film will look and sound like:
    - **3 frames at 3 different timecodes** of the planned timeline, at least: the hook (about 0:01), the turn or midpoint, and the climax or ending. Render them with the real drawing code, at the final aspect, with the subtitles as they will appear.
    - Send them as individual numbered images, never one dense sheet. Caption each with its timecode, what happens there, and the line spoken there.
@@ -76,9 +79,12 @@ Return numbered, concrete fixes on:
    - no dead air longer than 1 s unless the silence is deliberate
    - a loop ending as a match cut when the script asks for one
 8. **Phone-first legibility:**
-   - Burn in large subtitles.
+   - Burn in large subtitles. For word-by-word captions, time the locked words with `studio/word_timing.py` (offline; see `studio/SKILL_HARNESS.md`).
    - For 9:16, keep text between 15 % and 75 % of the frame height, away from the right 15 % (the platform icons) and the bottom 20 % (the caption UI).
-9. **Mix and master:** −14 LUFS, true peak at or below −1 dB.
+9. **Mix and master:** −14 LUFS, true peak at or below −1 dB. At the mix, also write **post-fader, pre-master stems** for the editor package:
+   - each VO line as its own clip, each music stem, SFX/foley and ambience
+   - every stem at its level in the mix, ducking included, so at 0 dB they sum to the mix before the final loudness step
+   - check the sum against the mix and note the residual in `06-qc.md`
 10. **QC:**
     - contact sheets every 1–2 s, plus 0.2 s strips on key actions
     - `readcheck`, loudness and black-frame checks
@@ -93,12 +99,24 @@ Return numbered, concrete fixes on:
     - `cover.jpg`
     - `CREDITS`
     - `06-qc.md`
+    - the **editor package** `final/editor/`, so the owner can make small corrections in Premiere Pro or DaVinci Resolve (owner rule, 2026-11-01):
+      - Write `editor.json` in the film folder from `studio/templates/editor.json`: the picture, the shots, the stems, the subtitles, and the sync points from the cue map as markers.
+      - The picture must be **textless** when the film burns in subtitles: render once more with the captions off. Put the master's finishing pass (grain) in `picture_filter`.
+      - Run `python3 studio/editor_package.py <film>/editor.json projects/<slug>/final/editor`. Add `--media-root <the owner's folder>` when the owner has said where the package will live.
+
+    Send the owner exactly **2 files** (owner rule, 2026-11-02):
+    - the final video
+    - one zip with everything else
+
+    Run `python3 studio/deliver.py projects/<slug>/final --video projects/<slug>/final/<slug>.mp4` and send the two files it prints. It refuses a file over 400 MiB; for a long film, build the editor package with `--crf 18`.
 
     Then ask the orchestrator for the social agent's publishing kit.
 
 ## Phase D: revisions
 
 Change only what the owner asks for. Log every change in `STATUS.md`, then re-run the QC steps it affects. A change to the words goes back to the writer and needs the owner's approval again.
+
+If the owner corrects the cut in the editor package, their NLE export is the final for that version. When a later version is needed (a re-render, another aspect), carry their corrections into the film's own timeline first: take them from the owner's exported XML or notes.
 
 ## Honesty and limits
 
