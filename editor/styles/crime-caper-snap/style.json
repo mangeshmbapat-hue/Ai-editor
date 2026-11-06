@@ -1,0 +1,24 @@
+{
+  "slug": "crime-caper-snap",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 1.1,
+    "cuts_per_10s": 9,
+    "first_cut_seconds": 0.8,
+    "grade_preset": "bleach-bypass"
+  },
+  "edl_defaults": {
+    "grade": "bleach-bypass",
+    "transition": "cut",
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.2
+    ],
+    "silence_cut": 0.2,
+    "music_db": -16,
+    "freeze_first": 0.8,
+    "captions": null
+  }
+}

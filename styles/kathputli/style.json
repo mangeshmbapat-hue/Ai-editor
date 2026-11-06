@@ -1,0 +1,27 @@
+{
+ "slug": "kathputli",
+ "num": "16",
+ "en": "Kathputli Marionette",
+ "hi": "कठपुतली",
+ "cn": "卡特普特利提线木偶",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a village-fair marionette show about a stubborn camel who will not cross a bridge, with the puppeteer's strings rising out of a small arched booth.",
+ "line_hi": "प्रस्तावित डेमो: मेले में कठपुतली का एक खेल, एक ज़िद्दी ऊँट जो पुल पार नहीं करना चाहता, और छोटे मेहराबदार मंच से ऊपर जाती कठपुतली वाले की डोरियाँ।",
+ "line_cn": "拟定演示：乡村集市上的一场提线木偶戏，讲一头不肯过桥的倔骆驼，木偶师的提线从小小的拱形戏台上方升起。",
+ "uses": [
+  "Fables & children's stories",
+  "Public awareness",
+  "Heritage"
+ ],
+ "nearest": [
+  "shadow-puppet",
+  "paper-popup",
+  "brick-toy"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

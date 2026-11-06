@@ -1,0 +1,28 @@
+{
+  "slug": "masala-hero-entry",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 1.3,
+    "cuts_per_10s": 7.5,
+    "first_cut_seconds": 1.0,
+    "grade_preset": "teal-orange"
+  },
+  "edl_defaults": {
+    "grade": "teal-orange",
+    "transition": "cut",
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.15
+    ],
+    "silence_cut": 0,
+    "music_db": -12,
+    "slowmo_last": 0.5,
+    "fx_every": {
+      "flash": 5,
+      "shake": 6
+    },
+    "captions": null
+  }
+}

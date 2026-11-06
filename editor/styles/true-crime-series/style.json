@@ -1,0 +1,33 @@
+{
+  "slug": "true-crime-series",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.5,
+    "cuts_per_10s": 2.8,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "desat-doc"
+  },
+  "edl_defaults": {
+    "grade": "desat-doc",
+    "vignette": true,
+    "transition": "fadeblack",
+    "transition_every": 6,
+    "transition_s": 0.4,
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.08
+    ],
+    "silence_cut": 0.4,
+    "music_db": -18,
+    "captions": {
+      "max_words": 5,
+      "position": "bottom",
+      "size": 0.045,
+      "uppercase": false,
+      "color": "white",
+      "box": false
+    }
+  }
+}

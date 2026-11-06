@@ -1,0 +1,28 @@
+{
+  "slug": "fashion-strobe",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 0.6,
+    "cuts_per_10s": 16,
+    "first_cut_seconds": 0.4,
+    "grade_preset": "bright-clean"
+  },
+  "edl_defaults": {
+    "grade": "bright-clean",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.15
+    ],
+    "silence_cut": 0,
+    "music_db": -10,
+    "beat_sync": true,
+    "fx_every": {
+      "flash": 3
+    },
+    "freeze_last": 0.8,
+    "captions": null
+  }
+}

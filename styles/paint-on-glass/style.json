@@ -1,0 +1,26 @@
+{
+ "slug": "paint-on-glass",
+ "num": "32",
+ "en": "Paint-on-Glass",
+ "hi": "काँच पर पेंटिंग",
+ "cn": "玻璃油彩动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a monsoon afternoon over a harbour town, each scene smeared out of the last, from a dry street to a storm to a sky wiped open into evening light.",
+ "line_hi": "प्रस्तावित डेमो: एक बंदरगाह वाले कस्बे पर मानसून की दोपहर, हर दृश्य पिछले से घुलकर बनता है — सूखी गली से तूफ़ान तक, और फिर शाम की रोशनी में पोंछकर खुला आसमान।",
+ "line_cn": "建议演示：港口小镇的一个季风午后，每个场景都从上一个抹化而来，从干燥的街道到暴雨，再到被抹开、透出傍晚光线的天空。",
+ "uses": [
+  "Literary adaptation",
+  "Music video",
+  "Dream and memory sequences"
+ ],
+ "nearest": [
+  "impasto",
+  "watercolor"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

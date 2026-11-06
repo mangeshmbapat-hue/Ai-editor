@@ -1,0 +1,37 @@
+{
+  "slug": "meme-chaos",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 0.9,
+    "cuts_per_10s": 11,
+    "first_cut_seconds": 0.5,
+    "grade_preset": "punchy-social"
+  },
+  "edl_defaults": {
+    "grade": "punchy-social",
+    "transition": "cut",
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.35
+    ],
+    "silence_cut": 0.2,
+    "music_db": -18,
+    "fx_every": {
+      "shake": 3,
+      "rgb_split": 5
+    },
+    "freeze_last": 0.6,
+    "captions": {
+      "max_words": 2,
+      "position": "center",
+      "size": 0.08,
+      "uppercase": true,
+      "color": "white",
+      "box": false,
+      "animate": "word",
+      "highlight_color": "white"
+    }
+  }
+}

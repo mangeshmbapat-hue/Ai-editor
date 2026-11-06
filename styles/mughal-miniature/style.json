@@ -1,0 +1,27 @@
+{
+ "slug": "mughal-miniature",
+ "num": "10",
+ "en": "Mughal Miniature",
+ "hi": "मुग़ल लघुचित्र",
+ "cn": "莫卧儿细密画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a garden through one day, seen as an album page with gold margins, where the camera leans in with a magnifier and each closer look reveals finer brushwork and a new small event.",
+ "line_hi": "प्रस्तावित डेमो: एक बाग़ का एक दिन, सुनहरे हाशिये वाले एक अल्बम-पृष्ठ की तरह, जहाँ कैमरा आवर्धक लेकर झुकता है और हर नज़दीकी नज़र महीन ब्रशकारी और एक नई छोटी घटना दिखाती है।",
+ "line_cn": "拟定演示：一座花园的一天，画成带金色边饰的画册页，镜头像拿着放大镜俯身细看，每靠近一次就显出更细的笔触和一件新的小事。",
+ "uses": [
+  "History & courts",
+  "Gardens & natural history",
+  "Detailed explainers"
+ ],
+ "nearest": [
+  "ukiyoe",
+  "isometric-picture-book",
+  "watercolor"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

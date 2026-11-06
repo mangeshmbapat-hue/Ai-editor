@@ -1,0 +1,27 @@
+{
+ "slug": "codex-screenfold",
+ "num": "24",
+ "en": "Codex Screenfold",
+ "hi": "कोडेक्स",
+ "cn": "中美洲折页抄本",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a family's move across the mountains told as footprints crossing the folds of a painted screenfold book that opens panel by panel, the days counted in dots.",
+ "line_hi": "प्रस्तावित डेमो: पहाड़ों के पार एक परिवार का सफ़र, चित्रित तह-किताब की तहों को पार करते पदचिह्नों में, किताब पन्ना-दर-पन्ना खुलती है और दिन बिंदुओं में गिने जाते हैं।",
+ "line_cn": "拟议演示：一家人翻山迁徙的旅程，化作一串脚印穿过一本逐页展开的彩绘折页书的折痕，日子用圆点计数。",
+ "uses": [
+  "Genealogies & lineages",
+  "Journeys & migrations",
+  "Heritage education"
+ ],
+ "nearest": [
+  "paper-popup",
+  "pictogram-motion",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

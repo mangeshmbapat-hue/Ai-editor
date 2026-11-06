@@ -1,0 +1,21 @@
+{
+  "slug": "one-take-hidden-cuts",
+  "measured": false,
+  "targets": {
+    "aspect": "any",
+    "average_shot_seconds": 8.0,
+    "cuts_per_10s": 1.2,
+    "first_cut_seconds": 6.0,
+    "grade_preset": "neutral"
+  },
+  "edl_defaults": {
+    "grade": "neutral",
+    "transition": "smoothleft",
+    "transition_every": 1,
+    "transition_s": 0.3,
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -16,
+    "captions": null
+  }
+}

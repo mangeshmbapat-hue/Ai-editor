@@ -1,0 +1,33 @@
+{
+  "slug": "soft-aesthetic-vlog",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16 or 16:9",
+    "average_shot_seconds": 2.8,
+    "cuts_per_10s": 3.5,
+    "first_cut_seconds": 2.5,
+    "grade_preset": "warm-film"
+  },
+  "edl_defaults": {
+    "grade": "warm-film",
+    "grain": 6,
+    "transition": "dissolve",
+    "transition_every": 4,
+    "transition_s": 0.5,
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.06
+    ],
+    "silence_cut": 0,
+    "music_db": -18,
+    "captions": {
+      "max_words": 6,
+      "position": "bottom",
+      "size": 0.04,
+      "uppercase": false,
+      "color": "white",
+      "box": false
+    }
+  }
+}

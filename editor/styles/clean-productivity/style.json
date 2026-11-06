@@ -1,0 +1,28 @@
+{
+  "slug": "clean-productivity",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.2,
+    "cuts_per_10s": 3,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "bright-clean"
+  },
+  "edl_defaults": {
+    "grade": "bright-clean",
+    "transition": "dissolve",
+    "transition_every": 5,
+    "transition_s": 0.3,
+    "zoom_every": 0,
+    "silence_cut": 0.4,
+    "music_db": -22,
+    "captions": {
+      "max_words": 4,
+      "position": "bottom",
+      "size": 0.05,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}

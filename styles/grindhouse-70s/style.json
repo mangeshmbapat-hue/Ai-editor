@@ -1,0 +1,27 @@
+{
+ "slug": "grindhouse-70s",
+ "num": "67",
+ "en": "70s Grindhouse",
+ "hi": "70s ग्राइंडहाउस",
+ "cn": "70年代 Grindhouse 剥削片",
+ "category_en": "Cinema Eras",
+ "category_hi": "सिनेमा के दौर",
+ "category_cn": "电影时代",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a trailer for a film that never existed, in which two rival street-food carts race to feed a midnight crowd, with freeze-frame name titles, split screens, a missing reel and a burn-through finale.",
+ "line_hi": "प्रस्तावित डेमो: एक कभी न बनी फ़िल्म का ट्रेलर, जिसमें दो प्रतिद्वंद्वी स्ट्रीट-फ़ूड ठेले आधी रात की भीड़ को खिलाने की होड़ में हैं: फ़्रीज़-फ़्रेम नाम-शीर्षक, स्प्लिट स्क्रीन, एक गायब रील और बर्न-थ्रू वाला अंत।",
+ "line_cn": "拟议演示：一部从未拍过的电影的预告片：两辆对手街头小吃车争抢午夜人潮，配上定格人名字幕、分屏、一卷丢失的胶片和烧穿的结尾。",
+ "uses": [
+  "Comedy & parody",
+  "Retro ads",
+  "Event promos"
+ ],
+ "nearest": [
+  "silent-film",
+  "newsreel",
+  "countdown"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

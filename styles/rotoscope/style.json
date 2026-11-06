@@ -1,0 +1,26 @@
+{
+ "slug": "rotoscope",
+ "num": "34",
+ "en": "Rotoscope",
+ "hi": "रोटोस्कोप",
+ "cn": "转描动画",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a cyclist's ride through a monsoon city, traced over the film's own rigged 3D render, the colour shapes drifting loose from the lines as the rain sets in.",
+ "line_hi": "प्रस्तावित डेमो: मानसून वाले शहर में एक साइकिल सवार की सवारी, फ़िल्म के अपने रिग किए 3D रेंडर पर ट्रेस की गई; बारिश शुरू होते ही रंगों की आकृतियाँ रेखाओं से छूटकर बहने लगती हैं।",
+ "line_cn": "建议演示：一位骑车人穿过季风中的城市，描摹自影片自己的绑定3D渲染；雨势渐起，色块慢慢脱离线条漂散。",
+ "uses": [
+  "Documentary interview",
+  "Music video",
+  "Sport and dance"
+ ],
+ "nearest": [
+  "cel-anime-80s",
+  "silent-film"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,26 @@
+{
+ "slug": "cross-stitch",
+ "num": "29",
+ "en": "Cross-stitch",
+ "hi": "क्रॉस-स्टिच",
+ "cn": "十字绣",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a family recipe stitched as a sampler, the dish forming cell by cell, while the back of the cloth shows the tangled work behind each step.",
+ "line_hi": "प्रस्तावित डेमो: परिवार की एक रेसिपी सैंपलर की तरह कढ़ी जाती है, व्यंजन खाना-दर-खाना बनता है, और कपड़े का उल्टा हिस्सा हर क़दम के पीछे की उलझी मेहनत दिखाता है।",
+ "line_cn": "拟议演示：一道家传菜谱被绣成一幅样本绣，菜肴一格一格地成形，而布的背面露出每一步背后纠缠的针线功夫。",
+ "uses": [
+  "Family & memory stories",
+  "Step-by-step explainers",
+  "Greetings & keepsakes"
+ ],
+ "nearest": [
+  "pixel-rpg",
+  "microgame"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

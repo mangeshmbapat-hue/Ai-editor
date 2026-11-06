@@ -1,0 +1,26 @@
+{
+  "slug": "retro-vhs",
+  "measured": false,
+  "targets": {
+    "aspect": "4:3 or 9:16",
+    "average_shot_seconds": 2.5,
+    "cuts_per_10s": 4,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "vhs-retro"
+  },
+  "edl_defaults": {
+    "grade": "vhs-retro",
+    "transition": "cut",
+    "zoom_every": 3,
+    "zoom": [
+      1.0,
+      1.1
+    ],
+    "silence_cut": 0,
+    "music_db": -18,
+    "fx_all": [
+      "vhs"
+    ],
+    "captions": null
+  }
+}

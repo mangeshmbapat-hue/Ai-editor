@@ -1,0 +1,26 @@
+{
+  "slug": "symmetry-storybook",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 4:3",
+    "average_shot_seconds": 3.0,
+    "cuts_per_10s": 3.3,
+    "first_cut_seconds": 2.5,
+    "grade_preset": "pastel"
+  },
+  "edl_defaults": {
+    "grade": "pastel",
+    "transition": "cut",
+    "zoom_every": 0,
+    "silence_cut": 0,
+    "music_db": -16,
+    "captions": {
+      "max_words": 6,
+      "position": "bottom",
+      "size": 0.045,
+      "uppercase": false,
+      "color": "white",
+      "box": false
+    }
+  }
+}

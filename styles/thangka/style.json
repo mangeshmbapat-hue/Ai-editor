@@ -1,0 +1,26 @@
+{
+ "slug": "thangka",
+ "num": "20",
+ "en": "Thangka",
+ "hi": "थांगका",
+ "cn": "唐卡",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: the water cycle of a Himalayan valley built in thangka grammar from charcoal grid to gold line, a glacier peak at the centre and cloud scrolls, rivers and villages in the registers around it.",
+ "line_hi": "प्रस्तावित डेमो: थांगका की रचना-शैली में एक हिमालयी घाटी का जल-चक्र, कोयले की ग्रिड से सोने की रेखा तक, केंद्र में हिमनद वाली चोटी और चारों ओर बादलों के घुमाव, नदियाँ और गाँव।",
+ "line_cn": "拟定演示：以唐卡的构图语法描绘喜马拉雅山谷的水循环，从炭笔网格画到金线，冰川山峰居中，四周环绕卷云、河流与村庄。",
+ "uses": [
+  "Nature & science",
+  "Geography",
+  "Heritage"
+ ],
+ "nearest": [
+  "stained-glass",
+  "ukiyoe"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

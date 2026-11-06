@@ -1,0 +1,27 @@
+{
+ "slug": "warli",
+ "num": "02",
+ "en": "Warli",
+ "hi": "वारली",
+ "cn": "瓦尔利画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a harvest day on a hillside village, told by hundreds of white triangle figures who plough, carry, cook and finally join one turning spiral of dancers.",
+ "line_hi": "प्रस्तावित डेमो: पहाड़ी गाँव में फसल का एक दिन, जिसे सैकड़ों सफ़ेद त्रिकोण आकृतियाँ जोतते, ढोते, पकाते हुए कहती हैं और अंत में नाचने वालों के एक घूमते सर्पिल में मिल जाती हैं।",
+ "line_cn": "拟定演示：山坡村庄的一个收获日，由数百个白色三角小人讲述：犁地、搬运、做饭，最后汇成一圈旋转的舞者螺旋。",
+ "uses": [
+  "Community & work",
+  "Agriculture & seasons",
+  "Explainers with crowds"
+ ],
+ "nearest": [
+  "pictogram-motion",
+  "chalkboard",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

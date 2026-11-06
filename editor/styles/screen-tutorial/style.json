@@ -1,0 +1,30 @@
+{
+  "slug": "screen-tutorial",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 3.5,
+    "cuts_per_10s": 2.8,
+    "first_cut_seconds": 2.0,
+    "grade_preset": "neutral"
+  },
+  "edl_defaults": {
+    "grade": "neutral",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.35
+    ],
+    "silence_cut": 0.5,
+    "music_db": -28,
+    "captions": {
+      "max_words": 5,
+      "position": "bottom",
+      "size": 0.045,
+      "uppercase": false,
+      "color": "white",
+      "box": true
+    }
+  }
+}

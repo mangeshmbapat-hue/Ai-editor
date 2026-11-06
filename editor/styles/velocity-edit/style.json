@@ -1,0 +1,34 @@
+{
+  "slug": "velocity-edit",
+  "measured": false,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 1.0,
+    "cuts_per_10s": 10,
+    "first_cut_seconds": 0.5,
+    "grade_preset": "punchy-social"
+  },
+  "edl_defaults": {
+    "grade": "punchy-social",
+    "transition": "zoomin",
+    "transition_every": 4,
+    "transition_s": 0.2,
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.2
+    ],
+    "silence_cut": 0,
+    "music_db": -8,
+    "beat_sync": true,
+    "speed_alternate": [
+      1.8,
+      0.6
+    ],
+    "fx_every": {
+      "shake": 2,
+      "flash": 4
+    },
+    "captions": null
+  }
+}

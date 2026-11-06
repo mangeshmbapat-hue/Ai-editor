@@ -1,0 +1,23 @@
+{
+  "slug": "one-point-dread",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9",
+    "average_shot_seconds": 5.5,
+    "cuts_per_10s": 1.8,
+    "first_cut_seconds": 4.0,
+    "grade_preset": "cool-night"
+  },
+  "edl_defaults": {
+    "grade": "cool-night",
+    "transition": "cut",
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.12
+    ],
+    "silence_cut": 0,
+    "music_db": -16,
+    "captions": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "slug": "archival-documentary",
+  "measured": false,
+  "targets": {
+    "aspect": "16:9 or 9:16",
+    "average_shot_seconds": 5.0,
+    "cuts_per_10s": 2,
+    "first_cut_seconds": 4.0,
+    "grade_preset": "faded-vintage"
+  },
+  "edl_defaults": {
+    "grade": "faded-vintage",
+    "transition": "dissolve",
+    "transition_every": 1,
+    "transition_s": 0.8,
+    "zoom_every": 1,
+    "zoom": [
+      1.0,
+      1.12
+    ],
+    "silence_cut": 0,
+    "music_db": -18,
+    "captions": null
+  }
+}

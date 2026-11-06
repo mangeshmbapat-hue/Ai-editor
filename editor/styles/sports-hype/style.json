@@ -1,0 +1,28 @@
+{
+  "slug": "sports-hype",
+  "measured": false,
+  "targets": {
+    "aspect": "any",
+    "average_shot_seconds": 0.9,
+    "cuts_per_10s": 11,
+    "first_cut_seconds": 0.5,
+    "grade_preset": "moody-dark"
+  },
+  "edl_defaults": {
+    "grade": "moody-dark",
+    "transition": "cut",
+    "zoom_every": 2,
+    "zoom": [
+      1.0,
+      1.2
+    ],
+    "silence_cut": 0,
+    "music_db": -10,
+    "slowmo_last": 0.5,
+    "fx_every": {
+      "shake": 2,
+      "flash": 4
+    },
+    "captions": null
+  }
+}

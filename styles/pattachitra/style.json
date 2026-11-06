@@ -1,0 +1,27 @@
+{
+ "slug": "pattachitra",
+ "num": "05",
+ "en": "Pattachitra",
+ "hi": "पट्टचित्र",
+ "cn": "帕塔奇特拉布画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a fisherman's week on the Odisha coast, laid out as a grid of bordered panels on a red ground, each panel painted border first and outlined in black last.",
+ "line_hi": "प्रस्तावित डेमो: ओडिशा तट पर एक मछुआरे का एक सप्ताह, लाल ज़मीन पर किनारीदार पैनलों के ग्रिड में, जहाँ हर पैनल पहले किनारी से शुरू होकर अंत में काली रेखा से पूरा होता है।",
+ "line_cn": "拟定演示：奥里萨海岸一位渔夫的一周，排成红底上带花边的画格，每格先画边框，最后勾黑线。",
+ "uses": [
+  "Heritage & festivals",
+  "Episodic narratives",
+  "Regional culture"
+ ],
+ "nearest": [
+  "ukiyoe",
+  "stained-glass",
+  "papercut-red"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

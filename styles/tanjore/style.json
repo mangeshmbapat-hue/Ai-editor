@@ -1,0 +1,27 @@
+{
+ "slug": "tanjore",
+ "num": "09",
+ "en": "Tanjore",
+ "hi": "तंजौर",
+ "cn": "坦焦尔画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a temple-town goldsmith's workshop seen as a gilded panel, where a lamp moves across raised gesso and inlaid stones and each gleam marks one step of the craft.",
+ "line_hi": "प्रस्तावित डेमो: एक मंदिर-नगर के सुनार की कार्यशाला, सोने से सजे एक पैनल की तरह, जहाँ उभरे गेसो और जड़े पत्थरों पर दीया सरकता है और हर चमक कारीगरी का एक चरण बताती है।",
+ "line_cn": "拟定演示：一座庙城金匠的作坊，被做成一块贴金画板，一盏灯掠过凸起的石膏浮雕和镶嵌的宝石，每一次闪光标出工艺的一步。",
+ "uses": [
+  "Heritage & crafts",
+  "Luxury & jewellery",
+  "Ceremonial openings"
+ ],
+ "nearest": [
+  "art-deco",
+  "glass-product",
+  "paper-popup"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

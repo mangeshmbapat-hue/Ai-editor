@@ -1,0 +1,26 @@
+{
+ "slug": "y2k-chrome",
+ "num": "56",
+ "en": "Y2K Chrome",
+ "hi": "Y2K क्रोम",
+ "cn": "Y2K 液态铬",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a drop of liquid chrome lands in an empty silver studio and keeps reshaping itself into the gadgets one teenager imagined for the year 2000.",
+ "line_hi": "प्रस्तावित डेमो: तरल क्रोम की एक बूँद एक ख़ाली चाँदी-से स्टूडियो में गिरती है और बार-बार ढलकर उन गैजेट्स का रूप लेती है जिनकी कल्पना एक किशोर ने साल 2000 के लिए की थी।",
+ "line_cn": "拟议演示：一滴液态铬落进空荡的银色摄影棚，不断变形成一个少年为 2000 年想象出的各种小玩意。",
+ "uses": [
+  "Fashion and beauty",
+  "Music and club promos",
+  "Tech product teasers"
+ ],
+ "nearest": [
+  "glass-product",
+  "dark-keynote"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "gond",
+ "num": "03",
+ "en": "Gond",
+ "hi": "गोंड",
+ "cn": "贡德画",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a single forest tree through one night, its trunk, birds and the deer beneath it filled with rows of dots and dashes that flow like sap as the animals wake.",
+ "line_hi": "प्रस्तावित डेमो: एक रात में जंगल का एक पेड़, जिसके तने, पक्षियों और नीचे खड़े हिरण में बिंदुओं और डैशों की पंक्तियाँ भरी हैं, जो जानवरों के जागने पर रस की तरह बहती हैं।",
+ "line_cn": "拟定演示：森林中一棵树的一夜，树干、鸟和树下的鹿都填满成行的点与短线，动物醒来时纹样像树液一样流动。",
+ "uses": [
+  "Nature & wildlife",
+  "Children's stories",
+  "Ecology explainers"
+ ],
+ "nearest": [
+  "risograph",
+  "engraving",
+  "silkscreen-poster"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

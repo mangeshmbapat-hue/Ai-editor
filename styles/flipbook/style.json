@@ -1,0 +1,27 @@
+{
+ "slug": "flipbook",
+ "num": "39",
+ "en": "Flipbook",
+ "hi": "फ़्लिपबुक",
+ "cn": "手翻书",
+ "category_en": "Animation Techniques",
+ "category_hi": "एनिमेशन तकनीक",
+ "category_cn": "动画技法",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a doodle in the corner of a school notebook tries to escape the margin, flip by flip, as the pad runs out of pages.",
+ "line_hi": "प्रस्तावित डेमो: स्कूल की कॉपी के कोने में बना एक चित्र, हर पलटते पन्ने के साथ हाशिये से भागने की कोशिश करता है, जबकि कॉपी के पन्ने ख़त्म होते जाते हैं।",
+ "line_cn": "建议演示：学校笔记本角落里的一个涂鸦，一页一页地想逃出页边，而本子的页数越来越少。",
+ "uses": [
+  "Short comic gag",
+  "Social short",
+  "Teaching how animation works"
+ ],
+ "nearest": [
+  "crayon-book",
+  "urban-sketch",
+  "whiteboard"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

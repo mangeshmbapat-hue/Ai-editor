@@ -1,0 +1,27 @@
+{
+ "slug": "cubism",
+ "num": "46",
+ "en": "Cubism",
+ "hi": "घनवाद",
+ "cn": "立体主义",
+ "category_en": "Art Movements",
+ "category_hi": "कला आंदोलन",
+ "category_cn": "艺术流派",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: A kettle coming to the boil is seen from five sides at once; as the steam rises, the facets turn until the whole kitchen shares one canvas.",
+ "line_hi": "प्रस्तावित डेमो: उबलने को तैयार एक केतली एक साथ पाँच ओर से दिखती है; भाप उठते ही फलक घूमते हैं और पूरी रसोई एक ही कैनवस पर आ जाती है।",
+ "line_cn": "拟议演示：一把即将烧开的水壶同时从五个侧面被看见；随着蒸汽升起，块面不断翻转，直到整个厨房同在一张画布上。",
+ "uses": [
+  "Art education",
+  "Music & culture",
+  "Many-sided stories"
+ ],
+ "nearest": [
+  "stained-glass",
+  "impasto",
+  "spy-titles"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

@@ -1,0 +1,27 @@
+{
+ "slug": "synthwave",
+ "num": "54",
+ "en": "Synthwave",
+ "hi": "सिंथवेव",
+ "cn": "合成器浪潮",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a night delivery rider crosses an endless neon grid toward a setting striped sun, each kilometre marked by a city that builds itself in wireframe and switches its lights on.",
+ "line_hi": "प्रस्तावित डेमो: रात का एक डिलीवरी राइडर डूबते धारीदार सूरज की ओर अंतहीन नियॉन ग्रिड पार करता है; हर किलोमीटर पर एक शहर वायरफ़्रेम में ख़ुद बनता है और अपनी बत्तियाँ जला देता है।",
+ "line_cn": "拟议演示：一名夜间送货骑手穿越无尽的霓虹网格，驶向一轮正在落下的条纹太阳；每一公里都有一座城市以线框自行搭建起来，并点亮它的灯。",
+ "uses": [
+  "Music videos",
+  "Game and tech launches",
+  "Event trailers"
+ ],
+ "nearest": [
+  "cel-anime-80s",
+  "hologram-hud",
+  "lowpoly-island"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

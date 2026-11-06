@@ -1,0 +1,26 @@
+{
+ "slug": "oscilloscope",
+ "num": "59",
+ "en": "Oscilloscope Art",
+ "hi": "ऑसिलोस्कोप आर्ट",
+ "cn": "示波器艺术",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one green beam draws a seed, a tree, a city and a planet in a single continuous line, and the soundtrack you hear is the very signal that draws them.",
+ "line_hi": "प्रस्तावित डेमो: एक हरी किरण एक ही अटूट रेखा में बीज, पेड़, शहर और ग्रह बनाती है, और जो साउंडट्रैक सुनाई देता है वही सिग्नल है जो इन्हें खींच रहा है।",
+ "line_cn": "拟议演示：一道绿色光束用一条连续不断的线依次画出种子、树、城市和行星，而你听到的配乐正是绘制它们的那个信号。",
+ "uses": [
+  "Music visualisers",
+  "Physics and audio explainers",
+  "Tech brand idents"
+ ],
+ "nearest": [
+  "ascii-crt",
+  "hologram-hud"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

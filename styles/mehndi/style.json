@@ -1,0 +1,26 @@
+{
+ "slug": "mehndi",
+ "num": "15",
+ "en": "Mehndi",
+ "hi": "मेहंदी",
+ "cn": "海娜手绘",
+ "category_en": "Indian Traditions",
+ "category_hi": "भारतीय परंपरा",
+ "category_cn": "印度传统",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: a family's history drawn as henna growing over one palm, paisley by vine, with an invented name hidden in the pattern, then drying, flaking and leaving its deepening stain.",
+ "line_hi": "प्रस्तावित डेमो: एक हथेली पर बढ़ती मेहंदी के रूप में एक परिवार का इतिहास, बूटे-बेलों के बीच छिपा एक काल्पनिक नाम, फिर सूखना, झड़ना और गहराता हुआ रंग छोड़ जाना।",
+ "line_cn": "拟定演示：在一只手掌上生长的海娜图案讲述一个家族的历史，佩斯利与藤蔓间藏着一个虚构的名字，随后干裂、剥落，留下逐渐加深的颜色。",
+ "uses": [
+  "Weddings & celebrations",
+  "Personal & family stories",
+  "Craft & process"
+ ],
+ "nearest": [
+  "one-line",
+  "engraving"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

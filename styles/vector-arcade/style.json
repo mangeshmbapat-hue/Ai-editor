@@ -1,0 +1,27 @@
+{
+ "slug": "vector-arcade",
+ "num": "60",
+ "en": "Vector Arcade",
+ "hi": "वेक्टर आर्केड",
+ "cn": "矢量街机",
+ "category_en": "Internet & Digital",
+ "category_hi": "इंटरनेट और डिजिटल",
+ "category_cn": "网络与数字",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: an attract-mode loop on a dark arcade screen in which a small wireframe ship clears a field of drifting ideas, explodes into its own line segments and reassembles for the next level.",
+ "line_hi": "प्रस्तावित डेमो: एक अँधेरी आर्केड स्क्रीन पर चलता डेमो-लूप, जिसमें एक छोटा वायरफ़्रेम यान तैरते विचारों का मैदान साफ़ करता है, अपनी ही रेखाओं के टुकड़ों में बिखर जाता है और अगले लेवल के लिए फिर जुड़ जाता है।",
+ "line_cn": "拟议演示：一块昏暗街机屏幕上的演示循环：一艘小小的线框飞船清理一片漂浮的想法，炸裂成自己的线段，再为下一关重新组装。",
+ "uses": [
+  "Game-culture explainers",
+  "Tech and esports promos",
+  "Retro brand idents"
+ ],
+ "nearest": [
+  "ascii-crt",
+  "hologram-hud",
+  "microgame"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}

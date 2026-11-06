@@ -1,0 +1,26 @@
+{
+ "slug": "persian-miniature",
+ "num": "19",
+ "en": "Persian Miniature",
+ "hi": "फ़ारसी लघुचित्र",
+ "cn": "波斯细密画",
+ "category_en": "World Folk",
+ "category_hi": "विश्व लोक कला",
+ "category_cn": "世界民间艺术",
+ "status": "draft",
+ "film": null,
+ "line": "Proposed demo: one day in a walled garden seen from above and from the side at once, its pool, terraces and pavilions coming alive while the gold sky turns to lapis night.",
+ "line_hi": "प्रस्तावित डेमो: एक चारदीवारी वाले बाग़ का एक दिन, जिसे एक साथ ऊपर से और सामने से देखा जाता है; हौज़, चबूतरे और मंडप जीवित होते हैं और सुनहरा आकाश लाजवर्दी रात में बदल जाता है।",
+ "line_cn": "拟定演示：一座围墙花园的一天，同时从上方和侧面观看，水池、台地和亭阁渐次苏醒，金色天空化为青金石色的夜晚。",
+ "uses": [
+  "Poetry & literature",
+  "History & heritage",
+  "Architecture & gardens"
+ ],
+ "nearest": [
+  "ukiyoe",
+  "isometric-picture-book"
+ ],
+ "frame_sec": null,
+ "dur": 0
+}
