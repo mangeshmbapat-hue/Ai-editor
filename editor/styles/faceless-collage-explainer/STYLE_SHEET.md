@@ -115,4 +115,5 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **End card:** 4–6 s. The owner gives the CTA and handle with each video; never reuse a sample's CTA.
 - **Mix:** −14 LUFS, true peak ≤ −1 dBTP. Music ducked under the VO.
 - **Language:** Hindi, English or Hinglish, decided by the owner's VO for each video. Pick fonts with Devanagari support for Hindi (the `rozha-hind` pairing is the default).
+- **Code-drawn visuals (owner, 2026-11-09):** when the owner sends no images, draw semi-realistic, cinematic, lit and shaded scenes on 3D paper/tabletop collage layers with drop shadows; never flat black silhouettes. Promo-pace VOs (like s2) get kinetic type on nearly every phrase, a transition plus SFX on every cut, shake on hits and parallax on layers.
 - **Inputs:** the owner's images, AI clips and footage, plus the VO (the owner's recording or an AI voice). The engine builds the type, motion, collage moves, transitions, sound and captions.
