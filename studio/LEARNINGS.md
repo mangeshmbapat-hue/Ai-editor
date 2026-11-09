@@ -26,6 +26,7 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
   - Not yet measured on human recordings or sung vocals.
   - Unknown speech still needs the Whisper or MMS_FA hosts allowed. (studio)
 - 2026-11-09 · owner · Keep replies to the owner short: send the deliverable (storyboard frames, video) or the one question that is truly needed; no progress narration or process explanations. Why: the owner wants results, not updates. Source: "tumse bola h video banao storyboard dikhao fafltu bate mt kro" (faceless-editor)
+- 2026-11-09 · owner · Do not bring repo, GitHub or tooling issues to the owner unless they block the video and only the owner can fix them; then say it in one line. The owner cares only about the video. Source: "tumhe jo bhi connect karna hai ... sab tum khud kar do. mujhe video se matlab hai" (silhouette-follow)
 
 ## Social
 - 2026-11-01 · owner · Every night (a scheduled task, about 10:40 PM IST) find 10 topics with viral potential, suggest the best style for each from `studio/STYLE_MENU.md` (plus one experiment), and send them to the owner, following `studio/NIGHTLY.md`. Source: "roj raat 11 bje automatically 10 topics dundne or mujhe suggest krne h or unpr konsa style acha rhega vo bhi. virality match krte hue" (studio)
