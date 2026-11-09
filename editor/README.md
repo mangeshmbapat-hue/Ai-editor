@@ -103,3 +103,7 @@ See `edl.example.json`. Fields:
 Speed: analysis is cached by file hash; a storyboard decodes the edit once (about real time on this machine for 1080x1920), and part corrections re-show only the changed clips.
 
 Not built yet: automatic best-take selection between repeated takes, and audio judged by ear. Footage labels and style scores are heuristics; catalog pace numbers are estimates until measured from a reference. In this cloud environment `youtube.com`, `huggingface.co` / `openaipublic.azureedge.net` (Whisper models) and `cdn.jsdelivr.net` are blocked; `mg-new` and `mg-render` copy GSAP from npm instead of the CDN.
+
+## Faceless Editor
+
+For faceless videos (voiceover + images/clips, no presenter): `faceless-stills <edit>` turns images into clips, then `faceless-plan <edit> --voice raw/vo.mp3 --words tr/vo.json --cta "..."` drafts `edl.json` in the learned house style (`styles/faceless-collage-explainer/`). The EDL's `audio.voice` is a voiceover track laid from 0 s that ducks the music; text items take `animate: pop|fade|slam`. The storyboard, approval and QC are the same as for any edit. Agent: `.claude/agents/faceless-editor.md`.
