@@ -116,5 +116,6 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **Mix:** −14 LUFS, true peak ≤ −1 dBTP. Music ducked under the VO.
 - **Language:** Hindi, English or Hinglish, decided by the owner's VO for each video. Pick fonts with Devanagari support for Hindi (the `rozha-hind` pairing is the default).
 - **Reference reel (owner, 2026-11-09):** the delivered `silhouette-follow` reel is the template for every new VO: match its scene look, pace, kinetic type density, transitions and SFX exactly.
+- **Clarity over speed (owner, 2026-11-09):** one clearly matching visual per VO sentence, held about 2.0–2.5 s on average; no rapid sub-cuts inside a sentence. Promo-pace cutting is only for short hype promos.
 - **Code-drawn visuals (owner, 2026-11-09):** when the owner sends no images, draw semi-realistic, cinematic, lit and shaded scenes on 3D paper/tabletop collage layers with drop shadows; never flat black silhouettes. Promo-pace VOs (like s2) get kinetic type on nearly every phrase, a transition plus SFX on every cut, shake on hits and parallax on layers.
 - **Inputs:** the owner's images, AI clips and footage, plus the VO (the owner's recording or an AI voice). The engine builds the type, motion, collage moves, transitions, sound and captions.
