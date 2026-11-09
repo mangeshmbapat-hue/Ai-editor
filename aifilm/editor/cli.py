@@ -118,6 +118,21 @@ def parser():
     p.add_argument("edit")
     p.add_argument("name")
     p.add_argument("--opaque", action="store_true", help="Render .mp4 without alpha")
+    p = c.add_parser("faceless-stills", help="Faceless Editor: turn the still images in <edit>/raw into still clips the EDL can cut and move")
+    p.add_argument("edit")
+    p.add_argument("--seconds", type=float, default=8.0)
+    p.add_argument("--aspect", default="9:16")
+    p = c.add_parser("faceless-plan", help="Faceless Editor: draft edl.json from the voiceover's word timings and the visuals, in the house style")
+    p.add_argument("edit")
+    p.add_argument("--voice", required=True, help="voiceover file inside the edit, e.g. raw/vo.mp3")
+    p.add_argument("--words", required=True, help="word timings: transcribe JSON or studio/word_timing.py output")
+    p.add_argument("--visuals", nargs="*", help="visual clips in story order (default: every video in raw/, sorted)")
+    p.add_argument("--cta", help="the end-card line the owner gave for this video")
+    p.add_argument("--title", help="the hook text on screen in the first second (default: the first sentence)")
+    p.add_argument("--music", help="music file inside the edit")
+    p.add_argument("--no-captions", action="store_true", help="skip the word-highlight caption track (rules.json requires captions on short form)")
+    p.add_argument("--aspect", default="9:16")
+    p.add_argument("--end-card", type=float, default=5.0)
     return root
 
 
@@ -169,7 +184,8 @@ def main(argv=None):
             else:
                 result = [f for fam in args.families for f in F.install(fam, [int(w) for w in args.weights.split(",")])]
         elif cmd == "approve-style":
-            G.style(args.slug)
+            if not (R.STYLES / args.slug / "style.json").exists():
+                G.style(args.slug)
             result = E.approve_style(args.edit, args.slug, args.words)
         elif cmd == "lock-script":
             result = E.lock_script(args.edit, args.file, args.words)
@@ -208,6 +224,13 @@ def main(argv=None):
             result = {"draft": str(Path(args.workdir) / "STYLE_SHEET.draft.md"), "targets": S.targets(a), "frames": len(a["frames"])}
         elif cmd == "publish-style":
             result = {"saved": str(S.publish(args.workdir, R.STYLES, args.slug))}
+        elif cmd == "faceless-stills":
+            from . import faceless as FL
+            result = {"stills": FL.stills(args.edit, args.seconds, args.aspect)}
+        elif cmd == "faceless-plan":
+            from . import faceless as FL
+            result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, not args.no_captions, args.music,
+                             args.aspect, args.end_card)
         elif cmd == "mg-new":
             result = {"composition": T.mg_new(args.edit, args.name, args.resolution)}
         elif cmd == "mg-render":

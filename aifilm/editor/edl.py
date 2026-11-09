@@ -63,6 +63,7 @@ FX = {
     "glow": "eq=brightness=0.04:saturation=1.1,gblur=sigma=1.2",
     "bw": "hue=s=0",
 }
+TEXT_ANIMATIONS = ("pop", "fade", "slam")
 TEXT_POSITIONS = {"top": "h*0.18", "center": "(h-text_h)/2", "bottom": "h*0.66"}
 SUB_COLOURS = {"white": "&H00FFFFFF", "yellow": "&H0000F0FF", "green": "&H0033FF66", "red": "&H003333FF", "cyan": "&H00FFFF00"}
 DEVANAGARI = re.compile("[ऀ-ॿ]")
@@ -143,6 +144,7 @@ def validate(root, edl):
             require(isinstance(text.get("value"), str) and text["value"].strip(), cid + ": text needs a value")
             require(text.get("position", "bottom") in TEXT_POSITIONS, cid + ": text position must be top/center/bottom")
             require(text.get("role") in (None, "title", "headline", "body", "caption", "label"), cid + ": text role must be title/headline/body/caption/label")
+            require(text.get("animate") in (None,) + TEXT_ANIMATIONS, cid + ": text animate must be one of {}".format(list(TEXT_ANIMATIONS)))
         for ins in clip.get("inserts", []):
             require(ins.get("source") in sources, "{}: insert has unknown source {!r}".format(cid, ins.get("source")))
             a, b = num(ins.get("in"), cid + ".insert.in", 0), num(ins.get("out"), cid + ".insert.out", 0)
@@ -157,6 +159,12 @@ def validate(root, edl):
     music = audio.get("music")
     if music:
         require(media.probe(inside(root, music["file"]))["has_audio"], "Music file has no audio")
+    voice = audio.get("voice")
+    if voice:
+        require(isinstance(voice, dict) and voice.get("file"), "audio.voice needs a file")
+        require(media.probe(inside(root, voice["file"]))["has_audio"], "Voiceover file has no audio")
+        num(voice.get("start", 0), "audio.voice.start", 0)
+        num(voice.get("at", 0), "audio.voice.at", 0)
     for sfx in audio.get("sfx", []):
         require(media.probe(inside(root, sfx["file"]))["has_audio"], "SFX {} has no audio".format(sfx["file"]))
         num(sfx.get("at"), "sfx.at", 0)
@@ -388,6 +396,13 @@ def animated_events(cue, words, mode, subs):
     return out
 
 
+def text_motion(kind):
+    """ASS tags for a text item's entrance: pop (scale up with overshoot), fade, slam (big to normal)."""
+    return {None: "", "fade": "{\\fad(120,0)}",
+            "pop": "{\\fad(60,0)\\fscx40\\fscy40\\t(0,140,\\fscx112\\fscy112)\\t(140,240,\\fscx100\\fscy100)}",
+            "slam": "{\\fad(40,0)\\fscx220\\fscy220\\t(0,160,0.6,\\fscx100\\fscy100)}"}[kind]
+
+
 def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
     """All burned text in one ASS script: on-screen text items (timeline-mapped) and subtitles.
     Rendered by FFmpeg's `ass` filter with complex shaping, so Devanagari reorders correctly
@@ -408,7 +423,7 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
             b = row["start"] + float(item.get("end", row["duration"]))
             tags = "{{\\an{}\\pos({},{})\\fn{}\\fs{}\\b{}\\c{}\\bord{}}}".format(
                 an, int(W / 2), int(y), family, size, weight, ass_colour(item.get("color", "white")), max(2, size // 14))
-            events.append((a, b, "TxtBox" if item.get("box") else "Txt", tags + ass_text(item["value"])))
+            events.append((a, b, "TxtBox" if item.get("box") else "Txt", tags + text_motion(item.get("animate")) + ass_text(item["value"])))
     subs = edl.get("subtitles")
     cap = None
     if subs and subs.get("burn", True):
@@ -499,6 +514,7 @@ def hashed(root, rel):
 def global_files(edl):
     audio = edl.get("audio", {})
     files = ([audio["music"]["file"]] if audio.get("music") else []) + [s["file"] for s in audio.get("sfx", [])]
+    files += [audio["voice"]["file"]] if audio.get("voice") else []
     files += [o["file"] for o in edl.get("overlays", [])]
     files += ([edl["subtitles"]["file"]] if edl.get("subtitles") else []) + ([edl["grade"]["lut"]] if edl.get("grade", {}).get("lut") else [])
     files += [edl["subtitles"]["words"]] if (edl.get("subtitles") or {}).get("words") else []
@@ -763,6 +779,9 @@ def storyboard_markdown(edl, rec, total):
     music = audio.get("music")
     lines.append("- Music: {}".format("`{}` at {} dB{}".format(music["file"], music.get("gain_db", -16),
                                                               ", ducked under voice" if music.get("duck", True) else "") if music else "none"))
+    voice = audio.get("voice")
+    if voice:
+        lines.append("- Voiceover: `{}` from {}s at {} dB, starting at {}".format(voice["file"], voice.get("start", 0), voice.get("gain_db", 0), tc(voice.get("at", 0))))
     lines.append("- Source audio: {}".format("kept at {} dB".format(audio.get("source_gain_db", 0)) if audio.get("keep_source", True) else "muted"))
     for s in audio.get("sfx", []):
         lines.append("- SFX `{}` at {} ({} dB)".format(s["file"], tc(s["at"]), s.get("gain_db", 0)))
@@ -822,6 +841,11 @@ def sub_edl(edl, ids, context=1):
     audio = part.get("audio", {})
     if audio.get("music"):
         audio["music"]["start"] = float(audio["music"].get("start", 0)) + offset
+    voice = audio.get("voice")
+    if voice:
+        at = float(voice.get("at", 0))
+        voice["start"] = float(voice.get("start", 0)) + max(offset - at, 0)
+        voice["at"] = max(at - offset, 0)
     audio["sfx"] = [dict(s, at=s["at"] - offset) for s in audio.get("sfx", []) if offset <= s["at"] < offset + length]
     part["overlays"] = [dict(o, at=o.get("at", 0) - offset) for o in part.get("overlays", []) if offset <= o.get("at", 0) < offset + length]
     return part, offset, length

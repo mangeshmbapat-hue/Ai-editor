@@ -1,0 +1,139 @@
+{
+  "slug": "faceless-collage-explainer",
+  "measured": true,
+  "basis": "Learned 2026-11-09 from the owner's 4 sample videos (study only). Loudness, colour and speech rate are FFmpeg/Whisper measurements; the scene-change interval and the text timing were counted by eye on 1 fps and 6 fps frame sheets, because the samples' seamless transitions defeat the cut detector.",
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.0,
+    "scene_change_seconds": [
+      1.5,
+      2.5
+    ],
+    "cuts_per_10s": 5.0,
+    "first_cut_seconds": 2.5,
+    "hook_text_by_seconds": 1.0,
+    "prelap_seconds": 0.15,
+    "text_on_word_seconds": [
+      0.0,
+      0.3
+    ],
+    "vo_words_per_second": [
+      2.5,
+      3.0
+    ],
+    "end_card_seconds": [
+      4,
+      6
+    ],
+    "grade_preset": "warm-film",
+    "palette": [
+      "#181314",
+      "#432f27",
+      "#b06e45",
+      "#a6341e",
+      "#d8d7d5"
+    ],
+    "loudness_lufs": -14,
+    "true_peak_dbtp": -1
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "name": "The Scream",
+      "duration": 46.32,
+      "aspect": "9:16",
+      "cuts_per_10s_detector": 2.37,
+      "loudness": {
+        "lufs": -13.98,
+        "true_peak": 0.22,
+        "lra": 2.7
+      },
+      "luma_mean": 98.67,
+      "saturation_mean": 0.32,
+      "warmth_mean": 18.19,
+      "palette": [
+        "#432f27",
+        "#181314",
+        "#d8d7d5",
+        "#aba198",
+        "#535e5c",
+        "#b06e45"
+      ]
+    },
+    {
+      "sample": 2,
+      "name": "Frame War promo",
+      "duration": 24.25,
+      "aspect": "9:16",
+      "cuts_per_10s_detector": 14.02,
+      "loudness": {
+        "lufs": -13.74,
+        "true_peak": 0.12,
+        "lra": 16.8
+      },
+      "luma_mean": 100.08,
+      "saturation_mean": 0.37,
+      "warmth_mean": 9.35,
+      "palette": [
+        "#31362e",
+        "#12100f",
+        "#c0c4c1",
+        "#ae9976",
+        "#82543a",
+        "#3b8590"
+      ]
+    },
+    {
+      "sample": 3,
+      "name": "Warren Buffett cash",
+      "duration": 51.27,
+      "aspect": "9:16",
+      "cuts_per_10s_detector": 10.34,
+      "loudness": {
+        "lufs": -13.91,
+        "true_peak": 0.12,
+        "lra": 2.4
+      },
+      "luma_mean": 94.29,
+      "saturation_mean": 0.28,
+      "warmth_mean": 11.35,
+      "palette": [
+        "#56606b",
+        "#22191a",
+        "#43473a",
+        "#8c8585",
+        "#bebfc3",
+        "#a6341e"
+      ]
+    },
+    {
+      "sample": 4,
+      "name": "Project A119 moon",
+      "duration": 44.88,
+      "aspect": "9:16",
+      "cuts_per_10s_detector": 1.11,
+      "loudness": {
+        "lufs": -14.46,
+        "true_peak": 0.89,
+        "lra": 5.5
+      },
+      "luma_mean": 68.87,
+      "saturation_mean": 0.34,
+      "warmth_mean": 25.82,
+      "palette": [
+        "#181b1e",
+        "#704535",
+        "#392c2b",
+        "#c5b5ab",
+        "#050505",
+        "#ab6e49"
+      ]
+    }
+  ],
+  "vo_words_per_second": [
+    3.02,
+    2.63,
+    2.53,
+    2.52
+  ]
+}

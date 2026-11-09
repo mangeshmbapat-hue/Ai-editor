@@ -160,12 +160,24 @@ def build_graph(root, edl, probes, textfiles, sub_shift=0.0, cache=None):
         graph.append("[{}]ass=filename='{}'{}:shaping=complex[vs]".format(v, E.esc(script), fdir))
         v = "vs"
     graph.append("[{}]format=yuv420p[vout]".format(v))
-    # Audio: dialogue/source bed, music (looped, ducked), SFX.
+    # Audio: dialogue/source bed, voiceover track (faceless edits), music (looped, ducked), SFX.
     gain = float(audio_cfg.get("source_gain_db", 0))
     music = audio_cfg.get("music")
-    duck = bool(music and music.get("duck", True) and keep)
-    graph.append("[{}]volume={}dB,atrim=0:{:.4f}{}".format(a, gain, total, ",asplit=2[bed][key]" if duck else "[bed]"))
+    voice = audio_cfg.get("voice")
+    duck = bool(music and music.get("duck", True) and (keep or voice))
+    graph.append("[{}]volume={}dB,atrim=0:{:.4f}{}".format(a, gain, total, ",asplit=2[bed][key]" if duck and not voice else "[bed]"))
     mix = ["bed"]
+    if voice:
+        inputs += ["-i", str(inside(root, voice["file"]))]
+        ms = int(round(float(voice.get("at", 0)) * 1000))
+        chain = ["aresample=48000", "aformat=sample_fmts=fltp:channel_layouts=stereo", "atrim=start={:.3f}".format(float(voice.get("start", 0))),
+                 "asetpts=PTS-STARTPTS", "volume={}dB".format(float(voice.get("gain_db", 0)))]
+        if ms:
+            chain.append("adelay={}|{}".format(ms, ms))
+        chain.append("apad,atrim=0:{:.4f}".format(total))
+        graph.append("[{}:a]{}{}".format(n_inputs, ",".join(chain), ",asplit=2[vox][key]" if duck else "[vox]"))
+        mix.append("vox")
+        n_inputs += 1
     if music:
         inputs += ["-stream_loop", "-1", "-i", str(inside(root, music["file"]))]
         start = float(music.get("start", 0))
@@ -231,13 +243,15 @@ def render(root, preview=True, quality="standard"):
                     "aresample=48000").format(lufs, tp, measured["lufs"], measured["true_peak"], measured["lra"] or 7)
         media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(stage), "-map", "0:v", "-map", "0:a", "-c:v", "copy", "-af", norm,
                    "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(master)])
-        # loudnorm misses on very short or very dynamic mixes; measure and correct with a gain + limiter pass.
+        # loudnorm misses on very short or very dynamic mixes, and AAC can push true peaks over the
+        # ceiling: measure and correct with a gain + limiter pass (the limiter leaves headroom for AAC).
         result = media.loudness(master) if measured["lufs"] is not None else {"lufs": None}
-        for _ in range(2):
-            if result["lufs"] is None or abs(result["lufs"] - lufs) <= 0.5:
+        for attempt in range(3):
+            peak_ok = result.get("true_peak") is None or result["true_peak"] <= tp
+            if result["lufs"] is None or (abs(result["lufs"] - lufs) <= 0.5 and peak_ok):
                 break
             fixed = out / ".fixed.mp4"
-            limit = 10 ** ((tp - 0.3) / 20.0)
+            limit = 10 ** ((tp - 0.8 - 0.4 * attempt) / 20.0)
             media.run(["ffmpeg", "-hide_banner", "-y", "-i", str(stage), "-map", "0:v", "-map", "0:a", "-c:v", "copy",
                        "-af", "{},volume={:.2f}dB,alimiter=limit={:.4f}:level=disabled".format(norm, lufs - result["lufs"], limit),
                        "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(fixed)])
