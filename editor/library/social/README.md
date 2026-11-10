@@ -15,7 +15,7 @@ The owner's images of the social platforms, for the Faceless Editor (owner rule 
 - `whatsapp.png`: 662×664, transparent background.
 - `twitter.png`: 1500×1500, the X logo with a transparent background.
 - `snapchat.png`: 1300×1300, the owner's ghost-with-sunglasses version.
-- `facebook.png`: **not sent yet**. Ask the owner for it the first time a VO needs Facebook.
+- `facebook.png`: 2000×2000, the round blue "f" logo.
 
 - Only the owner's own files go here. Keep the original files unchanged; scale and animate copies in the job folder.
 - "social media" or "सोशल मीडिया" without a platform name: use 3-5 of these logos together.
