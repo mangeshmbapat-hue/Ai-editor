@@ -30,7 +30,11 @@
     "max_grades_per_film": 2,
     "max_same_framing_run": 4,
     "flash_max_per_second": 3,
-    "music_under_voice_db": 10
+    "music_under_voice_db": 14,
+    "sfx_under_voice_lu": 15,
+    "banned_fx": [
+      "shake"
+    ]
   },
   "history": [
     {
@@ -60,6 +64,29 @@
       "value": "see editor/craft/craft.json sources",
       "kind": "owner",
       "source": "owner asked Mann to learn and harness the craft rulebook; values from SMPTE ST 2046-1, Netflix timed-text guides, WCAG 2.x, or labelled defaults"
+    },
+    {
+      "date": "2026-11-10",
+      "rule": "music_under_voice_db",
+      "value": 14,
+      "kind": "owner",
+      "source": "Music tum apni taraf se lagate ho, sound effect bhi ... vo itne over nahi hone chahiye ki vo mere diye hue VO ko daba dein"
+    },
+    {
+      "date": "2026-11-10",
+      "rule": "sfx_under_voice_lu",
+      "value": 15,
+      "kind": "owner",
+      "source": "jab tum sound effect daalte ho, to uski bahut kam volume rakha karo ... mujhe sound effect voiceover ke neeche bahut halke se chahiye"
+    },
+    {
+      "date": "2026-11-10",
+      "rule": "banned_fx",
+      "value": [
+        "shake"
+      ],
+      "kind": "owner",
+      "source": "tum usko itna shake karte ho ki vo screen pe stable nahi rehta ... jis tarike se baar-baar video tum shake karwate ho, vo cheez mujhe nahi chahiye"
     }
   ]
 }

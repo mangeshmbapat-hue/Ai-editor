@@ -368,8 +368,32 @@ def check(root, edl, sample_contrast=True):
     flashes = sorted(r["start"] for r, c in zip(rows, clips) if "flash" in E.as_list(c.get("fx")))
     worst = max((sum(1 for f in flashes if t <= f < t + 1.0) for t in flashes), default=0)
     add("flash safety", "flash-safety", worst <= R["flash_max_per_second"], "max {} flashes in one second (limit {})".format(worst, R["flash_max_per_second"]), "fail")
+    # Owner-banned effects (2026-11-10: no shake; things enter with motion, sit still, leave with motion).
+    banned = [(c["id"], fx) for c in clips for fx in E.as_list(c.get("fx")) if fx in R.get("banned_fx", [])]
+    add("banned effects", "stable-frame", not banned,
+        "owner-banned FX on {}".format(", ".join("{} ({})".format(cid, fx) for cid, fx in banned)) if banned else "none used", "fail")
     # Sound: music under the voice.
     audio = edl.get("audio", {})
+    voice = audio.get("voice")
+    if voice and root is not None:
+        from . import media as M
+        vo = M.loudness(inside(root, voice["file"]))["lufs"]
+        if vo is not None:
+            vo += float(voice.get("gain_db", 0))
+            if audio.get("music"):
+                mu = M.loudness(inside(root, audio["music"]["file"]))["lufs"]
+                if mu is not None:
+                    gap = vo - (mu + float(audio["music"].get("gain_db", -16)))
+                    add("music under voiceover", "voice-first", gap >= R["music_under_voice_db"],
+                        "music {:.1f} LU under the VO before ducking (min {} LU)".format(gap, R["music_under_voice_db"]), "fail")
+            loud = []
+            for sfx in audio.get("sfx", []):
+                lv = M.loudness(inside(root, sfx["file"]))["lufs"]
+                if lv is not None and vo - (lv + float(sfx.get("gain_db", 0))) < R.get("sfx_under_voice_lu", 15):
+                    loud.append("{} at {}s ({:.1f} LU under)".format(sfx["file"], sfx["at"], vo - (lv + float(sfx.get("gain_db", 0)))))
+            if audio.get("sfx"):
+                add("SFX under voiceover", "voice-first", not loud,
+                    "too loud: " + "; ".join(loud[:4]) if loud else "every SFX at least {} LU under the VO".format(R.get("sfx_under_voice_lu", 15)), "fail")
     if audio.get("music") and audio.get("keep_source", True):
         gap = float(audio.get("source_gain_db", 0)) - float(audio["music"].get("gain_db", -16))
         add("music under voice", "voice-first", gap >= R["music_under_voice_db"],

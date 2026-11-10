@@ -115,4 +115,11 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **End card:** 4–6 s. The owner gives the CTA and handle with each video; never reuse a sample's CTA.
 - **Mix:** −14 LUFS, true peak ≤ −1 dBTP. Music ducked under the VO.
 - **Language:** Hindi, English or Hinglish, decided by the owner's VO for each video. Pick fonts with Devanagari support for Hindi (the `rozha-hind` pairing is the default).
+- **Reference reel (owner, 2026-11-09):** the delivered `silhouette-follow` reel is the template for every new VO: match its scene look, pace, kinetic type density, transitions and SFX exactly.
+- **Clarity over speed (owner, 2026-11-09):** one clearly matching visual per VO sentence, held about 2.0–2.5 s on average; no rapid sub-cuts inside a sentence. Promo-pace cutting is only for short hype promos.
+- **Code-drawn visuals (owner, 2026-11-09):** when the owner sends no images, draw semi-realistic, cinematic, lit and shaded scenes on 3D paper/tabletop collage layers with drop shadows; never flat black silhouettes. Promo-pace VOs (like s2) get kinetic type on nearly every phrase, a transition plus a very quiet SFX on every cut, and parallax on layers. ~~Shake on hits~~ (superseded 2026-11-10: never shake).
 - **Inputs:** the owner's images, AI clips and footage, plus the VO (the owner's recording or an AI voice). The engine builds the type, motion, collage moves, transitions, sound and captions.
+
+## Owner rules, 2026-11-10 (these override anything above)
+- **No shake, ever.** Every scene, image and text comes in with a smooth animation (fade, pop with a small settle, slide, push), then **sits still and stable**, then leaves with a smooth animation. Image moves are a slow, steady drift (about 4 % over a scene). `shake` is banned in `editor/rules.json`.
+- **The VO comes first.** SFX stay very quiet, at least 15 LU under the VO (measured). The music sits at least 14 LU under the VO before ducking. Run `faceless-level`; `craft-check` fails a louder mix.
