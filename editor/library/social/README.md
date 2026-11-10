@@ -10,6 +10,13 @@ The owner's images of the social platforms, for the Faceless Editor (owner rule 
 | WhatsApp | `whatsapp.png` | WhatsApp, व्हाट्सऐप, व्हाट्सएप |
 | Snapchat | `snapchat.png` | Snapchat, स्नैपचैट |
 
+## In the library now (owner sent 2026-11-10)
+- `instagram.png`: 225×225. This is small, so keep it under about 25 % of the frame width, or ask the owner for a bigger file.
+- `whatsapp.png`: 662×664, transparent background.
+- `twitter.png`: 1500×1500, the X logo with a transparent background.
+- `snapchat.png`: 1300×1300, the owner's ghost-with-sunglasses version.
+- `facebook.png`: **not sent yet**. Ask the owner for it the first time a VO needs Facebook.
+
 - Only the owner's own files go here. Keep the original files unchanged; scale and animate copies in the job folder.
 - "social media" or "सोशल मीडिया" without a platform name: use 3-5 of these logos together.
 - Each logo comes in with a smooth animation, sits still, and leaves smoothly (no shake).
