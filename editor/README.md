@@ -107,3 +107,7 @@ Not built yet: automatic best-take selection between repeated takes, and audio j
 ## Faceless Editor
 
 For faceless videos (voiceover + images/clips, no presenter): `faceless-stills <edit>` turns images into clips, then `faceless-plan <edit> --voice raw/vo.mp3 --words tr/vo.json --cta "..."` drafts `edl.json` in the learned house style (`styles/faceless-collage-explainer/`). The EDL's `audio.voice` is a voiceover track laid from 0 s that ducks the music; text items take `animate: pop|fade|slam`. The storyboard, approval and QC are the same as for any edit. Agent: `.claude/agents/faceless-editor.md`.
+
+## Animation Editor
+
+For product-promo animation reels (no footage): write a scene list (`styles/animation-product-promo/spec.example.json` is a synthetic example), then `anim-new <edit> spec.json` builds `anim/promo/index.html`, a HyperFrames composition driven by the house motion runtime (`aifilm/editor/anim/runtime.js`), in one of the four learned themes (`anim-themes`, or `--brand '#hex'` for a new product). `anim-storyboard` renders one frame per scene with the local Chromium. `anim-render` renders `renders/promo.mp4` only after `anim-approve --words` records the owner's approval for that exact spec. Agent: `.claude/agents/animation-editor.md`.
