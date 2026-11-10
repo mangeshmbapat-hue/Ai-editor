@@ -52,7 +52,8 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
 - **Objects, animals and places are real photos, never cartoon** (owner rule 2026-11-10): dogs, money and note bundles, computers, mics, stages and the Earth all come from real, free-licensed photos:
   - **NASA** (`images-api.nasa.gov`, public domain) for the Earth, space and rockets. Checked on 2026-11-10.
   - **Wikimedia Commons** (`commons.wikimedia.org`, `upload.wikimedia.org`, CC licences) for dogs, money, mics, stages and the like. It can rate-limit (HTTP 429); wait and retry gently, with a User-Agent naming the repo.
-  - **Pexels**, only once the owner adds an API key.
+  - **Pexels**, only once the owner adds an API key. Never ask the owner for keys; they could not get any (2026-11-10).
+  - Use the object as a **background-removed cutout** placed where the VO names it. Allow only public-domain, CC0, CC BY or CC BY-SA licences, because a cutout does not remove copyright.
   - Or photos the owner sends.
 
   Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
