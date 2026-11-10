@@ -52,5 +52,14 @@
   "author": "Vengolis",
   "file": "dog-street.jpg",
   "fetched": "2026-11-10"
+ },
+ "cat": {
+  "title": "File:Felis catus-cat on snow.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Felis_catus-cat_on_snow.jpg",
+  "licence": "CC BY-SA 3.0",
+  "author": "Von.grzanka",
+  "file": "cat.jpg",
+  "fetched": "2026-11-10"
  }
 }
