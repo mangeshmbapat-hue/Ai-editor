@@ -211,7 +211,7 @@ def storyboard(edit_root, name="promo"):
              "| # | time | scene | on screen | frame |", "|---|---|---|---|---|"]
     for r, t in zip(info["scenes"], times):
         f = "{:02d}.png".format(r["n"])
-        (sb / "f_{}.png".format(t)).rename(sb / f)
+        (sb / "f_{:02d}.png".format(r["n"])).rename(sb / f)
         lines.append("| {} | {:.2f}-{:.2f} s | {} | {} | storyboard/{} |".format(r["n"], r["start"], r["start"] + r["dur"], r["type"], r["what"], f))
     lines += ["", "Fingerprint: `{}`. The full render needs the owner's approval of this exact spec (`anim-approve`).".format(anim_fingerprint(root, name))]
     (sb / "STORYBOARD.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

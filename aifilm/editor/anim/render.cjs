@@ -4,7 +4,7 @@
  * pre-installed headless Chromium and encode it with FFmpeg. Needs nothing from the network.
  *
  *   node render.cjs <index.html> <out.mp4> --size 1080x1080 [--fps 30] [--audio bed.wav] [--crf 16]
- *   node render.cjs <index.html> <out-prefix> --size 1080x1080 --stills 0.5,3,9.2   -> <out-prefix>_0.5.png ...
+ *   node render.cjs <index.html> <out-prefix> --size 1080x1080 --stills 0.5,3,9.2   -> <out-prefix>_01.png, _02.png ...
  */
 'use strict';
 const { chromium } = require('playwright');
@@ -30,7 +30,8 @@ const [W, H] = opt.size.split('x').map(Number), fps = +opt.fps;
   const dur = await page.evaluate(() => window.DUR);
   const shot = async t => { await page.evaluate(t => { window.__timelines.main.seek(t, false); }, t); return page.screenshot({ type: 'png' }); };
   if (opt.stills) {
-    for (const t of opt.stills.split(',').map(Number)) { const f = pos[1] + '_' + t + '.png'; fs.writeFileSync(f, await shot(t)); console.log(f); }
+    const ts = opt.stills.split(',').map(Number);
+    for (let i = 0; i < ts.length; i++) { const f = pos[1] + '_' + String(i + 1).padStart(2, '0') + '.png'; fs.writeFileSync(f, await shot(ts[i])); console.log(f); }
   } else {
     const n = Math.round(dur * fps);
     const args = ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-'];

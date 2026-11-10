@@ -6,7 +6,10 @@
 (function () {
   'use strict';
   const S = window.ANIM_SPEC, T = S.theme, W = S.width, H = S.height;
-  const u = v => v * W, px = v => u(v) + 'px';
+  // Sizes were measured on the 1:1 samples as fractions of the width; a tall 9:16 frame scales them up so the
+  // UI reads on a phone (K), while positions stay fractions of the frame.
+  const K = S.scale || (H / W > 1.5 ? 1.35 : 1);
+  const u = v => v * W * K, px = v => u(v) + 'px';
   const root = document.getElementById('root');
   const tl = gsap.timeline({ paused: true });
   window.__timelines = window.__timelines || {};
@@ -42,6 +45,10 @@
     play: '<path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/>',
     heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="currentColor" stroke="none"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6.5 8-6.5s7 2 8 6.5"/>',
+    cup: '<path d="M5 9h11v5a5 5 0 01-5 5h-1a5 5 0 01-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 010 5H16M8 3.5c0 1.5 1.5 1.5 1.5 3M11.5 3.5c0 1.5 1.5 1.5 1.5 3"/>',
+    samosa: '<path d="M12 4L3.5 19h17z" fill="currentColor" stroke="none"/><path d="M8 15h8M12 9v3" stroke="#fff" stroke-width="1.4"/>',
+    bun: '<path d="M4 15a8 8 0 0116 0z" fill="currentColor" stroke="none"/><path d="M3.5 17.5h17" /><path d="M9 11.5l1.5-1M13 10.5l1.5 1" stroke="#fff" stroke-width="1.4"/>',
+    pakoda: '<path d="M6 9c2-4 9-5 12-1 3 4 0 10-5 10S3 15 6 9z" fill="currentColor" stroke="none"/><path d="M9 11l1 1M13 9.5l1 1M12 14l1 1" stroke="#fff" stroke-width="1.4"/>',
     camera: '<rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/>',
   };
   function icon(name, size, parent, css) {
@@ -104,7 +111,7 @@
       M.popIn(box, t0, { from: 0.8, blur: 18, dur: 0.3, ease: 'back.out(2.2)' });
       if (s.image) { const im = el('img', '', box, { width: '78%', height: '78%', objectFit: 'contain' }); im.src = 'assets/' + s.image; }
       else if (s.text) {
-        const word = el('div', 'logo-word', box, { fontSize: px((s.size || 0.2) * 0.25) });
+        const word = el('div', 'logo-word', box, { fontSize: px((s.size || 0.2) * Math.min(0.25, 1.45 / Math.max(s.text.length, 1))) });
         [...s.text].forEach((ch, i) => { const sp = el('span', '', word, null, esc(ch)); M.popIn(sp, t0 + 0.55 + i * 0.05, { from: 0.4, blur: 6, dy: i % 2 ? -0.02 : 0.02, dur: 0.3, ease: 'back.out(3)' }); });
       }
       if (s.tap !== false) M.tap(t0 + Math.min(1.2, d - 0.55), 0.53, 0.53, box);
@@ -132,7 +139,7 @@
       const items = s.items || [], size = s.size || 0.25, gap = size * 1.12;
       const strip = el('div', 'strip', L); gsap.set(strip, { left: 0, top: 0.5 * H, yPercent: -50 });
       const nodes = items.map((it, i) => {
-        const c = el('div', 'card product', strip, { width: px(size), height: px(size * 1.12), left: px(0.5 - size / 2 + i * gap) });
+        const c = el('div', 'card product', strip, { width: px(size), height: px(size * 1.12), left: (0.5 * W - u(size) / 2 + i * u(gap)) + 'px' });
         if (it.image) { const im = el('img', '', c); im.src = 'assets/' + it.image; }
         el('div', 'label', c, { fontSize: px(size * 0.1) }, esc(it.label || ''));
         M.popIn(c, t0 + 0.08 + Math.min(i, 3) * 0.1, { from: 0.85, dx: 0.1, blur: 10, dur: 0.3 });
@@ -246,15 +253,21 @@
       M.blurOut(card, t0 + d - 0.25, { to: 0.7 });
     },
     words(L, s, t0, d) { // kinetic line: words arrive one by one with blur, accent words in colour (optionally glowing)
-      const line = centre(el('div', 'words', L, { fontSize: px(s.size || 0.06), color: s.ink || '', width: px(0.86) }), 0.5, s.y || 0.5);
-      const accent = new Set((s.accent || []).map(x => String(x).toLowerCase()));
-      const words = String(s.text || '').split(/\s+/).filter(Boolean);
+      const line = centre(el('div', 'words', L, { fontSize: px(s.size || 0.06), color: s.ink || '', width: (0.88 * W) + 'px' }), 0.5, s.y || 0.5);
+        // accent: a list of words (all in s.color) or {word: colour} so each accent word can take its own theme colour
+      const accentMap = Array.isArray(s.accent) ? Object.fromEntries((s.accent || []).map(x => [String(x).toLowerCase(), s.color])) :
+        Object.fromEntries(Object.entries(s.accent || {}).map(([k, v]) => [k.toLowerCase(), v]));
+      const accent = new Set(Object.keys(accentMap));
+      // a "\n" in the text is a deliberate line break (balanced lines instead of a lone last word)
+      const words = String(s.text || '').replace(/\n/g, ' \n ').split(/[ \t]+/).filter(Boolean);
       const step = s.step || Math.min(0.16, (d * 0.55) / Math.max(words.length, 1));
       words.forEach((w, i) => {
+        if (w === '\n') { el('div', '', line, { flexBasis: '100%', height: 0 }); return; }
         const sp = el('span', '', line, null, esc(w));
         const hot = accent.has(w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, ''));
-        if (hot) { sp.style.color = colour(s.color); sp.style.fontWeight = 800; }
-        if (s.glow && hot) M.glowText(sp, s.color || 'primary'); else if (s.glow === 'all') M.glowText(sp);
+        const key = w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+        if (hot) { sp.style.color = colour(accentMap[key]); sp.style.fontWeight = 800; }
+        if (s.glow && hot) M.glowText(sp, accentMap[key] || 'primary'); else if (s.glow === 'all') M.glowText(sp);
         const at = s.at && s.at[i] !== undefined ? t0 + s.at[i] : t0 + 0.05 + i * step;
         M.blurIn(sp, at, { dy: hot ? 0.03 : 0.018, blur: hot ? 12 : 8, from: hot ? 1.35 : 1, dur: hot ? 0.3 : 0.22 });
       });
@@ -286,7 +299,7 @@
         const logo = centre(el('div', 'platform', L, { width: px(0.12), height: px(0.12) }));
         logo.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">' + GLYPH[s.platform || 'camera'] + '</svg>' +
           '<svg class="tint" viewBox="0 0 24 24" fill="none" stroke="url(#ig)" stroke-width="2" stroke-linecap="round"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9b234"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs>' + GLYPH[s.platform || 'camera'] + '</svg>';
-        const handle = centre(el('div', 'handle', L, { fontSize: px(0.026) }, esc(s.handle || '')), 0.5, 0.5 + 0.12 * W / H);
+        const handle = centre(el('div', 'handle', L, { fontSize: px(0.026) }, esc(s.handle || '')), 0.5, 0.5 + 0.12 * K * W / H);
         const at = t0 + Math.min(1.7, d * 0.35);
         tl.to(mark, { autoAlpha: 0.22, filter: 'blur(4px)', duration: 0.3 }, at)
           .fromTo(logo, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, at)
