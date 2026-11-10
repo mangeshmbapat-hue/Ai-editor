@@ -73,6 +73,14 @@ class PlanLogicTest(unittest.TestCase):
             p.write_text(json.dumps({"words": [{"s": 0.1, "e": 0.4, "w": "नमस्ते"}]}))
             self.assertEqual(F.load_words(p)[0]["word"], "नमस्ते")
 
+    def test_social_media_mentions_point_to_the_owner_logo_library(self):
+        g = [[{"word": "Instagram,", "start": 0, "end": 1}], [{"word": "सोशल", "start": 1, "end": 2}], [{"word": "hello", "start": 2, "end": 3}]]
+        found = F.social_mentions(g)
+        self.assertEqual([m["platform"] for m in found if m["scene"] == 0], ["instagram"])
+        self.assertEqual(len([m for m in found if m["scene"] == 1]), 5, "social media in general uses all five logos")
+        self.assertFalse([m for m in found if m["scene"] == 2])
+        self.assertTrue(all(m["file"].startswith("editor/library/social/") for m in found))
+
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
         self.assertEqual(E.text_motion(None), "")

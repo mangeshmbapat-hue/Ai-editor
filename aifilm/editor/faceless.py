@@ -247,6 +247,9 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
         notes.append("End card has no CTA yet: the owner gives it with each video (`--cta`).")
     if not music:
         notes.append("No music yet: add a bed (`--music`) so the end card is not dead air.")
+    for m in social_mentions(groups):
+        notes.append("{} names {}: animate the owner's logo `{}` in this scene{}.".format(
+            clips[m["scene"]]["id"], m["platform"], m["file"], "" if m["available"] else " (not in the library yet: ask the owner for it)"))
     clips.append(card)
     edl = {"version": 1, "title": title or " ".join(w["word"] for w in groups[0])[:60], "style": HOUSE_STYLE,
            "format": {"width": W, "height": H, "fps": 30, "fit": "cover"}, "sources": sources, "clips": clips,
@@ -345,6 +348,25 @@ def level(root):
         E.validate(root, edl)
         write_json(root / "edl.json", edl)
     return {"changes": changes}
+
+
+def social_mentions(groups):
+    """Scenes whose words name a social platform (or social media in general), with the owner's
+    logo files from editor/library/social/ (owner rule 2026-11-10: real logos, not heart icons)."""
+    from ..core import read_json
+    from .render import REPO
+    lib = REPO / "editor" / "library" / "social"
+    cfg = read_json(lib / "platforms.json")
+    out = []
+    for i, g in enumerate(groups):
+        said = {bare(w["word"]) for w in g}
+        names = [n for n, p in cfg["platforms"].items() if said & set(p["words"])]
+        if not names and said & set(cfg["general"]):
+            names = list(cfg["platforms"])
+        for n in names:
+            f = lib / cfg["platforms"][n]["file"]
+            out.append({"scene": i, "platform": n, "file": str(f.relative_to(REPO)), "available": f.exists()})
+    return out
 
 
 def write_caption_files(root, words):

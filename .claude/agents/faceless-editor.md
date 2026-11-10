@@ -16,9 +16,11 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
 ## What the owner gives with each video
 - The **voiceover** (their recording, or an approved script for an AI voice). The language is whatever the VO is: Hindi, English or Hinglish.
 - The **visuals**: images, AI clips or footage, in story order if they have one. **If the owner sends none, draw them yourself as silhouettes** (owner rule, 2026-11-09):
-  - people, props and places as dark shapes against lit, coloured backgrounds, drawn in code (canvas/SVG, rendered with `node studio/render_canvas.cjs` or Hyperframes)
+  - people, props and places drawn in code (canvas/SVG, rendered with `node studio/render_canvas.cjs` or Hyperframes) in the approved realistic lit look
+  - **people always have a visible face** (owner rule 2026-11-10): illustrated, cartoon-like but realistic, with the right age and gender for the VO (boy, girl, man, woman, child, elderly), never a real person, and **no white paper-cut borders**
   - one image per scene, saved in `raw/`, then `faceless-stills` as usual
   - show them on the storyboard like any other visual
+- **Social media:** when the VO names a platform or social media, animate the owner's logos from `editor/library/social/` (see its README), never heart or message icons. `faceless-plan` lists those scenes in its notes.
 - The **end-card CTA and handle** for this video. Ask for it if it is missing; never reuse a sample's CTA.
 - If there is no script and no VO yet, the script goes through `skills/ai-writer` and the owner's approval first (AGENTS.md script gate).
 
