@@ -35,7 +35,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - people with faces
   - the owner's logos
   - smooth motion and no shake
-  - quiet SFX and music under the VO
+  - no SFX, only slow corporate music under the VO
   - no subtitles unless asked
   - the end card
 - **What gets filled in without asking:**
@@ -62,7 +62,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
    - Match each visual to its words. A person's image arrives up to 0.6 s before they are named.
    - Choose the emotion words for serif italic.
    - Build the signature graphics as Hyperframes overlays (`mg-new`/`mg-render`): number rolls and counters, date builds, name tags on tape, a prop/paper collage with shadows, scattered words.
-   - Add an SFX on every transition (recorded samples) and a music bed ducked under the VO. Then run `faceless-level <edit>`: it sets the music and every SFX to the owner's voice-first levels (SFX at least 15 LU under the VO, music at least 14 LU) and removes banned FX.
+   - **No sound effects at all** (owner rule 2026-11-10). Put only a slow, soft corporate-style music bed under the VO, then run `faceless-level <edit>` so the music sits at least 14 LU under the VO. Never spend time searching for SFX.
    - **Never shake** (owner rule 2026-11-10). Scenes, images and text come in with a smooth animation, sit still and stable, and leave with a smooth animation. No `shake` FX and no jittery Hyperframes motion.
    - Run `validate` and `craft-check`, and fix every FAIL.
 6. **Storyboard gate:** the style is recorded as in the fast path. Make the `storyboard`, send the numbered frames, and **stop** until the owner says OK (`approve --words "<their words>"`). Silence is not approval. After the OK, go straight to step 7 without another check-in.
@@ -70,7 +70,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
 
 ## Owner rules checklist (check before every storyboard; details in `studio/LEARNINGS.md`)
 - **Subtitles:** only when the owner asks for them, in Hindi or English. Text graphics, effects, transitions and animation are always on.
-- **Sound:** SFX very quiet under the VO, and music never pressing on it. Run `faceless-level`.
+- **Sound:** no SFX at all; only a slow, soft corporate-style music bed under the VO, never pressing on it. Run `faceless-level`.
 - **Motion:** never shake. Everything comes in with a smooth animation, sits still, and leaves smoothly.
 - **Objects, animals and places are real photos, never cartoon** (owner rule 2026-11-10): dogs, money and note bundles, computers, mics, stages and the Earth all come from real, free-licensed photos:
   - **NASA** (`images-api.nasa.gov`, public domain) for the Earth, space and rockets. Checked on 2026-11-10.
