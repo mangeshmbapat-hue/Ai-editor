@@ -152,7 +152,7 @@ def default_visuals(root):
     return found
 
 
-def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=True, music=None,
+def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=False, music=None,
          aspect="9:16", end_card=END_CARD, transition_s=0.3):
     root = Path(root)
     W, H = E_size(aspect)
@@ -262,6 +262,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
                "Hand work before the storyboard: prop/paper collage and number counters as Hyperframes overlays (`mg-new`), an SFX on every transition, music."] + notes}
     if music:
         edl["audio"]["music"] = {"file": music, "gain_db": music_gain(root, voice, music), "duck": True, "fade_out": 1.5}
+    edl["subtitles_requested"] = bool(captions)
     if captions:
         write_caption_files(root, words)
         edl["subtitles"] = {"file": "captions.srt", "burn": True, "size": 0.035, "position": "bottom", "box": True,

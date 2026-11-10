@@ -139,6 +139,7 @@ class EditorCase(unittest.TestCase):
 
     def test_qc_flags_missing_subtitles_and_dead_air(self):
         self.edl["subtitles"] = None
+        self.edl["subtitles_requested"] = True      # the owner asked for subtitles on this one
         self.edl["audio"] = {"keep_source": False}
         self.save()
         E.storyboard(self.edit)

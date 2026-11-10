@@ -129,7 +129,7 @@ class PlanMediaTest(unittest.TestCase):
         values = [t["value"] for c in edl["clips"] for t in c.get("text", [])]
         self.assertIn("1892", values)
         self.assertIn("Edvard Munch", values)
-        self.assertTrue(edl["subtitles"]["burn"])
+        self.assertNotIn("subtitles", edl, "subtitles only when the owner asks (2026-11-10)")
         self.assertTrue(all(1.0 <= row["duration"] <= 4.0 for row in rows[1:-1]), rows)
         self.assertGreater(r["scenes"], 5)
         # owner gates still apply: no storyboard approval, no render
@@ -146,10 +146,10 @@ class PlanMediaTest(unittest.TestCase):
 
     def test_cli_plan_without_cta_notes_it(self):
         F.stills(self.edit, seconds=6)
-        code = main(["faceless-plan", str(self.edit), "--voice", "raw/vo.m4a", "--words", "words.json", "--no-captions"])
+        code = main(["faceless-plan", str(self.edit), "--voice", "raw/vo.m4a", "--words", "words.json", "--captions"])
         self.assertEqual(code, 0)
         edl = json.loads((self.edit / "edl.json").read_text(encoding="utf-8"))
-        self.assertNotIn("subtitles", edl)
+        self.assertTrue(edl["subtitles"]["burn"], "--captions adds them when the owner asks")
         self.assertTrue(any("CTA" in n for n in edl["notes"]))
 
     def test_owner_rules_quiet_sfx_and_no_shake(self):

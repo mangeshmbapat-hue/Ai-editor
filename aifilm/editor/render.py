@@ -348,7 +348,10 @@ def qc(root):
               "longest {}s (max {}s)".format(stats["longest_shot_seconds"], rules["short_form_max_shot_seconds"]), "warn")
         first = E.timeline(edl)[0][0]["duration"]
         check("hook (first cut)", first <= rules["hook_first_cut_max_seconds"], "first shot {}s (max {}s)".format(first, rules["hook_first_cut_max_seconds"]), "warn")
-        check("subtitles", bool(edl.get("subtitles")) or not rules["short_form_requires_subtitles"], "burned subtitles required for short form", "fail")
+        # Owner rule 2026-11-10: subtitles only when the owner asked for them (EDL "subtitles_requested").
+        wanted = edl.get("subtitles_requested", rules["short_form_requires_subtitles"])
+        check("subtitles", bool(edl.get("subtitles")) or not wanted,
+              "the owner asked for subtitles and there are none" if wanted else "not requested", "fail")
     check("shortest shot", stats["shortest_shot_seconds"] >= rules["min_shot_seconds"],
           "{}s (min {}s)".format(stats["shortest_shot_seconds"], rules["min_shot_seconds"]), "warn")
     style = style_targets(edl.get("style"))
