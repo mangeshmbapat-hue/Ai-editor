@@ -49,6 +49,13 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
 - **Subtitles:** only when the owner asks for them, in Hindi or English. Text graphics, effects, transitions and animation are always on.
 - **Sound:** SFX very quiet under the VO, and music never pressing on it. Run `faceless-level`.
 - **Motion:** never shake. Everything comes in with a smooth animation, sits still, and leaves smoothly.
+- **Objects, animals and places are real photos, never cartoon** (owner rule 2026-11-10): dogs, money and note bundles, computers, mics, stages and the Earth all come from real, free-licensed photos:
+  - **NASA** (`images-api.nasa.gov`, public domain) for the Earth, space and rockets. Checked on 2026-11-10.
+  - **Wikimedia Commons** (`commons.wikimedia.org`, `upload.wikimedia.org`, CC licences) for dogs, money, mics, stages and the like. It can rate-limit (HTTP 429); wait and retry gently, with a User-Agent naming the repo.
+  - **Pexels**, only once the owner adds an API key.
+  - Or photos the owner sends.
+
+  Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
 - **People:** realistic figures with visible faces, cartoon-like but real, of the right age and gender, generic people only. No white borders.
 - **No images sent:** draw the scenes yourself in the approved realistic lit look.
 - **Social media:** use the owner's logos from `editor/library/social/` (Facebook, X, Instagram, WhatsApp, Snapchat), never hearts or generic icons.
