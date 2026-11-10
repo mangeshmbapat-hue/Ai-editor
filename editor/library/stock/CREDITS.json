@@ -1,0 +1,47 @@
+{
+ "money-rupee-notes": {
+  "title": "File:₹2000 Indian Rupee Banknote.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/%E2%82%B92000_Indian_Rupee_Banknote.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:%E2%82%B92000_Indian_Rupee_Banknote.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Ravi Dwivedi",
+  "file": "money-rupee-notes.jpg",
+  "fetched": "2026-11-10"
+ },
+ "money-rupee-bundle": {
+  "title": "File:East India reformers or new ways & means. (BM 1868,0808.5062).jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/East_India_reformers_or_new_ways_%26_means._%28BM_1868%2C0808.5062%29.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:East_India_reformers_or_new_ways_%26_means._(BM_1868,0808.5062).jpg",
+  "licence": "Public domain",
+  "author": "unknown",
+  "file": "money-rupee-bundle.jpg",
+  "fetched": "2026-11-10"
+ },
+ "money-dollar-notes": {
+  "title": "File:Confederate 100 Dollars.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Confederate_100_Dollars.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Confederate_100_Dollars.jpg",
+  "licence": "Public domain",
+  "author": "Confederate States of America.",
+  "file": "money-dollar-notes.jpg",
+  "fetched": "2026-11-10"
+ },
+ "money-coins": {
+  "title": "File:Coins of the Indian rupee.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Coins_of_the_Indian_rupee.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Coins_of_the_Indian_rupee.png",
+  "licence": "CC BY-SA 4.0",
+  "author": "ChiK",
+  "file": "money-coins.png",
+  "fetched": "2026-11-10"
+ },
+ "dog": {
+  "title": "File:Dülmen, Hausdülmen, Golden Retriever -- 2022 -- 5945.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/bf/D%C3%BClmen%2C_Hausd%C3%BClmen%2C_Golden_Retriever_--_2022_--_5945.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Hausd%C3%BClmen,_Golden_Retriever_--_2022_--_5945.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Dietmar Rabich",
+  "file": "dog.jpg",
+  "fetched": "2026-11-10"
+ }
+}
