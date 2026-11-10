@@ -1,0 +1,52 @@
+{
+ "platforms": {
+  "facebook": {
+   "file": "facebook.png",
+   "words": [
+    "facebook",
+    "fb",
+    "फेसबुक"
+   ]
+  },
+  "twitter": {
+   "file": "twitter.png",
+   "words": [
+    "twitter",
+    "ट्विटर",
+    "tweet",
+    "ट्वीट"
+   ]
+  },
+  "instagram": {
+   "file": "instagram.png",
+   "words": [
+    "instagram",
+    "insta",
+    "इंस्टाग्राम",
+    "इंस्टा"
+   ]
+  },
+  "whatsapp": {
+   "file": "whatsapp.png",
+   "words": [
+    "whatsapp",
+    "व्हाट्सऐप",
+    "व्हाट्सएप",
+    "वॉट्सऐप"
+   ]
+  },
+  "snapchat": {
+   "file": "snapchat.png",
+   "words": [
+    "snapchat",
+    "स्नैपचैट"
+   ]
+  }
+ },
+ "general": [
+  "social",
+  "सोशल",
+  "platforms",
+  "प्लेटफॉर्म"
+ ]
+}
