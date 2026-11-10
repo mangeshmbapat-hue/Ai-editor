@@ -43,5 +43,14 @@
   "author": "Dietmar Rabich",
   "file": "dog.jpg",
   "fetched": "2026-11-10"
+ },
+ "dog-street": {
+  "title": "File:Indian pariah dog 07904.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Indian_pariah_dog_07904.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Indian_pariah_dog_07904.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Vengolis",
+  "file": "dog-street.jpg",
+  "fetched": "2026-11-10"
  }
 }
