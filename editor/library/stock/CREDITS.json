@@ -8,24 +8,6 @@
   "file": "money-rupee-notes.jpg",
   "fetched": "2026-11-10"
  },
- "money-rupee-bundle": {
-  "title": "File:East India reformers or new ways & means. (BM 1868,0808.5062).jpg",
-  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/East_India_reformers_or_new_ways_%26_means._%28BM_1868%2C0808.5062%29.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:East_India_reformers_or_new_ways_%26_means._(BM_1868,0808.5062).jpg",
-  "licence": "Public domain",
-  "author": "unknown",
-  "file": "money-rupee-bundle.jpg",
-  "fetched": "2026-11-10"
- },
- "money-dollar-notes": {
-  "title": "File:Confederate 100 Dollars.jpg",
-  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Confederate_100_Dollars.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Confederate_100_Dollars.jpg",
-  "licence": "Public domain",
-  "author": "Confederate States of America.",
-  "file": "money-dollar-notes.jpg",
-  "fetched": "2026-11-10"
- },
  "money-coins": {
   "title": "File:Coins of the Indian rupee.png",
   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Coins_of_the_Indian_rupee.png",
@@ -78,6 +60,78 @@
   "licence": "Public domain",
   "author": "Bill Koplitz",
   "file": "microphones-press.jpg",
+  "fetched": "2026-11-10"
+ },
+ "news-studio": {
+  "title": "File:News studio of 3 Central Square, 8 July 2022.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/News_studio_of_3_Central_Square%2C_8_July_2022.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:News_studio_of_3_Central_Square,_8_July_2022.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Seth Whales",
+  "file": "news-studio.jpg",
+  "fetched": "2026-11-10"
+ },
+ "laptop": {
+  "title": "File:IBM Thinkpad R51.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/IBM_Thinkpad_R51.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:IBM_Thinkpad_R51.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "André Karwath aka Aka",
+  "file": "laptop.jpg",
+  "fetched": "2026-11-10"
+ },
+ "computer-desk": {
+  "title": "File:HP Envy X2 (edit).jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/HP_Envy_X2_%28edit%29.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:HP_Envy_X2_(edit).jpg",
+  "licence": "CC BY 2.0",
+  "author": "HP_Envy_X2.jpg\noriginal photo: Beau Giles from Sydenham, Sydney, Australia\nderivative work: Jbarta / Nagualdesign",
+  "file": "computer-desk.jpg",
+  "fetched": "2026-11-10"
+ },
+ "supreme-court-india": {
+  "title": "File:Supreme Court of India, inside buildings 02.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Supreme_Court_of_India%2C_inside_buildings_02.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Supreme_Court_of_India,_inside_buildings_02.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Pinakpani",
+  "file": "supreme-court-india.jpg",
+  "fetched": "2026-11-10"
+ },
+ "parliament-india": {
+  "title": "File:Sansad Bhavan, Delhi, BNK.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Sansad_Bhavan%2C_Delhi%2C_BNK.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Sansad_Bhavan,_Delhi,_BNK.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Nikhilb239",
+  "file": "parliament-india.jpg",
+  "fetched": "2026-11-10"
+ },
+ "newspaper": {
+  "title": "File:(Stack of Newspapers) - DPLA - 0b25c96090a717cc43076ab977d3be51.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/%28Stack_of_Newspapers%29_-_DPLA_-_0b25c96090a717cc43076ab977d3be51.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:(Stack_of_Newspapers)_-_DPLA_-_0b25c96090a717cc43076ab977d3be51.jpg",
+  "licence": "CC BY 4.0",
+  "author": "Hicks, William",
+  "file": "newspaper.jpg",
+  "fetched": "2026-11-10"
+ },
+ "stopwatch": {
+  "title": "File:Stopwatch, 1810201155, ako.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Stopwatch%2C_1810201155%2C_ako.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Stopwatch,_1810201155,_ako.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Ansgar Koreng",
+  "file": "stopwatch.jpg",
+  "fetched": "2026-11-10"
+ },
+ "earth": {
+  "title": "Most Amazing High Definition Image of Earth - Blue Marble 2012",
+  "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001386/GSFC_20171208_Archive_e001386~medium.jpg",
+  "page": "https://images.nasa.gov/details/GSFC_20171208_Archive_e001386",
+  "licence": "Public domain (NASA)",
+  "author": "NASA Goddard Space Flight Center",
+  "file": "earth.jpg",
   "fetched": "2026-11-10"
  }
 }

@@ -25,16 +25,16 @@ WIDTH = 1280
 
 # slug -> search terms (best first). Real photos of everyday things faceless videos talk about.
 ITEMS = {
-    "money-rupee-notes": "Indian rupee banknotes", "money-rupee-bundle": "bundle of rupee notes",
-    "money-dollar-notes": "United States dollar banknotes", "money-coins": "Indian rupee coins",
+    "money-rupee-notes": "Indian rupee banknotes", "money-rupee-bundle": "stack of Indian 500 rupee notes photograph",
+    "money-dollar-notes": "United States one hundred dollar bill 2013 series", "money-coins": "Indian rupee coins",
     "dog": "golden retriever dog", "dog-street": "Indian pariah dog", "cat": "domestic cat portrait",
     "microphone": "microphone studio condenser", "microphones-press": "press microphones podium",
-    "news-studio": "television news studio", "camera-tv": "television camera broadcast",
+    "news-studio": "television news studio", "camera-tv": "television studio camera equipment",
     "stage": "empty stage spotlight theatre", "crowd": "crowd concert audience",
-    "earth": "The Blue Marble Earth", "india-map-satellite": "India satellite image",
+    "earth": "The Blue Marble Earth",
     "laptop": "laptop computer", "smartphone": "smartphone in hand", "computer-desk": "desktop computer office",
     "supreme-court-india": "Supreme Court of India building", "parliament-india": "Parliament House New Delhi",
-    "bank-building": "Reserve Bank of India building", "atm": "ATM machine", "stock-market-screen": "stock market display board",
+    "bank-building": "Reserve Bank of India Mumbai headquarters", "atm": "automated teller machine India photograph", "stock-market-screen": "stock market display board",
     "newspaper": "newspapers stack", "calendar": "wall calendar", "stopwatch": "stopwatch", "clock": "wall clock",
     "trophy": "trophy cup", "gavel": "judge gavel", "police": "police car India",
     "hospital": "hospital building", "school-classroom": "classroom India", "farmer-field": "wheat field India",
