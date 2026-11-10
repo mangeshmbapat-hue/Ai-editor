@@ -133,6 +133,9 @@ def parser():
     p.add_argument("--captions", action="store_true", help="burn a word-highlight subtitle track; only when the owner asks for subtitles (owner rule 2026-11-10)")
     p.add_argument("--aspect", default="9:16")
     p.add_argument("--end-card", type=float, default=5.0)
+    p = c.add_parser("cutout", help="Faceless Editor: background-removed PNG of a real photo (rembg)")
+    p.add_argument("src")
+    p.add_argument("out")
     p = c.add_parser("faceless-level", help="Faceless Editor: put music and every SFX at the owner's voice-first levels and drop banned FX")
     p.add_argument("edit")
     return root
@@ -233,6 +236,9 @@ def main(argv=None):
             from . import faceless as FL
             result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, args.captions, args.music,
                              args.aspect, args.end_card)
+        elif cmd == "cutout":
+            from . import faceless as FL
+            result = {"cutout": FL.cutout(args.src, args.out)}
         elif cmd == "faceless-level":
             from . import faceless as FL
             result = FL.level(args.edit)
