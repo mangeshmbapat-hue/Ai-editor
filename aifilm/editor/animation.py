@@ -78,6 +78,9 @@ def theme_from_brand(brand, base="lavender"):
     else:
         t["grounds"][t["default_ground"]] = _mix(rgb, (255, 255, 255), 0.88)
         t["track"] = _mix(rgb, (255, 255, 255), 0.85)
+        deep = tuple(round(v * 0.5) for v in rgb)  # shadows and the watermark take the brand's hue, like the samples
+        t["shadow"] = "rgba({},{},{},0.14)".format(*deep)
+        t["mark"] = "rgba({},{},{},0.55)".format(*deep)
     return t
 
 
