@@ -133,5 +133,95 @@
   "author": "NASA Goddard Space Flight Center",
   "file": "earth.jpg",
   "fetched": "2026-11-10"
+ },
+ "crowd": {
+  "title": "File:Man-person-people-crowd-concert-audience-41796.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Man-person-people-crowd-concert-audience-41796.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Man-person-people-crowd-concert-audience-41796.jpg",
+  "licence": "CC0",
+  "author": "https://pxhere.com/es/photo/41796",
+  "file": "crowd.jpg",
+  "fetched": "2026-11-10"
+ },
+ "smartphone": {
+  "title": "File:Black smartphone in hand (Unsplash).jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Black_smartphone_in_hand_%28Unsplash%29.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Black_smartphone_in_hand_(Unsplash).jpg",
+  "licence": "CC0",
+  "author": "Dennis Cortés cortes",
+  "file": "smartphone.jpg",
+  "fetched": "2026-11-10"
+ },
+ "stock-market-screen": {
+  "title": "File:Electronic stock board in Yaesu, Tokyo 2007.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Electronic_stock_board_in_Yaesu%2C_Tokyo_2007.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Electronic_stock_board_in_Yaesu,_Tokyo_2007.jpg",
+  "licence": "CC BY 2.0",
+  "author": "nappa",
+  "file": "stock-market-screen.jpg",
+  "fetched": "2026-11-10"
+ },
+ "clock": {
+  "title": "File:Pendulum clock by Jacob Kock, antique furniture photography, IMG 0931 edit.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Pendulum_clock_by_Jacob_Kock%2C_antique_furniture_photography%2C_IMG_0931_edit.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Pendulum_clock_by_Jacob_Kock,_antique_furniture_photography,_IMG_0931_edit.jpg",
+  "licence": "CC0",
+  "author": "Christoph Braun",
+  "file": "clock.jpg",
+  "fetched": "2026-11-10"
+ },
+ "trophy": {
+  "title": "File:MLG Columbus CSGO Major cup.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1c/MLG_Columbus_CSGO_Major_cup.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:MLG_Columbus_CSGO_Major_cup.jpg",
+  "licence": "CC BY 2.0",
+  "author": "SteelSeries",
+  "file": "trophy.jpg",
+  "fetched": "2026-11-10"
+ },
+ "police": {
+  "title": "File:Delhi Police car All Women PCR vehicle at India Gate.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Delhi_Police_car_All_Women_PCR_vehicle_at_India_Gate.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Delhi_Police_car_All_Women_PCR_vehicle_at_India_Gate.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Pulakit Singh",
+  "file": "police.jpg",
+  "fetched": "2026-11-10"
+ },
+ "school-classroom": {
+  "title": "File:A coaching classroom in India, belonging to Aakash Educational Services Pvt. Ltd..jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/A_coaching_classroom_in_India%2C_belonging_to_Aakash_Educational_Services_Pvt._Ltd..jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:A_coaching_classroom_in_India,_belonging_to_Aakash_Educational_Services_Pvt._Ltd..jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Nakna06",
+  "file": "school-classroom.jpg",
+  "fetched": "2026-11-10"
+ },
+ "road-traffic": {
+  "title": "File:An urban road and traffic in Bangalore Karnataka India April 2014.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/An_urban_road_and_traffic_in_Bangalore_Karnataka_India_April_2014.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:An_urban_road_and_traffic_in_Bangalore_Karnataka_India_April_2014.jpg",
+  "licence": "CC BY-SA 2.0",
+  "author": "Harsha K R from Bangalore, India",
+  "file": "road-traffic.jpg",
+  "fetched": "2026-11-10"
+ },
+ "rocket-launch": {
+  "title": "File:First NASA ISINGLASS rocket launch.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/First_NASA_ISINGLASS_rocket_launch.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:First_NASA_ISINGLASS_rocket_launch.jpg",
+  "licence": "Public domain",
+  "author": "NASA",
+  "file": "rocket-launch.jpg",
+  "fetched": "2026-11-10"
+ },
+ "gold": {
+  "title": "File:Gold ingot and bar of Banque de France.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Gold_ingot_and_bar_of_Banque_de_France.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Gold_ingot_and_bar_of_Banque_de_France.jpg",
+  "licence": "CC BY 4.0",
+  "author": "Ibex73",
+  "file": "gold.jpg",
+  "fetched": "2026-11-10"
  }
 }
