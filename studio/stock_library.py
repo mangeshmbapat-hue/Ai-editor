@@ -41,6 +41,9 @@ ITEMS = {
     "city-mumbai": "Mumbai skyline", "city-delhi": "India Gate New Delhi", "road-traffic": "traffic India road",
     "rocket-launch": "rocket launch", "satellite": "satellite in orbit", "factory": "factory industry",
     "gold": "gold bars", "chart-paper": "financial newspaper chart", "car": "car on road",
+    # food (Animation Editor, Chamosa 2026-11-10: real items on every scene)
+    "cutting-chai": "cutting chai glass", "chai-kulhad": "chai kulhad", "onion-pakoda": "onion pakoda",
+    "samosa-chutney": "samosa with chutney", "bun-maska": "bun maska",
 }
 
 

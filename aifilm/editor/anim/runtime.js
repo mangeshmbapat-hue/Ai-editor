@@ -310,6 +310,21 @@
     },
   };
 
+  // Real product photos (transparent cutouts) placed around a scene's UI: they pop in with the house overshoot,
+  // sit still with a soft contact shadow (a warm glow on dark grounds), and leave through blur with the scene.
+  function props(L, s, t0, d, dark) {
+    (s.props || []).forEach((p, i) => {
+      const box = centre(el('div', 'prop', L, { width: (p.w || 0.4) * W + 'px', zIndex: p.front ? 30 : 5 }), p.x, p.y);
+      const im = el('img', '', box, { filter: dark ? 'drop-shadow(0 0 ' + px(0.04) + ' rgba(255,170,90,.45))' : 'drop-shadow(0 ' + px(0.02) + ' ' + px(0.03) + ' rgba(80,40,10,.28))' });
+      im.src = 'assets/' + p.image;
+      gsap.set(box, { rotation: p.rot || 0 });
+      const at = t0 + (p.at !== undefined ? p.at : 0.08 + i * 0.1);
+      tl.fromTo(box, { autoAlpha: 0, scale: 0.6, y: u(0.05), filter: 'blur(14px)' },
+        { autoAlpha: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: 0.4, ease: 'back.out(1.6)' }, at);
+      M.blurOut(box, t0 + d - 0.25, { to: 1.06 });
+    });
+  }
+
   // ---- build: ground, watermark, scenes ---------------------------------------------------------
   const ground = el('div', 'ground', root);
   const grounds = T.grounds;
@@ -322,6 +337,7 @@
     tl.set(ground, { background: g }, t); // grounds change on the scene boundary, never through grey
     L.style.color = /night|dark|deep/.test(s.ground || '') || s.type === 'endcard' || T.dark ? T.ink_dark || '#f2f2f7' : T.ink;
     SCENES[s.type](L, s, t, d);
+    props(L, s, t, d, s.type === 'endcard' || /night|dark|deep/.test(s.ground || '') || T.dark);
     if (s.type !== 'logo' && s.type !== 'search' && s.type !== 'button' && s.type !== 'pill') hideCursor(t + 0.05);
     t += d;
   });

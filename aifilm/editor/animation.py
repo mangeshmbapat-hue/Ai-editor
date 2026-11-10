@@ -108,6 +108,7 @@ def assets_of(spec):
                 if isinstance(it.get(key), str) and "." in it[key]:
                     names.append(it[key])
         names += [i for i in s.get("icons", []) if "." in i]
+        names += [p["image"] for p in s.get("props", []) if p.get("image")]
     return sorted(set(names))
 
 

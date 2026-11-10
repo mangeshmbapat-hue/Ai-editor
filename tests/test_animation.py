@@ -77,6 +77,13 @@ class BuildAndGateTest(unittest.TestCase):
         self.assertEqual(info["size"], "1080x1080")
         self.assertEqual(info["scenes"][-1]["type"], "endcard")
 
+    def test_props_are_assets(self):
+        s = spec()
+        s["scenes"][1]["props"] = [{"image": "cup.png", "x": 0.5, "y": 0.3, "w": 0.3}]
+        self.assertIn("cup.png", A.assets_of(s))
+        with self.assertRaises(ProductionError):  # a prop that is not in raw/ is refused
+            self.make(s)
+
     def test_missing_asset_is_refused(self):
         s = spec()
         s["scenes"][0]["image"] = "logo.png"

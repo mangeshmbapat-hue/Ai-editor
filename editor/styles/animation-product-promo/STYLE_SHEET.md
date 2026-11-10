@@ -73,6 +73,7 @@ The four learned themes are in `aifilm/editor/animation.py` (`lavender`, `midnig
 - No subtitles unless the owner asks for them (owner rule, 2026-11-10).
 
 ## Icons and PNGs
+- **Owner rule (2026-11-10): the real product is on every scene.** Photo cutouts of the product (for food, the dishes themselves) sit around the UI and the text. They pop in with the house overshoot, hold still with a soft contact shadow (a warm glow on dark grounds), and leave through blur. Use the `props` field of any scene.
 - App and product icons are **squircles** (24 % corner radius) or **3D-style glossy PNGs** with a soft drop shadow (s4 orbit, s3 dock). The product's own screens and icons come from the owner (PNG with a transparent background; `cutout` makes one from a photo).
 - Line icons inside pills and chips are white on the accent colour, or the accent on white. The runtime has built-in line icons (search, filter, bolt, check, send, plus, star, bike, bell, play, heart, user, camera).
 - Social platforms use the owner's library (`editor/library/social/`) when a platform is named.
