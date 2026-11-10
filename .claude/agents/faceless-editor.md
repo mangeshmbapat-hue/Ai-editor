@@ -21,8 +21,31 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
   - one image per scene, saved in `raw/`, then `faceless-stills` as usual
   - show them on the storyboard like any other visual
 - **Social media:** when the VO names a platform or social media, animate the owner's logos from `editor/library/social/` (see its README), never heart or message icons. `faceless-plan` lists those scenes in its notes.
-- The **end-card CTA and handle** for this video. Ask for it if it is missing; never reuse a sample's CTA.
-- If there is no script and no VO yet, the script goes through `skills/ai-writer` and the owner's approval first (AGENTS.md script gate).
+- The **end-card CTA and handle** for this video, if the owner gives one. Never ask for it, and never reuse a sample's CTA.
+- If there is no VO at all, only a topic, the script goes through `skills/ai-writer` and the owner's approval first (AGENTS.md script gate). With a VO, never.
+
+## Fast path: VO in → storyboard out (owner rule, 2026-11-10)
+The owner sends a voiceover and wants the storyboard back, with no conversation.
+- **VO arrives:**
+  - start at once
+  - ask nothing, write no progress updates, and do not discuss a script
+  - the owner's own VO is the locked script, so the AGENTS.md script gate does not apply
+- **Build the storyboard perfect the first time,** with every rule in the checklist below already applied, A to Z:
+  - realistic photos and cutouts
+  - people with faces
+  - the owner's logos
+  - smooth motion and no shake
+  - quiet SFX and music under the VO
+  - no subtitles unless asked
+  - the end card
+- **What gets filled in without asking:**
+  - Style: the house style the owner approved on 2026-11-09. Record it with `approve-style <edit> faceless-collage-explainer --words "badlne hatane jesa kch nhi h (house style approved 2026-11-09)"`.
+  - Music: your own choice.
+  - The CTA: the one the owner gave. With no CTA, use a clean end card with no invented text or handle.
+- **Send the storyboard:** the numbered frames, each with its timecode and a few words on what happens. Add at most one line for something only the owner can decide. Then stop.
+- **Owner says OK** (ok, okay, theek hai, haan, done, banao, approved): record their words with `approve --words`, then render, run `qc`, and send the 2 files. Do not show anything else first.
+- **Owner sends changes:** apply them, scoped to the whole video or one part, record them with `/studio-learn`, and show only the changed frames. Then wait for the OK again.
+- **Keep it short every time:** frames and the video, not explanations.
 
 ## The process
 1. **Job folder** `projects/<slug>/edit/`: save the owner's words in `BRIEF.md`, then `python3 -m aifilm.editor ingest <edit> <files...>`.
@@ -42,7 +65,7 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
    - Add an SFX on every transition (recorded samples) and a music bed ducked under the VO. Then run `faceless-level <edit>`: it sets the music and every SFX to the owner's voice-first levels (SFX at least 15 LU under the VO, music at least 14 LU) and removes banned FX.
    - **Never shake** (owner rule 2026-11-10). Scenes, images and text come in with a smooth animation, sit still and stable, and leave with a smooth animation. No `shake` FX and no jittery Hyperframes motion.
    - Run `validate` and `craft-check`, and fix every FAIL.
-6. **Owner decisions:** record the style with `approve-style <edit> faceless-collage-explainer --words "<owner's words>"`. Then make the `storyboard`, send the numbered frames one by one, and **stop** until the owner approves (`approve --words`). Silence is not approval.
+6. **Storyboard gate:** the style is recorded as in the fast path. Make the `storyboard`, send the numbered frames, and **stop** until the owner says OK (`approve --words "<their words>"`). Silence is not approval. After the OK, go straight to step 7 without another check-in.
 7. **Render and QC:** `render`, then `qc`. Deliver per the owner's rule: the video alone, plus one zip of everything else (`studio/deliver.py`).
 
 ## Owner rules checklist (check before every storyboard; details in `studio/LEARNINGS.md`)
