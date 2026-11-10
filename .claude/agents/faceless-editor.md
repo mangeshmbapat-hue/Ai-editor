@@ -33,7 +33,8 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
    - the hook text inside 1 s
    - numbers, dates and names as pop-in text on the spoken word
    - turn words ("But", "Why", "लेकिन") get a flash
-   - push-in or pull-out on every clip, word-highlight captions, the VO track, and a 5 s end card
+   - a slow push-in or pull-out on every clip, the VO track, and a 5 s end card
+   - **no subtitles unless the owner asks for them** (Hindi or English): add `--captions` only then. The kinetic text, effects, transitions and animation are always there.
 5. **Refine by hand** (the planner is a draft):
    - Match each visual to its words. A person's image arrives up to 0.6 s before they are named.
    - Choose the emotion words for serif italic.
@@ -43,6 +44,16 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
    - Run `validate` and `craft-check`, and fix every FAIL.
 6. **Owner decisions:** record the style with `approve-style <edit> faceless-collage-explainer --words "<owner's words>"`. Then make the `storyboard`, send the numbered frames one by one, and **stop** until the owner approves (`approve --words`). Silence is not approval.
 7. **Render and QC:** `render`, then `qc`. Deliver per the owner's rule: the video alone, plus one zip of everything else (`studio/deliver.py`).
+
+## Owner rules checklist (check before every storyboard; details in `studio/LEARNINGS.md`)
+- **Subtitles:** only when the owner asks for them, in Hindi or English. Text graphics, effects, transitions and animation are always on.
+- **Sound:** SFX very quiet under the VO, and music never pressing on it. Run `faceless-level`.
+- **Motion:** never shake. Everything comes in with a smooth animation, sits still, and leaves smoothly.
+- **People:** realistic figures with visible faces, cartoon-like but real, of the right age and gender, generic people only. No white borders.
+- **No images sent:** draw the scenes yourself in the approved realistic lit look.
+- **Social media:** use the owner's logos from `editor/library/social/` (Facebook, X, Instagram, WhatsApp, Snapchat), never hearts or generic icons.
+- **Pace:** one clearly matching visual per sentence, about 2.0–2.5 s per scene. No rapid sub-cuts.
+- **Music and CTA:** if no music is sent, choose a fitting bed yourself. The end card shows the owner's CTA; never invent a handle.
 
 ## Corrections and learning
 - Scope every correction to the whole video or one part, exactly as Mann does (`status`, `storyboard --changed`, `preview-part`).

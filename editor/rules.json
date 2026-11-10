@@ -11,7 +11,7 @@
     "short_form_max_seconds": 90,
     "short_form_max_shot_seconds": 3.0,
     "hook_first_cut_max_seconds": 2.5,
-    "short_form_requires_subtitles": true,
+    "short_form_requires_subtitles": false,
     "min_shot_seconds": 0.25,
     "style_pace_tolerance": 0.3,
     "safe_zone_profile": "standard",
@@ -87,6 +87,13 @@
       ],
       "kind": "owner",
       "source": "tum usko itna shake karte ho ki vo screen pe stable nahi rehta ... jis tarike se baar-baar video tum shake karwate ho, vo cheez mujhe nahi chahiye"
+    },
+    {
+      "date": "2026-11-10",
+      "rule": "short_form_requires_subtitles",
+      "value": false,
+      "kind": "owner",
+      "source": "jab main tumse videos mein subtitle maangu, English ya Hindi mein, to hi mujhe har video ke subtitles dena. varna subtitle ki zaroorat har video mein nahi hoti hai, kyunki koi client to mana karta hai"
     }
   ]
 }

@@ -130,7 +130,7 @@ def parser():
     p.add_argument("--cta", help="the end-card line the owner gave for this video")
     p.add_argument("--title", help="the hook text on screen in the first second (default: the first sentence)")
     p.add_argument("--music", help="music file inside the edit")
-    p.add_argument("--no-captions", action="store_true", help="skip the word-highlight caption track (rules.json requires captions on short form)")
+    p.add_argument("--captions", action="store_true", help="burn a word-highlight subtitle track; only when the owner asks for subtitles (owner rule 2026-11-10)")
     p.add_argument("--aspect", default="9:16")
     p.add_argument("--end-card", type=float, default=5.0)
     p = c.add_parser("faceless-level", help="Faceless Editor: put music and every SFX at the owner's voice-first levels and drop banned FX")
@@ -231,7 +231,7 @@ def main(argv=None):
             result = {"stills": FL.stills(args.edit, args.seconds, args.aspect)}
         elif cmd == "faceless-plan":
             from . import faceless as FL
-            result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, not args.no_captions, args.music,
+            result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, args.captions, args.music,
                              args.aspect, args.end_card)
         elif cmd == "faceless-level":
             from . import faceless as FL
