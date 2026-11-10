@@ -192,7 +192,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
         used[pick] = out
         clip = {"id": "C{:02d}".format(i + 1), "source": sid[pick], "in": round(offset, 3), "out": round(out, 3),
                 "beat": " ".join(w["word"] for w in g),
-                "zoom": {"from": 1.12, "to": 1.0} if i % 3 == 2 else {"from": 1.0, "to": 1.12}}
+                "zoom": {"from": 1.04, "to": 1.0} if i % 3 == 2 else {"from": 1.0, "to": 1.04}}   # slow, steady drift (owner: no shake)
         if trans:
             clip["transition_in"] = trans
         if turn:
@@ -206,7 +206,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
                     break
             hook = hook if len(hook) <= 5 else hook[:3]   # a long first sentence keeps only its first words: "Destroying the moon"
             items.append({"value": wrap(title or " ".join(hook), 9, 5), "role": "title" if max(len(x) for x in hook) <= 7 else "headline", "position": "top", "start": 0.05, "end": round(dur, 3),
-                          "animate": "slam", "color": "#c44536"})
+                          "animate": "pop", "color": "#c44536"})
         runs, prev_key = [], False
         for w in g:
             key = is_key(w["word"], sentence_start)
@@ -240,7 +240,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
     last = visuals[(len(groups)) % len(visuals)]
     card = {"id": "C{:02d}".format(len(clips) + 1), "source": sid[last], "in": 0.0,
             "out": round(min(end_card, probes[last]["duration"]), 3), "beat": "end card", "transition_in": {"type": "fadeblack", "duration": 0.4},
-            "zoom": {"from": 1.0, "to": 1.06}}
+            "zoom": {"from": 1.0, "to": 1.03}}
     if cta:
         card["text"] = [{"value": wrap(cta, 14, 4), "role": "headline", "position": "center", "start": 0.3, "end": round(card["out"] - 0.2, 3), "animate": "pop", "box": True}]
     else:
@@ -258,7 +258,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=T
                words_file, now()[:10], len(groups), vo_end / len(groups), PRELAP),
                "Hand work before the storyboard: prop/paper collage and number counters as Hyperframes overlays (`mg-new`), an SFX on every transition, music."] + notes}
     if music:
-        edl["audio"]["music"] = {"file": music, "gain_db": -20, "duck": True, "fade_out": 1.5}
+        edl["audio"]["music"] = {"file": music, "gain_db": music_gain(root, voice, music), "duck": True, "fade_out": 1.5}
     if captions:
         write_caption_files(root, words)
         edl["subtitles"] = {"file": "captions.srt", "burn": True, "size": 0.035, "position": "bottom", "box": True,
@@ -287,6 +287,64 @@ def caption_cues(words, max_words=4, min_seconds=0.9, max_cps=17, max_chars=28):
     if cur:
         cues.append(cur)
     return cues
+
+
+def music_gain(root, voice, music, under=None):
+    """Gain that puts the music `under` LU below the VO (editor/rules.json music_under_voice_db),
+    measured, so the bed never presses on the owner's voice."""
+    from ..core import read_json
+    from .render import REPO
+    under = under if under is not None else read_json(REPO / "editor" / "rules.json")["rules"]["music_under_voice_db"]
+    vo, mu = media.loudness(inside(root, voice))["lufs"], media.loudness(inside(root, music))["lufs"]
+    if vo is None or mu is None:
+        return -24.0
+    return round(min(vo - under - mu - 2.0, 0.0), 1)
+
+
+def sfx_gain(root, voice, sfx, under=None):
+    """Gain for an SFX hit that keeps it well under the VO (editor/rules.json sfx_under_voice_lu)."""
+    from ..core import read_json
+    from .render import REPO
+    under = under if under is not None else read_json(REPO / "editor" / "rules.json")["rules"]["sfx_under_voice_lu"]
+    vo, fx = media.loudness(inside(root, voice))["lufs"], media.loudness(inside(root, sfx))["lufs"]
+    if vo is None or fx is None:
+        return -24.0
+    return round(min(vo - under - fx - 2.0, 0.0), 1)
+
+
+def level(root):
+    """Set every SFX and the music in edl.json to the owner's voice-first levels and drop banned
+    FX (shake). Run it after adding SFX by hand, before the storyboard."""
+    from ..core import project_lock, read_json
+    from .render import REPO
+    root = Path(root)
+    banned = set(read_json(REPO / "editor" / "rules.json")["rules"].get("banned_fx", []))
+    with project_lock(root):
+        edl = read_json(root / "edl.json")
+        audio = edl.get("audio", {})
+        voice = (audio.get("voice") or {}).get("file")
+        require(voice, "level needs a voiceover track (audio.voice)")
+        changes = []
+        if audio.get("music"):
+            g = music_gain(root, voice, audio["music"]["file"])
+            if audio["music"].get("gain_db", 0) > g:
+                changes.append("music {} -> {} dB".format(audio["music"].get("gain_db", 0), g))
+                audio["music"]["gain_db"] = g
+        for sfx in audio.get("sfx", []):
+            g = sfx_gain(root, voice, sfx["file"])
+            if sfx.get("gain_db", 0) > g:
+                changes.append("{} at {}s {} -> {} dB".format(sfx["file"], sfx["at"], sfx.get("gain_db", 0), g))
+                sfx["gain_db"] = g
+        for c in edl["clips"]:
+            kept = [fx for fx in E.as_list(c.get("fx")) if fx not in banned]
+            if len(kept) != len(E.as_list(c.get("fx"))):
+                changes.append("{}: removed {}".format(c["id"], ", ".join(sorted(set(E.as_list(c.get("fx"))) & banned))))
+                c["fx"] = kept
+                if not kept:
+                    del c["fx"]
+        E.validate(root, edl)
+        write_json(root / "edl.json", edl)
+    return {"changes": changes}
 
 
 def write_caption_files(root, words):

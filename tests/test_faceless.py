@@ -76,6 +76,8 @@ class PlanLogicTest(unittest.TestCase):
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
         self.assertEqual(E.text_motion(None), "")
+        for kind in ("pop", "fade", "slam"):
+            self.assertRegex(E.text_motion(kind), r"\\fad\(\d+,1[0-9]{2}\)", "text also leaves smoothly")
 
     def test_house_style_is_learned_and_measured(self):
         style = json.loads((R.STYLES / F.HOUSE_STYLE / "style.json").read_text(encoding="utf-8"))
@@ -141,6 +143,30 @@ class PlanMediaTest(unittest.TestCase):
         edl = json.loads((self.edit / "edl.json").read_text(encoding="utf-8"))
         self.assertNotIn("subtitles", edl)
         self.assertTrue(any("CTA" in n for n in edl["notes"]))
+
+    def test_owner_rules_quiet_sfx_and_no_shake(self):
+        """Owner rules 2026-11-10: SFX and music stay well under the VO; nothing shakes."""
+        from aifilm.editor import craft as C
+        F.stills(self.edit, seconds=6)
+        ff("-f", "lavfi", "-i", "anoisesrc=d=0.4:c=pink:a=0.9", self.edit / "raw" / "whoosh.wav")
+        F.plan(self.edit, "raw/vo.m4a", "words.json", cta="x", music="raw/bed.wav")
+        edl = json.loads((self.edit / "edl.json").read_text(encoding="utf-8"))
+        self.assertTrue(all(c.get("zoom", {}).get("from", 1) <= 1.05 and c.get("zoom", {}).get("to", 1) <= 1.05 for c in edl["clips"]))
+        edl["audio"]["sfx"] = [{"file": "raw/whoosh.wav", "at": 2.0, "gain_db": 0}]
+        edl["audio"]["music"]["gain_db"] = 0
+        edl["clips"][2]["fx"] = ["shake"]
+        write_json(self.edit / "edl.json", edl)
+        found = {f["check"]: f["result"] for f in C.check(self.edit, edl, sample_contrast=False)}
+        self.assertEqual(found["banned effects"], "fail")
+        self.assertEqual(found["SFX under voiceover"], "fail")
+        self.assertEqual(found["music under voiceover"], "fail")
+        r = F.level(self.edit)
+        self.assertTrue(r["changes"])
+        edl = json.loads((self.edit / "edl.json").read_text(encoding="utf-8"))
+        found = {f["check"]: f["result"] for f in C.check(self.edit, edl, sample_contrast=False)}
+        self.assertEqual(found["banned effects"], "pass")
+        self.assertEqual(found["SFX under voiceover"], "pass")
+        self.assertEqual(found["music under voiceover"], "pass")
 
     def test_sub_edl_shifts_the_voice(self):
         F.stills(self.edit, seconds=6)

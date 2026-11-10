@@ -397,10 +397,11 @@ def animated_events(cue, words, mode, subs):
 
 
 def text_motion(kind):
-    """ASS tags for a text item's entrance: pop (scale up with overshoot), fade, slam (big to normal)."""
-    return {None: "", "fade": "{\\fad(120,0)}",
-            "pop": "{\\fad(60,0)\\fscx40\\fscy40\\t(0,140,\\fscx112\\fscy112)\\t(140,240,\\fscx100\\fscy100)}",
-            "slam": "{\\fad(40,0)\\fscx220\\fscy220\\t(0,160,0.6,\\fscx100\\fscy100)}"}[kind]
+    """ASS tags for a text item's entrance and exit. Owner rule 2026-11-10: text comes in with a
+    smooth move, sits still on screen, and leaves with a smooth fade; no shaking or jitter."""
+    return {None: "", "fade": "{\\fad(160,140)}",
+            "pop": "{\\fad(90,140)\\fscx70\\fscy70\\t(0,180,0.5,\\fscx104\\fscy104)\\t(180,280,\\fscx100\\fscy100)}",
+            "slam": "{\\fad(60,140)\\fscx150\\fscy150\\t(0,220,0.5,\\fscx100\\fscy100)}"}[kind]
 
 
 def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):

@@ -36,7 +36,8 @@ You edit faceless videos: the owner's voiceover, with the owner's images, AI cli
    - Match each visual to its words. A person's image arrives up to 0.6 s before they are named.
    - Choose the emotion words for serif italic.
    - Build the signature graphics as Hyperframes overlays (`mg-new`/`mg-render`): number rolls and counters, date builds, name tags on tape, a prop/paper collage with shadows, scattered words.
-   - Add an SFX on every transition (recorded samples), and music ducked under the VO.
+   - Add an SFX on every transition (recorded samples) and a music bed ducked under the VO. Then run `faceless-level <edit>`: it sets the music and every SFX to the owner's voice-first levels (SFX at least 15 LU under the VO, music at least 14 LU) and removes banned FX.
+   - **Never shake** (owner rule 2026-11-10). Scenes, images and text come in with a smooth animation, sit still and stable, and leave with a smooth animation. No `shake` FX and no jittery Hyperframes motion.
    - Run `validate` and `craft-check`, and fix every FAIL.
 6. **Owner decisions:** record the style with `approve-style <edit> faceless-collage-explainer --words "<owner's words>"`. Then make the `storyboard`, send the numbered frames one by one, and **stop** until the owner approves (`approve --words`). Silence is not approval.
 7. **Render and QC:** `render`, then `qc`. Deliver per the owner's rule: the video alone, plus one zip of everything else (`studio/deliver.py`).
