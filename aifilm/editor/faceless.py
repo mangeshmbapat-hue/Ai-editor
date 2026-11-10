@@ -379,3 +379,19 @@ def write_caption_files(root, words):
                   for n, (c, e) in enumerate(zip(cues, ends), 1))
     (Path(root) / "captions.srt").write_text(srt, encoding="utf-8")
     write_json(Path(root) / "captions.words.json", words)
+
+
+def cutout(src, out):
+    """Background-removed PNG of a real photo (rembg, u2net), for an object placed where the VO
+    names it. The model (176 MB) downloads from GitHub on first use."""
+    try:
+        from rembg import new_session, remove
+        from PIL import Image
+    except ImportError as exc:
+        raise E.ProductionError("Cutouts need rembg: python3 -m pip install rembg onnxruntime") from exc
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img = remove(Image.open(src).convert("RGB"), session=new_session("u2net"))
+    box = img.getbbox()
+    (img.crop(box) if box else img).save(out)
+    return str(out)

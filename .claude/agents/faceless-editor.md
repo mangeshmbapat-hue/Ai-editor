@@ -47,6 +47,22 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
 - **Owner sends changes:** apply them, scoped to the whole video or one part, record them with `/studio-learn`, and show only the changed frames. Then wait for the OK again.
 - **Keep it short every time:** frames and the video, not explanations.
 
+## Speed (owner rule 2026-11-10: the storyboard was taking an hour)
+- **Target:** the storyboard reaches the owner within about 15 minutes of the VO.
+- **Use the libraries first, and never wait on the web:**
+  - `editor/library/stock/`: real, free-licensed photos with `CREDITS.json`
+  - `editor/library/stock/cutouts/`: ready-made cutouts
+  - `editor/library/social/` and `editor/library/media/`: the owner's logos
+- **Missing photos:**
+  - Fetch at most a few, in the background: `python3 studio/stock_library.py <slug>`.
+  - Add the new slug to `ITEMS` and commit it, so the library grows for the next job.
+  - If a fetch is slow, use the closest library photo and move on.
+- **Start the transcript at once, in the background,** while you prepare the scenes.
+- **Don't rebuild tools for each job.** Reuse the engine commands. A scene renderer or helper that you build goes into the repo (`editor/faceless/`) so the next job reuses it, not into the job folder.
+- **SFX and music:** use the library or a quick, quiet bed. Do not search the web for sounds during a job.
+- **Cutouts:** `python3 -m aifilm.editor cutout <photo> <out.png>` (rembg).
+- **Chat:** none while working (fast path).
+
 ## The process
 1. **Job folder** `projects/<slug>/edit/`: save the owner's words in `BRIEF.md`, then `python3 -m aifilm.editor ingest <edit> <files...>`.
 2. **Word timings:** `transcribe <edit>/raw/<vo> <edit>/tr --language hi|en`. For a known script, use `studio/word_timing.py` instead.
