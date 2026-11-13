@@ -6,6 +6,7 @@ soft feathered edges, a 2D finish, whole products only, no broken people).
     python3 studio/soft_cutout.py <photo> <out.png> [--model isnet-general-use|u2net] [--warm] [--flush right,bottom]
 
 - removes the background (rembg; isnet-general-use is best for products, u2net for people) and keeps the largest piece
+  (--keep 2 keeps the two largest, for one photo of two people standing apart, e.g. two founders)
 - repaints the edge fringe from the inside, so no light or dark halo from the old background
 - a light edge-preserving smoothing for the soft 2D look, then a feathered alpha
 - --warm: a brown-to-cream duotone for old black-and-white photos so they sit in a warm theme
@@ -31,6 +32,7 @@ def main(argv=None):
     ap.add_argument("--model", default="isnet-general-use")
     ap.add_argument("--warm", action="store_true")
     ap.add_argument("--flush", default="")
+    ap.add_argument("--keep", type=int, default=1, help="how many of the largest pieces to keep (2 for two people in one photo)")
     ap.add_argument("--size", type=int, default=900, help="upscale so the longest side is at least this")
     a = ap.parse_args(argv)
     from rembg import new_session, remove
@@ -38,7 +40,8 @@ def main(argv=None):
     m = rgba[..., 3] > 30
     lab, n = ndimage.label(m)
     if n > 1:
-        keep = lab == (np.argmax(ndimage.sum(m, lab, range(1, n + 1))) + 1)
+        sizes = ndimage.sum(m, lab, range(1, n + 1))
+        keep = np.isin(lab, np.argsort(sizes)[::-1][:max(1, a.keep)] + 1)
         rgba[..., 3] = np.where(ndimage.binary_dilation(keep, iterations=3), rgba[..., 3], 0)
     x = crop(rgba, 40)
     h, w = x.shape[:2]; k = max(1.0, a.size / max(h, w))
