@@ -56,6 +56,11 @@ Run the **faceless-editor** agent (`.claude/agents/faceless-editor.md`) with the
   - never a real person's face
 - **People** the owner does not supply may be drawn or AI figures: realistic, with visible faces of the right age and gender, generic, and without white borders.
 - **Finish:** real objects get the soft 2D finish (`soft2d`, on by default): real but smooth and a little cute, never a paper cutout. Objects stay modest in size (about half the frame width).
+- **Show what each sentence says** (owner, 2026-11-13):
+  - Never fill a video with the same few objects; use an object at most twice per video and never back to back.
+  - Abstract ideas (sizes, effects, colours, steps, before/after) get a designed demo graphic in the theme. Kinds: `faceless.design`: timeline, icons with a scale, effects (overload or clean), checklist, cards3, beforeafter, spotlight, palette, ruler. Save them as `raw/design-*.png`; they stay crisp, with no reflection.
+  - Concrete things named in the VO get a real photo (a diamond for "special", gold for "luxury").
+  - Drop any photo with a brand name or a messy cutout.
 - **Own text picks:** for tips and explainers, choose the key phrase of each scene yourself and pass it with `faceless-plan --texts texts.json` ({scene number: words}). The direction pass still picks the treatment.
 - **Cutouts:**
   - use `cutout` / `faceless-card`; they come out hole-free and get a soft shadow and reflection
