@@ -337,4 +337,6 @@ Spoken words are reconstructed from a rough recognition; times are ±0.4 s.
 _None yet._
 
 ## Rules from the owner's corrections
-_None yet._
+- 2026-11-13 (Chaayos): **timing overrides "0.1–0.4 s before" above.** Every text and image starts about 0.45 s before its word and has finished entering when the word is spoken (helper `lead = 0.45`, entrances 0.42–0.45 s). Hold each item long enough to read and see (aim for 1.5–2 s of full visibility); prefer moving finished lines up into a header over removing them. Circle wipes take 0.35 s and start in the pause after the sentence ends, never on its last word.
+- 2026-11-13 (Chaayos): **never crop a product's base.** Cut out from the whole source image (base, rim and bottom band included), then check every scene where the cutout appears.
+- 2026-11-13 (Chaayos): **real photos of people are colour-graded into the theme and blended**: denoise, neutralise any grey cast, warm the whites slightly, lift the shadows gently; in the scene give them a soft side and bottom fade, a grounded shadow and a faint accent-tinted light behind, flush to the frame edge.
