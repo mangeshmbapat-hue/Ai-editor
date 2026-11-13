@@ -1,0 +1,40 @@
+{
+  "about": "Product-animation styles, one per product category, taught by the owner one category at a time (owner rule 2026-11-13). A video is made in a category only after its sheet is learned and approved.",
+  "categories": {
+    "makeup-beauty": {
+      "name": "Makeup & beauty",
+      "products": "lipstick, foundation bottle, cream jar, serum, perfume, nail polish",
+      "status": "not learned",
+      "sheet": "editor/product-styles/makeup-beauty/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "food-drinks": {
+      "name": "Food & drinks",
+      "products": "snacks, chai and coffee, cold drinks, packaged food, sweets, restaurant dishes",
+      "status": "not learned",
+      "sheet": "editor/product-styles/food-drinks/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "fashion-clothing": {
+      "name": "Fashion & clothing",
+      "products": "clothes, shoes, sportswear, bags, accessories",
+      "status": "not learned",
+      "sheet": "editor/product-styles/fashion-clothing/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "automobile": {
+      "name": "Automobile",
+      "products": "cars, bikes and scooters, EVs, car accessories",
+      "status": "not learned",
+      "sheet": "editor/product-styles/automobile/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "apps-digital": {
+      "name": "Apps & digital products",
+      "products": "mobile apps, websites, software and AI tools, online services",
+      "status": "learned 2026-11-10 from the owner's 4 app-promo samples; the Chamosa promo made with it was rejected on 2026-11-13",
+      "sheet": "editor/styles/animation-product-promo/STYLE_SHEET.md",
+      "brands": {}
+    }
+  }
+}

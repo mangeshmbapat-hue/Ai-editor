@@ -111,6 +111,16 @@ class BuildAndGateTest(unittest.TestCase):
         self.assertEqual(main(["anim-themes", "--brand", "#00aa88"]), 0)
 
 
+class ProductLibraryTest(unittest.TestCase):
+    def test_every_category_has_a_sheet_and_honest_status(self):
+        lib = json.loads((REPO / "editor" / "product-styles" / "LIBRARY.json").read_text(encoding="utf-8"))
+        self.assertLessEqual({"makeup-beauty", "food-drinks", "fashion-clothing", "automobile"}, set(lib["categories"]))
+        for slug, c in lib["categories"].items():
+            sheet = (REPO / c["sheet"]).read_text(encoding="utf-8")
+            if c["status"] == "not learned":  # a template must never read as a learned style
+                self.assertIn("not learned yet", sheet, slug)
+
+
 @unittest.skipUnless(HAVE_RENDER, "needs node, Playwright's Chromium and FFmpeg")
 class RenderTest(unittest.TestCase):
     def test_storyboard_frames(self):
