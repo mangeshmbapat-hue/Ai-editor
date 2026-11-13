@@ -143,6 +143,7 @@ def parser():
     p.add_argument("--theme")
     p.add_argument("--width", type=float, default=0.68)
     p.add_argument("--photo", action="store_true", help="full-bleed place/scene photo with theme bands instead of a cutout")
+    p.add_argument("--panel", choices=["top", "center", "bottom"], help="frosted-glass panel where the text will sit")
     p = c.add_parser("faceless-themes", help="Faceless Editor: list the colour themes")
     p = c.add_parser("faceless-level", help="Faceless Editor: put music and every SFX at the owner's voice-first levels and drop banned FX")
     p.add_argument("edit")
@@ -249,7 +250,7 @@ def main(argv=None):
             result = {"cutout": FL.cutout(args.src, args.out)}
         elif cmd == "faceless-card":
             from . import faceless as FL
-            result = {"card": FL.photo_card(args.src, args.out, args.theme) if args.photo else FL.card(args.src, args.out, args.theme, width=args.width)}
+            result = {"card": FL.photo_card(args.src, args.out, args.theme) if args.photo else FL.card(args.src, args.out, args.theme, width=args.width, panel=args.panel)}
         elif cmd == "faceless-themes":
             from . import faceless as FL
             result = {k: {"name": v["name"], "use": v["use"]} for k, v in FL.themes()["themes"].items()}

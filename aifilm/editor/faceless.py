@@ -166,6 +166,11 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
     for v, p in probes.items():
         require(p["has_video"], "Visual has no picture: " + v)
     sources = {"V{}".format(i + 1): v for i, v in enumerate(visuals)}
+
+    def zone_of(v):
+        # raw/stills/<name>.mp4 is made from raw/<name>.jpg; faceless-card wrote raw/<name>.layout.json
+        p = Path(root) / "raw" / (Path(v).stem + ".layout.json")
+        return json.loads(p.read_text(encoding="utf-8"))["text_zone"] if p.exists() else "lower"
     sid = {v: k for k, v in sources.items()}
     groups = scenes(words)
     vo_end = min(vinfo["duration"], words[-1]["end"] + 0.4)
@@ -206,7 +211,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
                 if SENTENCE_END.search(w["word"]):
                     break
             hook = hook if len(hook) <= 5 else hook[:3]   # a long first sentence keeps only its first words: "Destroying the moon"
-            items.append({"value": wrap(title or " ".join(hook), 9, 5), "role": "title" if max(len(x) for x in hook) <= 7 else "headline", "position": "top", "start": 0.05, "end": round(dur, 3),
+            items.append({"value": wrap(title or " ".join(hook), 8 if max(len(x) for x in hook) <= 8 else 10, 4), "clean": True, "role": "title" if max(len(x) for x in hook) <= 8 else "headline", "position": "top" if zone_of(pick) == "top" else "bottom", "start": 0.05, "end": round(dur, 3),
                           "animate": "pop", "color": th["accent"]})
         runs, prev_key = [], False
         for w in g:
@@ -221,10 +226,14 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
             value = " ".join(x["word"] for x in run).strip(" ,;:!?।\"'“”").rstrip(".")
             number = any(ch.isdigit() for ch in value)
             try:
-                value = wrap(value)
+                value = wrap(value, 10, 2)        # headline size: about 10 characters per line fit the 9:16 safe zone
             except E.ProductionError:
                 continue                      # too long for a graphic; the agent places it by hand
-            items.append({"value": value, "role": "headline", "position": "center", "start": round(max(run[0]["start"] - a, 0.0), 3),
+            zone = zone_of(pick)
+            pos = "top" if zone == "top" else ("lower" if "\n" in value else "bottom")
+            if items:
+                continue                      # one text block per scene, in the zone the card left free for it
+            items.append({"value": value, "clean": True, "role": "headline", "position": pos, "start": round(max(run[0]["start"] - a, 0.0), 3),
                           "end": round(dur, 3), "animate": "pop", "color": th["highlight"] if number else th["text"], "box": True})
         if items:
             clip["text"] = items
@@ -254,8 +263,8 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
     clips.append(card)
     edl = {"version": 1, "title": title or " ".join(w["word"] for w in groups[0])[:60], "style": HOUSE_STYLE,
            "format": {"width": W, "height": H, "fps": 30, "fit": "cover"}, "sources": sources, "clips": clips,
-           "typography": {"pairing": "rozha-hind"}, "colour_theme": th["id"],
-           "grade": {"preset": "bw-contrast" if th["id"] == "mono-classic" else "neutral"},
+           "typography": {"pairing": "poppins-hind"}, "colour_theme": th["id"],
+           "grade": {"preset": "bw-contrast" if th.get("mono") else "neutral"},
            "audio": {"keep_source": False, "source_gain_db": 0, "voice": {"file": voice, "gain_db": 0}},
            "master": {"lufs": -14, "true_peak": -1},
            "notes": ["Faceless plan from `{}` on {}: {} scenes at {:.2f}s average, cuts {}s before their word, key words as text on the spoken word.".format(
@@ -268,6 +277,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
         write_caption_files(root, words)
         edl["subtitles"] = {"file": "captions.srt", "burn": True, "size": 0.035, "position": "bottom", "box": True,
                             "animate": "highlight", "highlight_color": "yellow", "words": "captions.words.json"}
+    fit_text(edl)
     E.validate(root, edl)
     rows, total = E.timeline(edl)
     drift = max(abs(r["start"] - s) for r, s in zip(rows, starts))
@@ -382,6 +392,37 @@ def write_caption_files(root, words):
     write_json(Path(root) / "captions.words.json", words)
 
 
+def solid_cutout(photo, alpha):
+    """Owner rule 2026-11-13: no holes or bites inside a cutout. The matte from rembg can punch
+    holes in flat, bright objects (a banknote lost 7.6 % of its inside). Fill every hole that does
+    not touch the frame border, take the pixels from the original photo, and soften the edge."""
+    from PIL import Image, ImageDraw, ImageFilter
+    import numpy as np
+    a = np.array(alpha) > 110
+    mask = Image.fromarray(np.pad(~a, 1, constant_values=True).astype(np.uint8) * 255).copy()   # writable copy for floodfill
+    ImageDraw.floodfill(mask, (0, 0), 128)                       # the outside background becomes 128
+    outside = (np.array(mask)[1:-1, 1:-1] == 128)
+    solid = Image.fromarray(((~outside) * 255).astype(np.uint8)).filter(ImageFilter.MedianFilter(5)).filter(ImageFilter.GaussianBlur(1.2))
+    out = photo.convert("RGBA")
+    out.putalpha(solid)
+    return out
+
+
+def cutout_quality(img):
+    """0..1: how clean a cutout is (1 = one solid shape). Low scores fall back to a framed photo."""
+    import numpy as np
+    from PIL import Image
+    a = np.array(img.split()[3]) > 128
+    if not a.any():
+        return 0.0
+    rows, cols = np.where(a)
+    box = (rows.max() - rows.min() + 1) * (cols.max() - cols.min() + 1)
+    # ragged edges: compare the outline length with that of a smooth blob of the same area
+    edge = (a ^ np.roll(a, 1, 0)).sum() + (a ^ np.roll(a, 1, 1)).sum()
+    smooth = 4 * (a.sum() ** 0.5)
+    return float(max(0.0, min(1.0, smooth / max(edge, 1) * 1.6)) * min(1.0, a.sum() / box / 0.35))
+
+
 def cutout(src, out):
     """Background-removed PNG of a real photo (rembg, u2net), for an object placed where the VO
     names it. The model (176 MB) downloads from GitHub on first use."""
@@ -392,7 +433,9 @@ def cutout(src, out):
         raise E.ProductionError("Cutouts need rembg: python3 -m pip install rembg onnxruntime") from exc
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    img = remove(Image.open(src).convert("RGB"), session=new_session("u2net"))
+    photo = Image.open(src).convert("RGB")
+    img = remove(photo, session=new_session("u2net"))
+    img = solid_cutout(photo, img.split()[3])
     box = img.getbbox()
     (img.crop(box) if box else img).save(out)
     return str(out)
@@ -439,7 +482,7 @@ def gradient(theme_name=None, size=(1080, 1920), seed=7):
     return Image.blend(img, Image.merge("RGB", (noise, noise, noise)), 0.025)
 
 
-def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=None):
+def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=None, panel=None):
     """Put a real-photo cutout on the theme gradient with a soft 2D/3D touch: a contact shadow,
     a soft drop shadow, a faint light wrap from the background and a subtle floor reflection.
     `src` is a cutout PNG (with alpha) or a photo; photos are cut out first (rembg)."""
@@ -453,7 +496,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=
         obj = Image.open(cutout(src, tmp)).convert("RGBA")
     else:
         obj = obj.convert("RGBA")
-    if mono if mono is not None else t["id"] == "mono-classic":
+    if mono if mono is not None else t.get("mono"):
         a = obj.split()[3]
         obj = ImageOps.grayscale(obj.convert("RGB")).convert("RGBA")
         obj.putalpha(a)
@@ -463,17 +506,25 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=
     import numpy as np
     al = np.array(obj.split()[3])
     flat_bottom = (al[-3:] > 200).mean() > 0.35          # photo cut off at the bottom (a dog's bust, a person)
+    cut_side = None if flat_bottom else ("left" if (al[:, :3] > 200).mean() > 0.30 else ("right" if (al[:, -3:] > 200).mean() > 0.30 else None))
     if flat_bottom:
         pass                                             # placed on the frame's bottom edge below, so the cut never shows
     elif obj.width / float(obj.height) > 1.8:            # flat objects (a note, a card) get a slight 3D tilt
         obj = obj.rotate(-7, resample=Image.BICUBIC, expand=True)
-    scale = min(W * max(width, 0.85) / obj.width, H * 0.58 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.5 / obj.height)
+    # Layout (owner 2026-11-13: an object and its text never overlap): a whole object sits in the
+    # upper zone (about 16-52 % of the height) with its text below; a photo cut off at the bottom
+    # rises from the frame edge (bottom 48 %) with its text in the top zone.
+    scale = min(W * max(width, 0.85) / obj.width, H * 0.48 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.34 / obj.height)
     obj = obj.resize((max(1, int(obj.width * scale)), max(1, int(obj.height * scale))), Image.LANCZOS)
     bg = gradient(t["id"], size).convert("RGBA")
     if flat_bottom:
         # Owner rule 2026-11-13: a photo cut off at the bottom rises from the frame's bottom edge,
         # so the cut edge sits outside the picture and never looks odd.
         x, top = (W - obj.width) // 2, H - obj.height + 2
+    elif cut_side:
+        # a photo cut off at a side (a hand holding a phone) enters from that frame edge
+        top = int(H * y - obj.height / 2)
+        x = -2 if cut_side == "left" else W - obj.width + 2
     else:
         x, top = (W - obj.width) // 2, int(H * y - obj.height / 2)
     alpha = obj.split()[3]
@@ -482,11 +533,15 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=
     sh.paste((0, 0, 0, 150), (x + int(obj.width * 0.03), top + int(obj.height * 0.05)), alpha)
     bg = Image.alpha_composite(bg, sh.filter(ImageFilter.GaussianBlur(max(8, obj.width // 22))))
     # contact shadow (an ellipse under the object) and floor reflection, only for whole objects
-    if flat_bottom:
+    if flat_bottom or cut_side:
         bg.alpha_composite(obj, (x, top))
+        zone = "top" if flat_bottom else "lower"
+        if panel:
+            glass(bg, zone, t)
         out = Path(out)
         out.parent.mkdir(parents=True, exist_ok=True)
         bg.convert("RGB").save(out, quality=94)
+        write_json(out.with_suffix(".layout.json"), {"text_zone": zone, "theme": t["id"]})
         return str(out)
     from PIL import ImageDraw
     cs = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -505,20 +560,23 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=
     wrap.putalpha(ImageChops.subtract(edge, alpha.filter(ImageFilter.MinFilter(5))).point(lambda v: int(v * 0.35)))
     bg.alpha_composite(obj, (x, top))
     bg.alpha_composite(wrap, (x, top))
+    if panel:
+        glass(bg, "lower", t)
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     bg.convert("RGB").save(out, quality=94)
+    write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"]})
     return str(out)
 
 
-def photo_card(src, out, theme_name=None, size=(1080, 1920)):
+def photo_card(src, out, theme_name=None, size=(1080, 1920), panel=True):
     """A place or scene photo (building, crowd, street) full-bleed, with the theme's gradient
     laid over the top and bottom so text sits on a clean band and the colours stay in theme."""
     from PIL import Image, ImageOps
     t = theme(theme_name)
     W, H = size
     img = ImageOps.fit(Image.open(src).convert("RGB"), size, Image.LANCZOS)
-    if t["id"] == "mono-classic":
+    if t.get("mono"):
         img = ImageOps.grayscale(img).convert("RGB")
     top, bottom = _rgb(t["bg"][0]), _rgb(t["bg"][1])
     import numpy as np
@@ -526,8 +584,73 @@ def photo_card(src, out, theme_name=None, size=(1080, 1920)):
     a = np.where(f < 0.32, 235 * (0.32 - f) / 0.32, np.where(f > 0.62, 245 * (f - 0.62) / 0.38, 0)).repeat(W, 1)
     rgb = np.where((f < 0.5)[..., None], np.array(top, np.float32), np.array(bottom, np.float32)).repeat(W, 1)
     ov = Image.fromarray(np.dstack([rgb, a[..., None]]).astype(np.uint8), "RGBA")
-    res = Image.alpha_composite(img.convert("RGBA"), ov).convert("RGB")
+    res = Image.alpha_composite(img.convert("RGBA"), ov)
+    if panel:
+        glass(res, "lower", t)            # text over a busy photo always sits on glass
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    res.save(out, quality=94)
+    res.convert("RGB").save(out, quality=94)
+    write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"]})
     return str(out)
+
+
+GLASS_BANDS = {"top": (0.155, 0.335), "lower": (0.545, 0.70), "center": (0.42, 0.58), "bottom": (0.545, 0.70)}   # each holds two lines (top text from 18 %, lower from 57 %)
+
+
+def glass(img, where, t, radius=44, margin=0.07):
+    """Frosted-glass panel drawn into `img` (RGBA, in place) where on-screen text will sit.
+    Research values (2026-11-13): 12-20 px blur, 12-25 % tint, a hairline border at about 20-30 %
+    opacity and a soft shadow, on a calm background, for labels, numbers, names, quotes and the CTA.
+    Not for long body text. The text keeps at least 4.5:1 contrast (theme text on the theme surface)."""
+    from PIL import Image, ImageDraw, ImageFilter
+    W, H = img.size
+    y0, y1 = GLASS_BANDS[where] if isinstance(where, str) else where
+    box = (int(W * margin), int(H * y0), int(W * (1 - margin)), int(H * y1))
+    region = img.crop(box).filter(ImageFilter.GaussianBlur(18))
+    tint = Image.new("RGBA", region.size, _rgb(t.get("surface", t["bg"][0])) + (int(255 * (0.55 if t.get("light_theme") else 0.42)),))
+    region = Image.alpha_composite(region.convert("RGBA"), tint)
+    m = Image.new("L", region.size, 0)
+    ImageDraw.Draw(m).rounded_rectangle([0, 0, region.size[0] - 1, region.size[1] - 1], radius, fill=255)
+    sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([box[0], box[1] + 14, box[2], box[3] + 14], radius, fill=(0, 0, 0, 90))
+    img.alpha_composite(sh.filter(ImageFilter.GaussianBlur(22)))
+    img.paste(region, box[:2], m)
+    edge = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(edge).rounded_rectangle(box, radius, outline=_rgb(t.get("border", "#FFFFFF")) + (60,), width=2)
+    img.alpha_composite(edge)
+    return box
+
+
+def fit_text(edl, max_width=0.70, max_lines=2):
+    """Wrap every text item by its real rendered width (the role's font and size) so it stays inside
+    the 9:16 safe zone and the glass band: at most two lines; a title that would need more
+    drops to headline size. Items in the lower zone move to `lower` when they take two lines."""
+    from PIL import ImageFont
+    from . import craft
+    W = edl["format"]["width"]
+    for c in edl["clips"]:
+        for it in E.as_list(c.get("text")):
+            chain = {"title": ["title", "headline", "body"], "headline": ["headline", "body"]}.get(it.get("role"), [it.get("role")])
+            for role in chain:
+                trial = dict(it, role=role)
+                size, file_, _ = craft.resolve_text(edl, trial)
+                if not file_:
+                    break
+                font = ImageFont.truetype(file_, size)
+                lines, cur = [], ""
+                for word in it["value"].replace("\n", " ").split():
+                    test = (cur + " " + word).strip()
+                    if cur and font.getlength(test) > W * max_width:
+                        lines.append(cur)
+                        cur = word
+                    else:
+                        cur = test
+                lines.append(cur)
+                if len(lines) <= max_lines or role == chain[-1]:
+                    it["role"], it["value"] = role, "\n".join(lines)      # never drop the owner's words
+                    break
+            if it.get("position") in ("bottom", "lower", "glass-lower"):
+                it["position"] = "glass-lower"      # centred in the lower glass band, one or two lines
+            elif it.get("position") in ("top", "glass-top") and it.get("glass", True):
+                it["position"] = "glass-top"
+    return edl

@@ -94,14 +94,49 @@ class PlanLogicTest(unittest.TestCase):
                 for y in range(40, 160):
                     obj.putpixel((x, y), (230, 230, 230, 255))
             obj.save(Path(d) / "obj.png")
-            out = F.card(Path(d) / "obj.png", Path(d) / "card.jpg", "midnight-navy", size=(270, 480))
+            out = F.card(Path(d) / "obj.png", Path(d) / "card.jpg", "navy-ivory", size=(270, 480))
             img = Image.open(out).convert("RGB")
             self.assertEqual(img.size, (270, 480))
             r, g, b = img.getpixel((5, 470))
             self.assertGreater(b, r, "navy gradient background, not yellow")
-            mono = Image.open(F.card(Path(d) / "obj.png", Path(d) / "mono.jpg", "mono-classic", size=(270, 480))).convert("RGB")
+            mono = Image.open(F.card(Path(d) / "obj.png", Path(d) / "mono.jpg", "mono-silver", size=(270, 480))).convert("RGB")
             r, g, b = mono.getpixel((5, 470))
             self.assertLessEqual(max(r, g, b) - min(r, g, b), 6, "black-and-white theme stays grey")
+
+    def test_theme_text_contrast_meets_wcag(self):
+        def lum(h):
+            c = [int(h.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+            c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+            return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+
+        def ratio(a, b):
+            la, lb = sorted([lum(a), lum(b)], reverse=True)
+            return (la + 0.05) / (lb + 0.05)
+        for tid, t in F.themes()["themes"].items():
+            for bg in t["bg"]:
+                self.assertGreaterEqual(ratio(t["text"], bg), 4.5, tid)
+                self.assertGreaterEqual(ratio(t["muted"], bg), 4.5, tid)
+                self.assertGreaterEqual(ratio(t["accent"], bg), 3.0, tid + " accent is for large words")
+
+    def test_solid_cutout_fills_holes_inside_the_object(self):
+        from PIL import Image
+        import numpy as np
+        photo = Image.new("RGB", (200, 100), (200, 60, 160))
+        a = np.zeros((100, 200), np.uint8)
+        a[20:80, 20:180] = 255
+        a[40:60, 60:90] = 0            # a bite inside the note, like the rembg matte made
+        out = F.solid_cutout(photo, Image.fromarray(a))
+        al = np.array(out.split()[3])
+        self.assertGreater(al[50, 75], 200, "the hole is filled")
+        self.assertLess(al[5, 5], 20, "the outside stays transparent")
+
+    def test_fit_text_keeps_two_lines_in_the_safe_width(self):
+        edl = {"format": {"width": 1080, "height": 1920}, "typography": {"pairing": "poppins-hind"},
+               "clips": [{"text": [{"value": "Supreme Court ka sabse bada faisla aaj", "role": "title", "position": "bottom"}]}]}
+        F.fit_text(edl)
+        it = edl["clips"][0]["text"][0]
+        self.assertEqual(it["position"], "glass-lower")
+        self.assertLessEqual(it["value"].count("\n"), 2)
 
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
@@ -154,7 +189,7 @@ class PlanMediaTest(unittest.TestCase):
         self.assertLessEqual(colours, {th["text"], th["accent"], th["highlight"], th["muted"]}, "every text colour comes from the theme")
         values = [t["value"] for c in edl["clips"] for t in c.get("text", [])]
         self.assertIn("1892", values)
-        self.assertIn("Edvard Munch", values)
+        self.assertTrue(all(len(c.get("text", [])) <= 1 for c in edl["clips"]), "one text block per scene")
         self.assertNotIn("subtitles", edl, "subtitles only when the owner asks (2026-11-10)")
         self.assertTrue(all(1.0 <= row["duration"] <= 4.0 for row in rows[1:-1]), rows)
         self.assertGreater(r["scenes"], 5)

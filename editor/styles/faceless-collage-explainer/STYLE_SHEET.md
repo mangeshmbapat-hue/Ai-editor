@@ -138,3 +138,20 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **Objects** are real-photo cutouts made with `faceless-card <photo> <out> --theme <id>`. Each gets a soft drop shadow, a contact shadow, a faint floor reflection and a light wrap from the background. A photo cut off at the bottom fades into the background. A flat object (a note, a card) gets a slight 3D tilt.
 - **Places and scenes** (court, parliament, crowd, street) are full-bleed photos with theme bands at the top and bottom for the text: `faceless-card --photo`.
 - **Black and white theme:** the photos are black and white too, and the text is white or grey only.
+
+## Design system v3.1 (owner, 2026-11-13; the theme list above is replaced by `editor/faceless/palettes.json`)
+- **Themes:** 8 designed themes, each following 60-30-10: navy-ivory (the default), graphite-crimson, mono-silver, teal-sand, plum-rose, forest-gold, midnight-electric, and ivory-navy-light. Choose one per video by mood (each theme has `use` and `mood`). Text is checked to at least 4.5:1.
+- **Text:**
+  - clean: no outline, a soft shadow, the Poppins and Hind pairing
+  - colours: primary off-white, the key word or number in the accent, labels muted
+  - one text block per scene, fitted to the real font width, at most two lines
+- **Glass:**
+  - `faceless-card --panel`: a 18 px blur, the theme surface at about 40 %, a hairline border and a soft shadow
+  - for labels, numbers, names, quotes, the CTA and text over photos; text positions `glass-top` and `glass-lower` centre it in the panel
+  - not for long text
+- **Layout:**
+  - a whole object sits in the upper zone with its text below
+  - a cut-bottom photo rises from the bottom with its text on top
+  - a cut-side photo enters from its side
+  - the object and its text never overlap
+- **Cutouts:** hole-free (`solid_cutout`) and checked by eye. Replace any that look bad.

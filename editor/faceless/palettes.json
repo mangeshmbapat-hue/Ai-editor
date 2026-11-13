@@ -1,13 +1,144 @@
 {
- "about": "Faceless Editor colour themes (owner rule 2026-11-13: professional, corporate, classic). Pick ONE theme per video. The background is a smooth gradient (top -> bottom, plus a soft radial light), and every text colour comes from the same theme. Never mix in colours from outside the theme.",
- "default": "midnight-navy",
+ "about": "Faceless Editor design system (owner rule 2026-11-13: classy, corporate, nothing casually coloured). Each theme follows 60-30-10: about 60 % a deep, low-saturation base gradient (two close shades of one hue, never a rainbow), about 30 % surfaces (frosted-glass panels in the same hue family), and at most 10 % ONE accent. Text: primary is an off-white (or a deep ink on the light theme), secondary is a muted tint of the base hue, and the accent goes only on the key word, number or line. Every text pair is checked to at least 4.5:1 against the base (3:1 for large accent words). Pick ONE theme per video, by topic and mood.",
+ "default": "navy-ivory",
  "themes": {
-  "midnight-navy":  {"name": "Midnight navy",  "bg": ["#13294B", "#050B18"], "light": "#2E5C9A", "text": "#FFFFFF", "accent": "#5AA9FF", "highlight": "#FFD166", "muted": "#9FB3C8", "use": "finance, tech, news, business, default"},
-  "crimson-noir":   {"name": "Crimson noir",   "bg": ["#4A0E15", "#0A0606"], "light": "#8C1C2B", "text": "#FFFFFF", "accent": "#FF4D5E", "highlight": "#FFFFFF", "muted": "#C9A9AD", "use": "breaking news, danger, crime, drama, urgency"},
-  "mono-classic":   {"name": "Black and white", "bg": ["#3A3A3A", "#050505"], "light": "#6E6E6E", "text": "#FFFFFF", "accent": "#D9D9D9", "highlight": "#FFFFFF", "muted": "#9A9A9A", "use": "history, serious, documentary, legal; photos are graded black and white too"},
-  "emerald-gold":   {"name": "Emerald and gold", "bg": ["#0E3B2E", "#03120D"], "light": "#1F6B52", "text": "#F7F3E8", "accent": "#D4AF37", "highlight": "#F2D675", "muted": "#A8C3B6", "use": "money, wealth, gold, investment, premium"},
-  "royal-purple":   {"name": "Royal purple",   "bg": ["#2B1150", "#0A0416"], "light": "#5B2E99", "text": "#FFFFFF", "accent": "#B794FF", "highlight": "#FFD166", "muted": "#B8A9D1", "use": "luxury, mystery, science, space"},
-  "slate-teal":     {"name": "Slate and teal", "bg": ["#1E2B33", "#0A1014"], "light": "#2F4A57", "text": "#FFFFFF", "accent": "#2EC4B6", "highlight": "#F4F4F4", "muted": "#9BB0B8", "use": "health, education, environment, calm explainers"},
-  "charcoal-orange":{"name": "Charcoal and orange", "bg": ["#2A2A2E", "#0B0B0D"], "light": "#45454C", "text": "#FFFFFF", "accent": "#FF8A3D", "highlight": "#FFC08A", "muted": "#A6A6AE", "use": "sports, energy, automobiles, startups"}
+  "navy-ivory": {
+   "name": "Deep navy, ivory and gold",
+   "bg": [
+    "#14223D",
+    "#0A1222"
+   ],
+   "light": "#22385E",
+   "surface": "#1E3152",
+   "border": "#FFFFFF",
+   "text": "#F5F1E8",
+   "muted": "#A9B6CC",
+   "accent": "#E2B65B",
+   "highlight": "#E2B65B",
+   "accent_ink": "#0A1222",
+   "use": "business, finance, economy, government, banking, default",
+   "mood": "trust, authority"
+  },
+  "graphite-crimson": {
+   "name": "Graphite and crimson",
+   "bg": [
+    "#1D1E22",
+    "#0C0C0E"
+   ],
+   "light": "#2C2E34",
+   "surface": "#26282D",
+   "border": "#FFFFFF",
+   "text": "#F2F2F2",
+   "muted": "#A3A6AD",
+   "accent": "#E0474F",
+   "highlight": "#E0474F",
+   "accent_ink": "#FFFFFF",
+   "use": "news, breaking stories, crime, warnings, urgency",
+   "mood": "serious, urgent"
+  },
+  "mono-silver": {
+   "name": "Black, white and silver",
+   "bg": [
+    "#262626",
+    "#0B0B0B"
+   ],
+   "light": "#3A3A3A",
+   "surface": "#2E2E2E",
+   "border": "#FFFFFF",
+   "text": "#F4F4F4",
+   "muted": "#A8A8A8",
+   "accent": "#D6D6D6",
+   "highlight": "#FFFFFF",
+   "accent_ink": "#0B0B0B",
+   "use": "history, legal, courts, tributes, documentary; photos go black and white too",
+   "mood": "classic, timeless",
+   "mono": true
+  },
+  "teal-sand": {
+   "name": "Deep teal and sand",
+   "bg": [
+    "#0F2A2E",
+    "#07181A"
+   ],
+   "light": "#1B4247",
+   "surface": "#173A3E",
+   "border": "#FFFFFF",
+   "text": "#F3EFE6",
+   "muted": "#9FBDBC",
+   "accent": "#E8C07D",
+   "highlight": "#E8C07D",
+   "accent_ink": "#07181A",
+   "use": "health, education, environment, science explainers",
+   "mood": "calm, credible"
+  },
+  "plum-rose": {
+   "name": "Plum and rose gold",
+   "bg": [
+    "#2A1730",
+    "#130A17"
+   ],
+   "light": "#3F2448",
+   "surface": "#36203D",
+   "border": "#FFFFFF",
+   "text": "#F6EEF2",
+   "muted": "#C3A8C3",
+   "accent": "#E8A598",
+   "highlight": "#E8A598",
+   "accent_ink": "#130A17",
+   "use": "lifestyle, luxury, fashion, women-focused stories",
+   "mood": "elegant, warm"
+  },
+  "forest-gold": {
+   "name": "Forest green and gold",
+   "bg": [
+    "#13291F",
+    "#081410"
+   ],
+   "light": "#1F3F31",
+   "surface": "#1B372B",
+   "border": "#FFFFFF",
+   "text": "#F4F1E6",
+   "muted": "#A6BDAE",
+   "accent": "#D4AF37",
+   "highlight": "#D4AF37",
+   "accent_ink": "#081410",
+   "use": "money, wealth, gold, investment, agriculture",
+   "mood": "prosperous, premium"
+  },
+  "midnight-electric": {
+   "name": "Midnight and electric blue",
+   "bg": [
+    "#0D1424",
+    "#05080F"
+   ],
+   "light": "#18233D",
+   "surface": "#141E33",
+   "border": "#FFFFFF",
+   "text": "#EEF3FF",
+   "muted": "#93A3C2",
+   "accent": "#4F8CFF",
+   "highlight": "#7FB0FF",
+   "accent_ink": "#05080F",
+   "use": "technology, AI, startups, space, future",
+   "mood": "modern, sharp"
+  },
+  "ivory-navy-light": {
+   "name": "Ivory and navy (light)",
+   "bg": [
+    "#F6F3EC",
+    "#E6E1D6"
+   ],
+   "light": "#FFFFFF",
+   "surface": "#FFFFFF",
+   "border": "#14223D",
+   "text": "#14223D",
+   "muted": "#5B6578",
+   "accent": "#C0392B",
+   "highlight": "#C0392B",
+   "accent_ink": "#FFFFFF",
+   "use": "reports, corporate updates, clean daytime explainers",
+   "mood": "clean, editorial",
+   "light_theme": true
+  }
  }
 }
