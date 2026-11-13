@@ -436,7 +436,20 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
                 parts = re.split(r"(\s+)", item["value"])
                 body = "".join(("{{\\c{}}}{}{{\\c{}}}".format(ass_colour(item.get("accent_color", "yellow")), ass_text(p), ass_colour(item.get("color", "white")))
                                 if p.lower().strip(".,!?;:") in keys else ass_text(p)) for p in parts)
-            events.append((a, b, "TxtBox" if (item.get("box") or item.get("box_color")) else "Txt", tags + text_motion(item.get("animate")) + body))
+            if item.get("reveal") == "word":   # kinetic text: each word fades up in turn
+                step = int(float(item.get("reveal_step", 0.16)) * 1000)
+                keys = {w.lower().strip(".,!?;:") for w in item.get("accent_words", [])}
+                parts, k, out = re.split(r"(\s+)", item["value"]), 0, []
+                for p in parts:
+                    if not p.strip():
+                        out.append(ass_text(p))
+                        continue
+                    ms = k * step
+                    col = "\\c{}".format(ass_colour(item.get("accent_color", "yellow"))) if p.lower().strip(".,!?;:") in keys else "\\c{}".format(ass_colour(item.get("color", "white")))
+                    out.append("{{{}\\alpha&HFF&\\t({},{},\\alpha&H00&)}}{}".format(col, ms, ms + 220, ass_text(p)))
+                    k += 1
+                body = "".join(out)
+            events.append((a, b, "TxtBox" if (item.get("box") or item.get("box_color")) else "Txt", tags + text_motion(None if item.get("reveal") == "word" else item.get("animate")) + body))
     subs = edl.get("subtitles")
     cap = None
     if subs and subs.get("burn", True):

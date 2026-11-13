@@ -61,6 +61,13 @@ Run the **faceless-editor** agent (`.claude/agents/faceless-editor.md`) with the
   - Abstract ideas (sizes, effects, colours, steps, before/after) get a designed demo graphic in the theme. Kinds: `faceless.design`: timeline, icons with a scale, effects (overload or clean), checklist, cards3, beforeafter, spotlight, palette, ruler. Save them as `raw/design-*.png`; they stay crisp, with no reflection.
   - Concrete things named in the VO get a real photo (a diamond for "special", gold for "luxury").
   - Drop any photo with a brand name or a messy cutout.
+- **Edit variety and motion** (owner, 2026-11-13: never one template repeated):
+  - Mix layouts: hero objects, text-only kinetic title cards (`raw/title-card-N.png` with a text pick), and build-ups.
+  - Build-ups are `raw/build-<kind>.png` plus a `.json` of settings. Parts animate on their own times: checklist lines, cards that deal in, icons that really shrink 25 %, a moving playhead, an effect that switches from overload to clean, a journey from Beginner to Pro. Kinds are in `faceless.design_parts`.
+  - Text reveals word by word.
+  - Every other object scene gets a slow camera push.
+  - Transitions are smooth (fade, smooth slides, circle); no dips to black.
+  - No graphic, object or layout twice in one video.
 - **Own text picks:** for tips and explainers, choose the key phrase of each scene yourself and pass it with `faceless-plan --texts texts.json` ({scene number: words}). The direction pass still picks the treatment.
 - **Cutouts:**
   - use `cutout` / `faceless-card`; they come out hole-free and get a soft shadow and reflection
