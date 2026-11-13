@@ -138,6 +138,25 @@ class PlanLogicTest(unittest.TestCase):
         self.assertEqual(it["position"], "glass-lower")
         self.assertLessEqual(it["value"].count("\n"), 2)
 
+    def test_variety_never_repeats_a_treatment_back_to_back(self):
+        history = []
+        for kind in ["hook", "number", "number", "name", "name", "turn", "number", "name", "turn", "number"]:
+            history.append(F.choose(kind, history))
+        self.assertTrue(all(a != b for a, b in zip(history, history[1:])), history)
+        self.assertGreaterEqual(len(set(history)), 4, "a video uses several treatments, not one")
+        self.assertIn(F.choose("number", [], photo=True), ("glass", "tag"), "text over a photo always has a backing")
+
+    def test_two_tone_and_tag_text_reach_the_ass_script(self):
+        with tempfile.TemporaryDirectory() as d:
+            ff("-f", "lavfi", "-i", "color=c=black:s=320x568:d=2", "-pix_fmt", "yuv420p", Path(d) / "v.mp4")
+            edl = {"format": {"width": 320, "height": 568, "fps": 30}, "sources": {"V1": "v.mp4"},
+                   "clips": [{"id": "C01", "source": "V1", "in": 0, "out": 2,
+                              "text": [{"value": "Lekin asli sawaal", "role": "headline", "accent_words": ["sawaal"], "accent_color": "#E2B65B", "clean": True},
+                                       {"value": "Mumbai", "role": "headline", "box_color": "#E2B65B", "color": "#0A1222", "position": "top"}]}]}
+            text = E.ass_script(Path(d), edl).read_text(encoding="utf-8")
+            self.assertIn("\\c&H005BB6E2}sawaal", text)
+            self.assertIn("\\3c&H005BB6E2", text)
+
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
         self.assertEqual(E.text_motion(None), "")

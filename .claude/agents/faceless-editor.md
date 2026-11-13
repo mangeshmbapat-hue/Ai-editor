@@ -96,6 +96,11 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - Or photos the owner sends.
 
   Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
+- **Vary every video** (owner rule 2026-11-13, never latch on to one effect):
+  - Choose the text treatment by content: plain, emphasis, tag, glass or background word.
+  - No treatment twice in a row, and none in more than about a third of the scenes.
+  - Glass only where it belongs: numbers, quotes, the CTA, text over photos.
+  - Rotate the smooth cutout entrances (rise, slide, pop, fade-up). `faceless-plan` does this when the visuals are images (objects in `raw/`, places in `raw/places/`); check the result and keep the variety when you refine.
 - **Design system v3.1** (owner rule 2026-11-13: think like a designer, do not just copy the colours the owner names):
   - themes from `editor/faceless/palettes.json` (60-30-10), chosen by mood
   - clean text in the theme roles; text on glass panels where it holds labels, numbers, names, the CTA or text over photos

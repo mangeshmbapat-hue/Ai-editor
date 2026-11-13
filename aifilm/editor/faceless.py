@@ -21,7 +21,7 @@ SCENE_MIN, SCENE_MAX = 1.5, 2.2   # group spans; scenes land at 1.5-2.5 s (sampl
 END_CARD = 5.0
 HOOK_MAX = 2.1
 TRANSITIONS = ["fadewhite", "zoomin", "circleopen", "slideup", "fadeblack"]
-TURN_WORDS = {"but", "why", "however", "yet", "lekin", "par", "magar", "kyun", "kyon", "लेकिन", "पर", "मगर", "क्यों"}
+TURN_WORDS = {"but", "why", "however", "yet", "lekin", "magar", "kyun", "kyon", "लेकिन", "मगर", "क्यों"}   # not "par"/"पर": it also means "on"
 KEY = re.compile(r"^[\$₹€£]?[0-9०-९][0-9०-९,.:/]*(%|s|st|nd|rd|th|k|m|bn)?$|^[0-9०-९]+%$", re.I)
 SENTENCE_END = re.compile(r"[.!?।]$")
 STILL_EXT = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
@@ -165,6 +165,8 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
     probes = {v: media.probe(inside(root, v)) for v in visuals}
     for v, p in probes.items():
         require(p["has_video"], "Visual has no picture: " + v)
+        if is_image(v):
+            p["duration"] = 600.0          # an image becomes an animated scene clip of exactly its scene's length
     sources = {"V{}".format(i + 1): v for i, v in enumerate(visuals)}
 
     def zone_of(v):
@@ -213,15 +215,22 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
             hook = hook if len(hook) <= 5 else hook[:3]   # a long first sentence keeps only its first words: "Destroying the moon"
             items.append({"value": wrap(title or " ".join(hook), 8 if max(len(x) for x in hook) <= 8 else 10, 4), "clean": True, "role": "title" if max(len(x) for x in hook) <= 8 else "headline", "position": "top" if zone_of(pick) == "top" else "bottom", "start": 0.05, "end": round(dur, 3),
                           "animate": "pop", "color": th["accent"]})
-        runs, prev_key = [], False
-        for w in g:
+        runs, prev_key, prev = [], False, None
+        for j, w in enumerate(g):
             key = is_key(w["word"], sentence_start)
             if key and prev_key:
                 runs[-1].append(w)          # "Edvard Munch", "Project A119", "$381 billion" stay one graphic
             elif key:
-                runs.append([w])
+                # "Supreme Court": a capitalised sentence opener belongs to the name that follows it
+                opener = prev is not None and prev["word"][:1].isupper() and prev["word"].isalpha() and runs_start_ok(prev)
+                runs.append(([prev] if opener else []) + [w])
+            elif prev_key and runs and any(ch.isdigit() for ch in runs[-1][-1]["word"]) and w["word"].strip(".,").isalpha() and len(w["word"]) <= 9:
+                runs[-1].append(w)          # a number keeps its unit: "12 logon", "2000 crore", "30 second"
+                key = True
             prev_key = key and not re.search(r"[,.;:!?।]$", w["word"])
             sentence_start = bool(SENTENCE_END.search(w["word"]))
+            prev = w
+        runs = [r_ for r_ in runs if dur - (r_[0]["start"] - a) >= 0.9]   # a word said in the last moment of a scene gets no flash of text
         for run in runs[:3 - len(items)]:
             value = " ".join(x["word"] for x in run).strip(" ,;:!?।\"'“”").rstrip(".")
             number = any(ch.isdigit() for ch in value)
@@ -235,6 +244,16 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
                 continue                      # one text block per scene, in the zone the card left free for it
             items.append({"value": value, "clean": True, "role": "headline", "position": pos, "start": round(max(run[0]["start"] - a, 0.0), 3),
                           "end": round(dur, 3), "animate": "pop", "color": th["highlight"] if number else th["text"], "box": True})
+        if turn and not items:             # a turn ("But...", "Why?") gets its own short line
+            phrase = []
+            for w in g:
+                if phrase and (len(phrase) >= 4 or len(" ".join(phrase + [w["word"]])) > 20):
+                    break                      # a short, whole phrase: "Lekin asli sawaal", "But the strangest part?"
+                phrase.append(w["word"])
+                if SENTENCE_END.search(w["word"]):
+                    break
+            items.append({"value": " ".join(phrase).strip(" ,"), "role": "headline", "position": "bottom",
+                          "start": round(max(g[0]["start"] - a, 0.0), 3), "end": round(dur, 3), "animate": "fade", "color": th["text"]})
         if items:
             clip["text"] = items
         clips.append(clip)
@@ -277,6 +296,8 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
         write_caption_files(root, words)
         edl["subtitles"] = {"file": "captions.srt", "burn": True, "size": 0.035, "position": "bottom", "box": True,
                             "animate": "highlight", "highlight_color": "yellow", "words": "captions.words.json"}
+    if any(is_image(v) for v in visuals):
+        direct(root, edl, {}, objects_place={v for v in visuals if "/places/" in v or Path(v).name.startswith("place-")})
     fit_text(edl)
     E.validate(root, edl)
     rows, total = E.timeline(edl)
@@ -482,7 +503,7 @@ def gradient(theme_name=None, size=(1080, 1920), seed=7):
     return Image.blend(img, Image.merge("RGB", (noise, noise, noise)), 0.025)
 
 
-def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=None, panel=None):
+def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=None, panel=None, layer_only=False):
     """Put a real-photo cutout on the theme gradient with a soft 2D/3D touch: a contact shadow,
     a soft drop shadow, a faint light wrap from the background and a subtle floor reflection.
     `src` is a cutout PNG (with alpha) or a photo; photos are cut out first (rembg)."""
@@ -516,7 +537,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
     # rises from the frame edge (bottom 48 %) with its text in the top zone.
     scale = min(W * max(width, 0.85) / obj.width, H * 0.48 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.34 / obj.height)
     obj = obj.resize((max(1, int(obj.width * scale)), max(1, int(obj.height * scale))), Image.LANCZOS)
-    bg = gradient(t["id"], size).convert("RGBA")
+    bg = Image.new("RGBA", size, (0, 0, 0, 0)) if layer_only else gradient(t["id"], size).convert("RGBA")
     if flat_bottom:
         # Owner rule 2026-11-13: a photo cut off at the bottom rises from the frame's bottom edge,
         # so the cut edge sits outside the picture and never looks odd.
@@ -540,7 +561,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
             glass(bg, zone, t)
         out = Path(out)
         out.parent.mkdir(parents=True, exist_ok=True)
-        bg.convert("RGB").save(out, quality=94)
+        (bg.save(out) if layer_only else bg.convert("RGB").save(out, quality=94))   # a layer keeps its alpha
         write_json(out.with_suffix(".layout.json"), {"text_zone": zone, "theme": t["id"]})
         return str(out)
     from PIL import ImageDraw
@@ -549,7 +570,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
     bg = Image.alpha_composite(bg, cs.filter(ImageFilter.GaussianBlur(max(6, obj.width // 30))))
     # faint floor reflection
     refl = ImageOps.flip(obj)
-    ra = refl.split()[3].point(lambda v: int(v * 0.12))
+    ra = refl.split()[3].point(lambda v: int(v * 0.08))
     fade = Image.linear_gradient("L").resize(refl.size).point(lambda v: 255 - v)
     from PIL import ImageChops
     refl.putalpha(ImageChops.multiply(ra, fade))
@@ -564,7 +585,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
         glass(bg, "lower", t)
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    bg.convert("RGB").save(out, quality=94)
+    (bg.save(out) if layer_only else bg.convert("RGB").save(out, quality=94))   # a layer keeps its alpha
     write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"]})
     return str(out)
 
@@ -646,11 +667,182 @@ def fit_text(edl, max_width=0.70, max_lines=2):
                     else:
                         cur = test
                 lines.append(cur)
-                if len(lines) <= max_lines or role == chain[-1]:
+                limit = max_lines + 1 if (it.get("treatment") not in (None, "glass", "tag") and it.get("position") in ("top", "glass-top")) else max_lines   # open text at the top may take three lines
+                if len(lines) <= limit or role == chain[-1]:
                     it["role"], it["value"] = role, "\n".join(lines)      # never drop the owner's words
                     break
-            if it.get("position") in ("bottom", "lower", "glass-lower"):
-                it["position"] = "glass-lower"      # centred in the lower glass band, one or two lines
-            elif it.get("position") in ("top", "glass-top") and it.get("glass", True):
-                it["position"] = "glass-top"
+            tr = it.get("treatment")
+            if tr in (None, "glass") and it.get("glass", True):
+                if it.get("position") in ("bottom", "lower", "glass-lower"):
+                    it["position"] = "glass-lower"      # centred in the lower glass band, one or two lines
+                elif it.get("position") in ("top", "glass-top"):
+                    it["position"] = "glass-top"
+            elif it.get("position") in ("bottom", "lower"):
+                it["position"] = "lower" if "\n" in it["value"] else "bottom"
+    return edl
+
+
+# ---- variety (owner rule 2026-11-13): many text treatments and entrances, chosen by content, never repeated back to back ----
+
+TREATMENTS = {
+    # id: (what it is, when the editor uses it)
+    "plain":    "clean off-white text on the gradient: headlines, statements, the hook",
+    "emphasis": "a clean line with the key word(s) in the accent colour: turns, claims, 'but the strangest part'",
+    "tag":      "a solid accent-coloured tag (text in the theme's ink): dates, places, names, categories, short labels",
+    "glass":    "a frosted-glass card: numbers and stats, quotes, the CTA, any text over a busy photo",
+    "bgword":   "one huge, faint word behind the object for depth, with a small plain line: topic openers, hooks",
+}
+ENTRANCES = ["rise", "slide-left", "pop", "fade-up", "slide-right"]   # all eased, smooth in and out; never shake
+
+
+def runs_start_ok(w):
+    return bare(w["word"]) not in TURN_WORDS and len(w["word"]) > 2
+
+
+def kind_of_text(i, g, key_value, turn):
+    if i == 0:
+        return "hook"
+    if turn:
+        return "turn"
+    if key_value and any(ch.isdigit() for ch in key_value):
+        return "number"
+    if key_value:
+        return "name"
+    if turn:
+        return "turn"
+    return None
+
+
+CANDIDATES = {"hook": ["bgword", "emphasis", "plain"], "number": ["glass", "tag", "emphasis"],
+              "name": ["tag", "glass", "emphasis"], "turn": ["emphasis", "plain", "tag"]}
+
+
+def choose(kind, history, photo=False, cap=0.35):
+    """The first fitting treatment that is not the previous scene's and not over its share of the video.
+    Text over a busy photo always gets a backing (glass or tag)."""
+    options = [o for o in CANDIDATES[kind] if not photo or o in ("glass", "tag")] or ["glass"]
+    n = max(1, len(history))
+    for o in options:
+        if (not history or history[-1] != o) and history.count(o) / float(n) <= cap:
+            return o
+    return next((o for o in options if not history or history[-1] != o), options[0])
+
+
+def is_image(path):
+    return Path(path).suffix.lower() in STILL_EXT
+
+
+def render_scene(root, cid, image, t, seconds, treatment, entrance, place=False, bg_word=None, size=(1080, 1920), fps=30):
+    """One scene as a clip: the theme background (with a glass panel or a faint background word when
+    the treatment asks for one) and the real-photo object animating in on `entrance`, holding still,
+    and fading out smoothly. A place photo fills the frame instead. Returns the clip path (in raw/scenes)."""
+    from PIL import Image, ImageDraw, ImageFont
+    root = Path(root)
+    W, H = size
+    folder = root / "raw" / "scenes"
+    folder.mkdir(parents=True, exist_ok=True)
+    src = inside(root, image)
+    if place:
+        bgp = folder / (cid + ".bg.jpg")
+        photo_card(src, bgp, t["id"], size, panel=(treatment == "glass"))
+        zone = "lower"
+        layer = None
+    else:
+        lay = folder / (cid + ".obj.png")
+        card(src, lay, t["id"], size, layer_only=True)
+        zone = json.loads(lay.with_suffix(".layout.json").read_text(encoding="utf-8"))["text_zone"]
+        bg = gradient(t["id"], size).convert("RGBA")
+        if treatment == "bgword" and bg_word:
+            from . import craft, fonts as FN
+            fnt = FN.resolve("Poppins", 800) or FN.resolve("Poppins", 700)
+            if fnt:
+                word = bg_word.upper()
+                fs = int(W * 0.30)
+                font = ImageFont.truetype(fnt, fs)
+                while font.getlength(word) > W * 0.96 and fs > 60:
+                    fs = int(fs * 0.9)
+                    font = ImageFont.truetype(fnt, fs)
+                word_layer = Image.new("RGBA", size, (0, 0, 0, 0))
+                wy = H * (0.70 if zone == "top" else 0.30)          # behind the object, away from the text zone
+                ImageDraw.Draw(word_layer).text((W / 2, wy), word, font=font, fill=_rgb(t["text"]) + (26,), anchor="mm")
+                bg.alpha_composite(word_layer)      # blended, so the word stays faint behind the object
+        if treatment == "glass":
+            glass(bg, zone, t)
+        bgp = folder / (cid + ".bg.png")
+        bg.save(bgp)
+        layer = lay
+    out = folder / (cid + ".mp4")
+    D = max(seconds, 0.5)
+    ease = "(1-pow(1-min(t/0.6,1),3))"      # ease-out cubic over 0.6 s (quoted in the filter, so commas are safe)
+    if layer is None:
+        graph = "[0:v]format=yuv420p[v]"
+        inputs = ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(bgp)]
+    else:
+        inputs = ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(bgp), "-loop", "1", "-t", "{:.3f}".format(D), "-i", str(layer)]
+        fade = "format=rgba,fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={:.3f}:d=0.3:alpha=1".format(max(D - 0.3, 0.4))
+        pos = {"rise": ("0", "{h}*0.30*(1-{e})"), "slide-left": ("-{w}*0.6*(1-{e})", "0"), "slide-right": ("{w}*0.6*(1-{e})", "0"),
+               "fade-up": ("0", "70*(1-{e})"), "pop": ("(main_w-overlay_w)/2", "(main_h-overlay_h)/2")}[entrance]
+        x, y = (p.format(w=W, h=H, e=ease) for p in pos)
+        scale = ",scale=w='iw*(0.86+0.14*{e})':h='ih*(0.86+0.14*{e})':eval=frame".format(e=ease) if entrance == "pop" else ""
+        graph = "[1:v]{}{}[o];[0:v][o]overlay=x='{}':y='{}':eval=frame:format=auto,format=yuv420p[v]".format(fade, scale, x, y)
+    media.run(["ffmpeg", "-hide_banner", "-y", *inputs, "-filter_complex", graph, "-map", "[v]", "-r", str(fps),
+               "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-t", "{:.3f}".format(D), str(out)])
+    write_json(out.with_suffix(".layout.json"), {"text_zone": zone, "theme": t["id"], "treatment": treatment, "entrance": entrance})
+    return out
+
+
+def direct(root, edl, words_by_clip, objects_place=(), seed=0):
+    """The direction pass after the timing plan (owner rule 2026-11-13: every video varies). For each
+    scene: pick the text treatment by what the text is, never the same twice in a row; pick an
+    entrance for its object, never the same twice in a row; render image scenes as animated clips;
+    and dress the text items in the chosen treatment and the theme's roles."""
+    t = theme(edl.get("colour_theme"))
+    history, last_entrance = [], None
+    for i, c in enumerate(edl["clips"]):
+        card_end = c.get("beat") == "end card"
+        src = edl["sources"][c["source"]]
+        items = E.as_list(c.get("text"))
+        key = items[0]["value"].replace("\n", " ") if items and i else None
+        kind = None if card_end else kind_of_text(i, words_by_clip.get(c["id"], []), key, "flash" in E.as_list(c.get("fx")))
+        place = src in objects_place
+        treatment = ("glass" if items else None) if card_end else (choose(kind, history, photo=place) if kind else None)
+        if treatment and not card_end:
+            history.append(treatment)
+        if is_image(src):
+            ent = ENTRANCES[(i + seed) % len(ENTRANCES)]
+            if ent == last_entrance:
+                ent = ENTRANCES[(i + seed + 1) % len(ENTRANCES)]
+            last_entrance = ent
+            words_here = (key or (items[0]["value"] if items else "")).replace("\n", " ").split()
+            topic = max(words_here, key=len).strip(".,!?") if (treatment == "bgword" and words_here) else None   # the strongest word, not "Ek"
+            clip_path = render_scene(root, c["id"], src, t, c["out"] - c["in"], treatment, ent, place=place, bg_word=topic,
+                                     size=(edl["format"]["width"], edl["format"]["height"]))
+            sid = "S" + c["id"][1:]
+            edl["sources"][sid] = str(Path(clip_path).relative_to(root))
+            c["source"], c["in"], c["out"] = sid, 0.0, round(c["out"] - c["in"], 3)
+            c.pop("zoom", None)          # the object's own move replaces the frame drift
+            zone = json.loads(Path(clip_path).with_suffix(".layout.json").read_text(encoding="utf-8"))["text_zone"]
+        else:
+            zone = "lower"
+        for it in items:
+            it["clean"] = True
+            it["position"] = ("glass-top" if zone == "top" else "glass-lower") if treatment == "glass" else ("top" if zone == "top" else "bottom")
+            if treatment == "tag":
+                it.update(box_color=t["accent"], color=t["accent_ink"], role="headline")
+                it.pop("clean", None)
+            elif treatment == "emphasis":
+                words = it["value"].replace("\n", " ").split()
+                it.update(color=t["text"], accent_color=t["accent"], accent_words=[max(words, key=len)] if words else [])
+            elif treatment == "glass":
+                it["color"] = t["highlight"] if any(ch.isdigit() for ch in it["value"]) else t["text"]
+            elif treatment in ("plain", "bgword"):
+                it["color"] = t["text"]
+                if treatment == "bgword":
+                    words = it["value"].replace("\n", " ").split()
+                    it.update(accent_color=t["accent"], accent_words=[max(words, key=len)] if words else [])
+            if treatment != "tag":
+                it.pop("box", None)          # only a tag has a box; glass, plain, emphasis and bgword text sit clean
+            it["treatment"] = treatment
+    used = [h for h in history]
+    edl.setdefault("notes", []).append("Direction: treatments {} · no treatment or entrance repeats back to back.".format(", ".join(used)))
     return edl
