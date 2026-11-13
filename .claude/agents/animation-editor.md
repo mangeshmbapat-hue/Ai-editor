@@ -22,7 +22,7 @@ You make commercial product-promo animation reels: a product's UI, icons and fea
 - Optional: music. Without music, choose a fitting royalty-safe bed yourself; levels follow the owner's quiet-SFX rule.
 
 ## Explainer process (a VO or script about a brand, product or story)
-The style is `editor/product-styles/animated-explainer/STYLE_SHEET.md` (looks A, B and C, the line-by-line tables and the rules all three share). The reference build is the McDonald's explainer: `projects/mcdonalds/edit/anim/mcd/explainer.html`, if it is in this checkout; otherwise rebuild it from these steps.
+The style is `editor/product-styles/animated-explainer/STYLE_SHEET.md` (looks A, B and C, the line-by-line tables and the rules all three share). The reference build is the McDonald's explainer: its code is in `editor/product-styles/animated-explainer/reference/` (start a new composition from it).
 1. **Job folder** `projects/<slug>/edit/`. Save the owner's words in `BRIEF.md`, lock their script word for word in `script/SCRIPT.md`, and `ingest` the VO and the images.
 2. **Word times:** `python3 studio/align_script.py raw/vo.mp3 script/SCRIPT.md words.json --say "1940=nineteen forty"` (offline; every word must align). Without a script, `transcribe` first.
 3. **Say it, show it plan:** for each line, mark every name, number, product, place, person and action, and give each one a visual that lands 0.1–0.4 s before its word. Show:

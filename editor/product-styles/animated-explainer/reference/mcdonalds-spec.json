@@ -1,0 +1,89 @@
+{
+  "composition": "explainer.html",
+  "aspect": "16:9",
+  "duration": 66.0,
+  "end_silence": 1.5,
+  "look": "A premium dark, in the brand's red, cream and yellow, with look C face badges and look B line draw-ons",
+  "storyboard": [
+    {
+      "t": 5.7,
+      "what": "Hook: 'Have you ever wondered...' typed word by word, burger, little restaurant, globe, people who know the brand"
+    },
+    {
+      "t": 8.0,
+      "what": "'Meet McDonald's': orb, arches rise, the name slides out, light rays"
+    },
+    {
+      "t": 10.9,
+      "what": "'An American multinational fast-food restaurant chain' under the logo"
+    },
+    {
+      "t": 15.3,
+      "what": "'Known for its...': Burgers, Fries, Chicken, Beverages, Desserts cards pop on each word"
+    },
+    {
+      "t": 16.35,
+      "what": "'quick-service dining': stopwatch draws, speed streaks, diners"
+    },
+    {
+      "t": 19.2,
+      "what": "'The story began in 1940': year rolls 1900 to 1940"
+    },
+    {
+      "t": 21.8,
+      "what": "'two brothers, Richard and Maurice McDonald': face badges, name tags on their names"
+    },
+    {
+      "t": 25.3,
+      "what": "'opened their first restaurant in San Bernardino, California': restaurant draws, pin drops"
+    },
+    {
+      "t": 28.6,
+      "what": "'the man who transformed it into a global business'"
+    },
+    {
+      "t": 30.0,
+      "what": "'was Ray Kroc': founder cutout rises with the name tag"
+    },
+    {
+      "t": 33.4,
+      "what": "'In 1955 he opened his first McDonald's restaurant': year rolls, restaurant draws"
+    },
+    {
+      "t": 36.4,
+      "what": "'an ambitious franchise expansion model': lines run out to new restaurants"
+    },
+    {
+      "t": 42.3,
+      "what": "'thousands of restaurants across more than 100 countries': globe, pins, 100+ counter"
+    },
+    {
+      "t": 44.1,
+      "what": "'it's not just about food': 'food' struck through"
+    },
+    {
+      "t": 47.8,
+      "what": "'franchising, digital ordering': hub nodes, the phone's Order button tapped"
+    },
+    {
+      "t": 51.9,
+      "what": "'home delivery, marketing, customer experience, localised menus': each node on its word"
+    },
+    {
+      "t": 53.65,
+      "what": "'From the iconic Big Mac'"
+    },
+    {
+      "t": 54.4,
+      "what": "'to McDelivery': the scooter rides in"
+    },
+    {
+      "t": 58.5,
+      "what": "'an entire global food-service ecosystem': the menu and people orbit the logo"
+    },
+    {
+      "t": 64.0,
+      "what": "'a worldwide brand phenomenon!': logo burst, light rays"
+    }
+  ]
+}
