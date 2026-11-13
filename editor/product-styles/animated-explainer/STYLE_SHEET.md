@@ -3,6 +3,7 @@
 Status: **breakdown done, waiting for the owner's approval** (2026-11-13). Learned from 2 owner samples, both kept as study material in the git-ignored `projects/_product-train/`:
 - **Sample 1, look A, "premium dark":** a 52 s explainer for an AI product-management tool (`explainer-collato/`). The owner called it the best animation sample.
 - **Sample 2, look B, "flat line-art":** a 98 s enterprise IT (virtual desktop) explainer (`explainer-jos/`), sent by the owner as "sab animation h ye".
+- **Sample 4, look D, "soft pastel SaaS":** a 144 s enterprise procurement-software explainer (`explainer-aerchain/`). The owner asked me to learn its theme, text, animation and effects, what comes on which words, and the ways each effect is built.
 - **Sample 3, look C, "health-tech navy and sky":** a 110 s dental AI software explainer (`explainer-dental/`). The owner asked me to notice the cartoon faces, the single theme, spoken words becoming text, the same colours for the ground, text and bubbles, the doctor tapping screens that grow, the graphs, the light streaks, the doctor's actions and the names, and every transition.
 
 The line-by-line table, the measurements and the theme rule just below are sample 1 (look A). Sample 2 (look B) has its own section further down. **Learn the style, never the sample's brand, logo, script, characters, UI or music.**
@@ -190,9 +191,80 @@ How it was studied: 1 fps and 4 fps frame sheets of the whole video, full-resolu
 - **Orbit of faces** for "scalable" and "every patient".
 - **Circle wipes** in the theme's colours (a navy circle from the corner, a white circle from the side, a navy iris) for every change between light and dark.
 
-## All three samples: the rules that hold in each
+## Sample 4, look D: soft pastel SaaS explainer (144 s)
+
+### Measured
+| | Value |
+|---|---|
+| Format | 1920×1080, 30 fps, 144.2 s |
+| Hard cuts | **0**: every change is a morph, a circle wipe, a camera pan or a physics move |
+| Voice | 1.0 → 143.3 s, a calm male VO at about 2.4 words per second, with 1 s of silence at each end |
+| Loudness | −23.4 LUFS, LRA 4.7, peak −5.9 dBFS (quiet; we deliver −14 LUFS / −1 dBTP) |
+| Ground | **near-white `#fbfdff`, 90 % of all pixels**; a big soft **sky-blue half-circle `#8bc1f0` at about 25 %** sits behind the subject in most scenes, like a stage |
+| Accents | eight pastel candy colours used together: lime `#aaf57d`, periwinkle `#7c9cef`, blue `#418ae0`, pink `#ed658c`, sky `#8bcef3`, orange `#f1a539`, butter `#f2da81`, violet `#cf6eeb` |
+| Lines and text | slate `#434b58` for outlines and headings, lilac-grey `#cac4d8` for faint UI |
+
+### The theme rule (look D)
+1. **A white ground, one sky-blue half-circle stage, and pastel accents on top.** There are no dark scenes. The colour lives in the round icon badges, chips, coins and UI blocks, never in the ground.
+2. **Many colours, one family.** Every accent has the same pastel lightness, so 8 hues still read as one theme. Each product feature owns one colour, used for its badge, its pill and its highlight.
+3. **People are flat vector characters with faces,** in pastel tops (orange, blue, violet, pink), at desks or standing beside a big UI, each with a role label (Procurement Team, Accounts Processing Team, End Users, Vendors, AP Team, Management).
+4. **The product UI is real but simplified:** white dashboard cards with soft shadows, pastel status chips and donut rings. Feature names sit in **pill tags** in the feature's colour above the UI (AerSource, AerScan, AerMatch, AerReco, AerAssist, AerPrompt).
+5. **One clean geometric sans.** Headings are slate semibold, labels small and grey, and pill text white. The wordmark is a custom logotype that **types on letter by letter**.
+
+### Line by line
+Spoken words are reconstructed from a rough recognition; times are ±0.4 s.
+
+| Time (s) | Spoken | On screen | Motion |
+|---|---|---|---|
+| 1.0–7.5 | "Are you spending too many hours … processing complex requirements …" | the **Procurement Team** at their desks; a **clock**; requirement cards with faces | the characters pop up from behind the half-circle; the clock hands spin fast for "too many hours"; the cards pile up on "complex requirements" |
+| 6.5–8.5 | "… in accounting files …" | **Accounts Processing Team**, a pink **"Invoice"** pill, stacking paper sheets | the sheets drop one by one |
+| 8.5–9.0 | (scene change) | a sky-blue circle grows from a dot to fill the frame, then shrinks to the half-circle stage | a circle wipe in the theme's own blue (0.5 s) |
+| 9.0–13.0 | "… legacy systems … rigid … long time to value … complex interfaces … high maintenance cost" | a vertical stack of coloured round icon badges with labels | each badge **drops in on its phrase**; its label types in beside it |
+| 13.0–17.5 | "… costing you money …" | the badges **turn into gold coins** that fall **into a glass jar**, then spill out | badge → coin morph, then gravity: fall, bounce, stack; the jar tips on "money" |
+| 17.5–21.5 | "… such complexity … the whole process is risky …" | a **hand stacks coloured blocks** (Repetitive Tasks, Conventional Negotiation, Cost Leakage, Manual Data Entry, Siloed Processes) into a **Jenga-like tower** | the tower leans, wobbles and **collapses**, with the blocks tumbling flat, on "risky" |
+| 22.0–24.0 | "AerChain" (the brand) | the wordmark **types on letter by letter**, centred | about 0.15 s per letter, with a caret |
+| 24.0–26.0 | "… the central nervous system …" | the wordmark shrinks into the **header bar of a dashboard**, which grows open | logo → UI header → full card |
+| 26.0–30.0 | "… for all your source-to-pay operations …" | round feature icons **orbit out** around the dashboard (Contracts, Purchase Orders, Invoice, Requisitions, Analytics, Reports, Payments) | they fly out from behind the card one by one and settle in a ring |
+| 30.0–34.0 | "… learns from the data across your systems …" | a **tree of integration logos** (SAP, Oracle, Azure, SYSPRO, IBM DB2, QuickBooks, Zoho) joined into an **AerChain** pill; a hand presses the pill | the lines grow down into the pill, which turns **lime** and reads **"Integrated ✓"** |
+| 34.0–39.0 | "… each and every user interaction …" | framed people joined by **elbow connector lines** | the frames pop in one by one as the line extends |
+| 39.0–42.0 | "… optimise the procurement process … operational excellence" | a **triangle of nodes** (cart, $, star) linked by bars of **confetti dots** | the nodes pop and the bars fill; the star bounces |
+| 42.0–50.0 | "This intelligence powers … smart suite …" | a **flowchart** of the suite (End User → AerProc → PR → AerSource → vendors → AerScan → AerMatch → ERP) | it builds left to right, a node every 0.3 s, while the camera pans |
+| 50.0–56.0 | "AerProc … create a requisition in seconds by chatting …" | a businessman beside a big **chat window** | the bubbles pop like a real chat |
+| 56.0–64.0 | "AerSource analyses your requirements …" | three PR documents; a **pink scanning frame** passes over them; the matching PR lifts out | a scanner sweep, then a lift and sort |
+| 64.0–76.0 | "… predicts the pricing … negotiation histories …" | a quote table; **Historical Price Trends** and **Negotiation Intelligence** badges pop around it; the **Suggested Price** column fills blue | the badges land on their words; the column fills cell by cell |
+| 76.0–82.0 | "AerPrompt … follows up with your team and vendors …" | reminder chips ("2 Days remaining…", "Last Day to Clear the Invoice"), a **gauge**, a messaging chat | the chips slide in; the needle swings; the messages pop |
+| 82.0–88.0 | "AerScan … extracts invoices …" | a paper invoice; a **pink scan sweep**; a digital invoice builds beside it | the band moves down; the fields type into the copy |
+| 88.0–95.0 | "AerMatch … cross-verifies …" | a table whose cells light **red/green**; a cursor marks **DISPUTE**, then **MATCHED** | the cells flash on "verify"; the cursor clicks |
+| 95.0–108.0 | "AerReco … reconciliation …" | a **green tick burst** and the toast **"Tax Data Reconciled Successfully"** | the tick scales in with a ring burst; the toast slides up |
+| 108.0–117.0 | "AerAssist … answers vendor queries instantly" | vendors' question bubbles around a blue bot, then a scrolling chat | the bubbles pop around the bot; the chat auto-scrolls |
+| 117.0–125.0 | "… 360-degree visualisation … reports builder" | two characters assembling a big dashboard | the panels slot in like blocks |
+| 125.0–129.0 | "… go live in a matter of days" | a lime circle **"Go Live in 10 Days"** | it pops with an overshoot on "days" |
+| 129.0–132.0 | "… configure the way you want" | a **"100% Configurable"** pill on the UI cards | the cards rearrange |
+| 132.0–140.0 | "… transparency … cost savings … efficiency … faster" | a vertical **timeline line** with round stat badges (100% Transparency, 5% Cash Savings, 70% Efficiency, 5X Faster) | the line grows; each badge pops off it on its words |
+| 140.0–144.2 | "Why wait? Visit AerChain …" | the wordmark types on, then the URL and a blue **"Visit Website Now"** button | letter by letter; the button comes last; then 1 s of silence |
+
+### Effect recipes (how to build each one in GSAP)
+- **Pop from behind the stage:** clip the character with the half-circle and tween `y` from +120 to 0 in 0.35 s with `back.out(1.6)`.
+- **Badge drop stack:** a round badge (a white icon on a pastel circle, about 90 px, with a soft shadow) falls from `y` −300 with `bounce.out` in 0.5 s, one per spoken phrase; its label types in 0.1 s later.
+- **Morph to coin:** scale the badge to 0.8 while crossfading to a gold coin, then give it gravity (`y` with `power2.in`, a short bounce and a small rotation).
+- **Jar or Jenga physics:**
+  - Stack the blocks.
+  - Wobble the tower ±2–4° twice.
+  - Give each block its own `rotation` (±40–90°) and its own `y` to the floor with `power2.in`, staggered 0.05 s from the top down.
+- **Typed wordmark:** split the word into letters; each one goes from `autoAlpha` 0 and `x` −6 to its place in 0.08 s, 0.12–0.15 s apart, followed by a blinking caret.
+- **Logo to UI morph:** scale the wordmark into a header bar, then grow the white card down from it (`scaleY` 0 → 1 with the transform origin at the top, 0.5 s).
+- **Orbit-out icons:** start every icon at the card's centre, behind it, and tween each to its ring position with `power3.out`, 0.15 s apart.
+- **Integration tree:** draw each connector with `strokeDashoffset` (0.4 s). When the last one lands, swap the pill to lime and its text to "Integrated ✓".
+- **Scanner sweep:** a pink-to-transparent gradient band, clipped to the document, moves top to bottom in 0.8 s; the fields then type into the copy.
+- **Cell flash:** table cells tween to pastel red or green on the spoken word, and a cursor clicks a status chip.
+- **Success burst:** a green tick goes 0 → 1.2 → 1 while a thin ring expands and fades; the toast slides up 30 px.
+- **Chat build:** bubbles alternate left and right, each scaling from 0.8 at its tail corner in 0.25 s; the window scrolls one bubble per message.
+- **Timeline badges:** the line grows with `scaleY`; at each stop a badge pops and its label types out.
+- **Circle wipe in the theme colour:** a sky-blue dot grows over the frame (0.45 s, `power3.in`), then shrinks back to the half-circle stage.
+
+## All four samples: the rules that hold in each
 1. **Say it, show it:** every named person, role, thing, number, tool or quality appears **on its word** (0.1–0.4 s before it), and the headlines land on their keyword.
-2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue; sample 3 is sky-white with deep navy and teal. The only colours outside the theme are the brand logo's own and the real app icons.
+2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue; sample 3 is sky-white with deep navy and teal; sample 4 is near-white with a sky-blue stage and one pastel family. The only colours outside the theme are the brand logo's own and the real app icons.
 3. **No hard cuts:** wipes in the theme's colours, camera moves, draw-ons, zooms into the UI, and morphs (an orb or squares into the logo, a URL into a button).
 4. **People always have faces:** photo badges (look A), or, when there is no photo, **one consistent cartoon character style** (looks B and C), always with a role pill or a name tag.
 7. **The bubbles and chips use the theme's colours** (navy pill with white text, or glass in the dark scenes), never a new colour.
@@ -202,7 +274,7 @@ How it was studied: 1 fps and 4 fps frame sheets of the whole video, full-resolu
 ## What this means for our videos
 - Script first (VO or text). Mark **every noun and action** in it and give each one a visual on its word.
 - Pick **one brand theme** (dark ground + light ground + accents + one brand gradient) and use nothing outside it.
-- **Choose the look per brand:** look A (premium dark, 3D cards, glows), look B (white flat line-art, draw-ons, drawn characters) or look C (sky-white and navy health-tech, cartoon people, glass UI, tap-to-grow). The owner picks it, or it follows the brand's colours.
+- **Choose the look per brand:** look A (premium dark, 3D cards, glows), look B (white flat line-art, draw-ons, drawn characters) look C (sky-white and navy health-tech, cartoon people, glass UI, tap-to-grow) or look D (white with a sky-blue half-circle stage, a pastel candy family, flat characters, playful physics: coins in a jar, a collapsing block tower, scanner sweeps, a typed wordmark). The owner picks it, or it follows the brand's colours.
 - Use 16:9 as in the samples, or 9:16 for reels with the same rules.
 
 ## Brand styles in this category
