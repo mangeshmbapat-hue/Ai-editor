@@ -15,3 +15,6 @@ mann = "aifilm.editor.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["aifilm*"]
+
+[tool.setuptools.package-data]
+"aifilm.editor" = ["anim/*.js", "anim/*.cjs", "anim/*.html"]

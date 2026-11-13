@@ -1,0 +1,19 @@
+{
+  "_note": "SYNTHETIC example for the Animation Editor: a made-up grocery app 'Kartly' with built-in icons only. Not a real product, not a generated film asset.",
+  "theme": "lavender",
+  "aspect": "1:1",
+  "watermark": "@your_handle",
+  "scenes": [
+    {"type": "logo", "dur": 1.9, "text": "kartly", "color": "primary"},
+    {"type": "search", "dur": 2.2, "phrases": ["what do you need ?", "fresh fruit tonight"]},
+    {"type": "chips", "dur": 1.8, "cols": 2, "items": [
+      {"icon": "star", "label": "Fruits", "color": "primary"}, {"icon": "heart", "label": "Gifts", "color": "secondary"},
+      {"icon": "bolt", "label": "Snacks", "color": "tertiary"}, {"icon": "bell", "label": "Offers", "color": "primary"}]},
+    {"type": "button", "dur": 1.6, "label": "Place Order", "icon": "bolt", "color": "primary"},
+    {"type": "status", "dur": 1.6, "title": "Rider Found", "sub": "Picking up your order", "icon": "bike", "color": "primary", "progress": 0.7},
+    {"type": "pill", "dur": 1.5, "label": "Arriving in 10 minutes", "icon": "bike", "color": "secondary"},
+    {"type": "counter", "dur": 1.8, "label": "today's savings", "from": 180, "to": 250, "prefix": "₹", "min": "₹0", "max": "₹500", "color": "tertiary"},
+    {"type": "swap", "dur": 3.0, "ground": "night", "fixed": "Always", "words": ["fresh", "fast", "yours"], "color": "glow"},
+    {"type": "endcard", "dur": 5.5, "wordmark": "kartly", "handle": "@your_handle"}
+  ]
+}

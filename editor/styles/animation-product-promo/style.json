@@ -1,0 +1,32 @@
+{
+  "slug": "animation-product-promo",
+  "measured": true,
+  "status": "learned, waiting for the owner's approval",
+  "basis": "Learned 2026-11-10 from the owner's 4 sample product-promo videos (study only, 368x368 WhatsApp copies). Grounds and accents were sampled with OpenCV, and loudness and silences measured with FFmpeg. Motion timings were counted on 10 fps strips. The sound was measured, not heard.",
+  "targets": {
+    "aspect": "1:1",
+    "duration_seconds": [17, 24],
+    "scene_seconds": [1.5, 2.5],
+    "payoff_text_seconds": [3, 4],
+    "hard_cuts_inside_flow": 0,
+    "end_card_seconds": [5.5, 6.7],
+    "sound_stops_before_end_seconds": 2.4,
+    "max_accents": 3,
+    "loudness_lufs": -14,
+    "true_peak_dbtp": -1,
+    "font": "Inter",
+    "glow_halo_fraction_of_width": [0.04, 0.08]
+  },
+  "themes": {
+    "lavender": {"ground": "#f7e3fc", "accents": ["#9b00ca", "#eb1783", "#3b74f3"]},
+    "midnight": {"ground": "linear-gradient(#0a004a,#000014)", "accents": ["#4453e8", "#3c73d4"]},
+    "graphite": {"ground": ["#e0e0e0", "#2e2e2e"], "accents": ["#2b6cef", "#d11a31", "#22a447"], "glow": "#35c3cc"},
+    "sky": {"ground": ["#fafafa", "linear-gradient(#62a4f2,#b6d4fa)", "#000106"], "accents": ["#2483ef", "#e85c6d", "#1b15d9"], "glow": "#20a4e5"}
+  },
+  "samples": [
+    {"id": "s1", "seconds": 16.9, "theme": "lavender", "loudness_lufs": -13.2, "true_peak_dbtp": 0.1, "still_frames_pct": 60},
+    {"id": "s2", "seconds": 20.0, "theme": "midnight", "loudness_lufs": -13.9, "true_peak_dbtp": 0.1, "still_frames_pct": 41},
+    {"id": "s3", "seconds": 23.5, "theme": "graphite", "loudness_lufs": -13.6, "true_peak_dbtp": 0.1, "still_frames_pct": 49},
+    {"id": "s4", "seconds": 37.7, "theme": "sky", "loudness_lufs": -13.8, "true_peak_dbtp": 0.9, "still_frames_pct": 26}
+  ]
+}

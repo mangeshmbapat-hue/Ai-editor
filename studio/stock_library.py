@@ -45,6 +45,9 @@ ITEMS = {
     "editing-suite": "video editing workstation monitors", "headphones": "studio headphones",
     "ruler": "wooden ruler centimetre", "diamond": "brilliant cut diamond gemstone", "megaphone": "megaphone loudspeaker",
     "perfume": "perfume bottle glass", "magnifier": "magnifying glass", "spotlight": "stage spotlight lamp",
+    # food (Animation Editor, Chamosa 2026-11-10: real items on every scene)
+    "cutting-chai": "cutting chai glass", "chai-kulhad": "chai kulhad", "onion-pakoda": "onion pakoda",
+    "samosa-chutney": "samosa with chutney", "bun-maska": "bun maska",
 }
 
 

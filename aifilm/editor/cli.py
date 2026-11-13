@@ -148,6 +148,25 @@ def parser():
     p = c.add_parser("faceless-themes", help="Faceless Editor: list the colour themes")
     p = c.add_parser("faceless-level", help="Faceless Editor: put music and every SFX at the owner's voice-first levels and drop banned FX")
     p.add_argument("edit")
+    p = c.add_parser("anim-new", help="Animation Editor: build anim/<name>/ (HTML + house motion runtime) from a scene spec.json")
+    p.add_argument("edit")
+    p.add_argument("spec", help="scene list JSON (see editor/styles/animation-product-promo/spec.example.json)")
+    p.add_argument("--name", default="promo")
+    p = c.add_parser("anim-themes", help="Animation Editor: the four learned colour themes")
+    p.add_argument("--brand", help="derive a theme from this brand colour (#rrggbb)")
+    p.add_argument("--base", default="lavender")
+    p = c.add_parser("anim-storyboard", help="Animation Editor: one frame per scene + STORYBOARD.md for the owner's approval")
+    p.add_argument("edit")
+    p.add_argument("--name", default="promo")
+    p = c.add_parser("anim-approve", help="Animation Editor: record the owner's storyboard approval (their exact words) for this exact spec")
+    p.add_argument("edit")
+    p.add_argument("--name", default="promo")
+    p.add_argument("--words", required=True)
+    p = c.add_parser("anim-render", help="Animation Editor: render the approved animation to renders/<name>.mp4")
+    p.add_argument("edit")
+    p.add_argument("--name", default="promo")
+    p.add_argument("--audio", help="music bed inside the edit, e.g. raw/bed.wav (levelled to -14 LUFS, stops 2.4 s before the end)")
+    p.add_argument("--fps", type=int, default=30)
     return root
 
 
@@ -259,6 +278,18 @@ def main(argv=None):
         elif cmd == "faceless-level":
             from . import faceless as FL
             result = FL.level(args.edit)
+        elif cmd.startswith("anim-"):
+            from . import animation as AN
+            if cmd == "anim-new":
+                result = AN.anim_new(args.edit, args.spec, args.name)
+            elif cmd == "anim-themes":
+                result = AN.theme_from_brand(args.brand, args.base) if args.brand else AN.THEMES
+            elif cmd == "anim-storyboard":
+                result = AN.storyboard(args.edit, args.name)
+            elif cmd == "anim-approve":
+                result = AN.anim_approve(args.edit, args.name, args.words)
+            else:
+                result = AN.anim_render(args.edit, args.name, args.audio, args.fps)
         elif cmd == "mg-new":
             result = {"composition": T.mg_new(args.edit, args.name, args.resolution)}
         elif cmd == "mg-render":

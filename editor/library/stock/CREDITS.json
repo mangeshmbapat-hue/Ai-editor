@@ -232,5 +232,50 @@
   "author": "Petragems",
   "file": "diamond.jpg",
   "fetched": "2026-11-13"
+ },
+ "cutting-chai": {
+  "title": "File:Fancy Cutting Chai.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/07/Fancy_Cutting_Chai.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Fancy_Cutting_Chai.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Heena Ahmed",
+  "file": "cutting-chai.jpg",
+  "fetched": "2026-11-10"
+ },
+ "chai-kulhad": {
+  "title": "File:Kulhad Chai 2.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Kulhad_Chai_2.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Kulhad_Chai_2.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Gannu03",
+  "file": "chai-kulhad.jpg",
+  "fetched": "2026-11-10"
+ },
+ "samosa-chutney": {
+  "title": "File:Samosa with Chutney.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Samosa_with_Chutney.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Samosa_with_Chutney.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Gaurav Dhwaj Khadka",
+  "file": "samosa-chutney.jpg",
+  "fetched": "2026-11-10"
+ },
+ "bun-maska": {
+  "title": "File:Bun Maska Pav.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Sanket Oswal",
+  "file": "bun-maska.jpg",
+  "fetched": "2026-11-10"
+ },
+ "onion-pakoda": {
+  "title": "File:Onion Pakoda 1.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Onion_Pakoda_1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Onion_Pakoda_1.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Yakshitha",
+  "file": "onion-pakoda.jpg",
+  "fetched": "2026-11-10"
  }
 }
