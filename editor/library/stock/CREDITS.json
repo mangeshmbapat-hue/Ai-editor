@@ -214,5 +214,23 @@
   "author": "Ibex73",
   "file": "gold.jpg",
   "fetched": "2026-11-10"
+ },
+ "wristwatch": {
+  "title": "File:A.L.B Watch Model A.L.B 100.JPG",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/A.L.B_Watch_Model_A.L.B_100.JPG",
+  "page": "https://commons.wikimedia.org/wiki/File:A.L.B_Watch_Model_A.L.B_100.JPG",
+  "licence": "CC BY 4.0",
+  "author": "Marie Durin",
+  "file": "wristwatch.jpg",
+  "fetched": "2026-11-13"
+ },
+ "headphones": {
+  "title": "File:SONY MDR-CD900ST.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/32/SONY_MDR-CD900ST.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:SONY_MDR-CD900ST.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Quercus acuta",
+  "file": "headphones.jpg",
+  "fetched": "2026-11-13"
  }
 }

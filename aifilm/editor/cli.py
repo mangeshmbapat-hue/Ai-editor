@@ -134,6 +134,7 @@ def parser():
     p.add_argument("--aspect", default="9:16")
     p.add_argument("--end-card", type=float, default=5.0)
     p.add_argument("--theme", help="colour theme for the whole video (faceless-themes lists them)")
+    p.add_argument("--texts", help="JSON file {scene number: on-screen words} with the editor's own text picks")
     p = c.add_parser("cutout", help="Faceless Editor: background-removed PNG of a real photo (rembg)")
     p.add_argument("src")
     p.add_argument("out")
@@ -244,7 +245,8 @@ def main(argv=None):
         elif cmd == "faceless-plan":
             from . import faceless as FL
             result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, args.captions, args.music,
-                             args.aspect, args.end_card, theme_name=args.theme)
+                             args.aspect, args.end_card, theme_name=args.theme,
+                             texts=json.loads(Path(args.texts).read_text(encoding="utf-8")) if args.texts else None)
         elif cmd == "cutout":
             from . import faceless as FL
             result = {"cutout": FL.cutout(args.src, args.out)}

@@ -44,6 +44,13 @@ def load_words(path):
         if text and start is not None and end is not None:
             words.append({"word": text, "start": float(start), "end": float(end)})
     require(words, "No word timings in {}; run `transcribe` on the voiceover (or studio/word_timing.py with the script)".format(path))
+    joined = []
+    for w in sorted(words, key=lambda w: w["start"]):
+        if joined and w["word"] in ("%", "%.", "%,", "-end", "-end."):   # Whisper splits "25 %" and "high -end"
+            joined[-1] = dict(joined[-1], word=joined[-1]["word"] + w["word"].lstrip("-") if not w["word"].startswith("-") else joined[-1]["word"] + w["word"], end=w["end"])
+        else:
+            joined.append(w)
+    words = joined
     return sorted(words, key=lambda w: w["start"])
 
 
@@ -79,7 +86,7 @@ def scenes(words, lo=SCENE_MIN, hi=SCENE_MAX):
     neighbour (never across a turn word). The first scene ends by HOOK_MAX."""
     clauses, cur = [], []
     for w in words:
-        if cur and (re.search(r"[.!?।,;:]$", cur[-1]["word"]) or bare(w["word"]) in TURN_WORDS):
+        if cur and (re.search(r"[.!?।,;:]$", cur[-1]["word"]) or bare(w["word"]) in TURN_WORDS or bare(w["word"]) in ("number", "step", "tip")):
             clauses.append(cur)
             cur = []
         cur.append(w)
@@ -96,15 +103,22 @@ def scenes(words, lo=SCENE_MIN, hi=SCENE_MAX):
             n = 1
         size = -(-len(c) // n)
         pieces += [c[i:i + size] for i in range(0, len(c), size)]
-    merged = []
+    merged, pending = [], []
     for g in pieces:
+        if pending:
+            g, pending = pending + g, []
+        if bare(g[0]["word"]) in ("number", "step", "tip") and span(g) < 0.9:
+            pending = g                  # "Number one," opens the next scene, it never trails the last one
+            continue
         turn = bare(g[0]["word"]) in TURN_WORDS
         across = merged and SENTENCE_END.search(merged[-1][-1]["word"])
         if merged and not turn and (span(g) < (0.6 if across else 0.9) or span(merged[-1]) < (0.6 if across else 0.9)) \
-                and span(merged[-1]) + span(g) <= hi + 0.6:
+                and span(merged[-1]) + span(g) <= hi + (0.6 if across else 1.2):   # a scrap inside a sentence always joins
             merged[-1] = merged[-1] + g
         else:
             merged.append(g)
+    if pending:
+        merged.append(pending)
     if merged and span(merged[0]) > HOOK_MAX and len(merged[0]) > 1:
         first = merged.pop(0)
         k = next((i for i, w in enumerate(first) if w["start"] - first[0]["start"] >= HOOK_MAX - 0.4), len(first) - 1) or 1
@@ -153,7 +167,7 @@ def default_visuals(root):
 
 
 def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=False, music=None,
-         aspect="9:16", end_card=END_CARD, transition_s=0.3, theme_name=None):
+         aspect="9:16", end_card=END_CARD, transition_s=0.3, theme_name=None, texts=None):
     root = Path(root)
     W, H = E_size(aspect)
     th = theme(theme_name)        # one colour theme for the whole video (owner rule 2026-11-13)
@@ -213,7 +227,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
                 if SENTENCE_END.search(w["word"]):
                     break
             hook = hook if len(hook) <= 5 else hook[:3]   # a long first sentence keeps only its first words: "Destroying the moon"
-            items.append({"value": wrap(title or " ".join(hook), 8 if max(len(x) for x in hook) <= 8 else 10, 4), "clean": True, "role": "title" if max(len(x) for x in hook) <= 8 else "headline", "position": "top" if zone_of(pick) == "top" else "bottom", "start": 0.05, "end": round(dur, 3),
+            items.append({"value": wrap(title or " ".join(hook), 8 if max(len(x) for x in hook) <= 8 else 10, 8), "clean": True, "role": "title" if max(len(x) for x in hook) <= 8 else "headline", "position": "top" if zone_of(pick) == "top" else "bottom", "start": 0.05, "end": round(dur, 3),
                           "animate": "pop", "color": th["accent"]})
         runs, prev_key, prev = [], False, None
         for j, w in enumerate(g):
@@ -254,6 +268,14 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
                     break
             items.append({"value": " ".join(phrase).strip(" ,"), "role": "headline", "position": "bottom",
                           "start": round(max(g[0]["start"] - a, 0.0), 3), "end": round(dur, 3), "animate": "fade", "color": th["text"]})
+        if texts and str(i + 1) in texts:   # the editor's own pick of on-screen words for this scene
+            line = texts[str(i + 1)]
+            first = line.split()[0].strip("#").lower() if line.split() else ""
+            at = next((w["start"] - a for w in g if bare(w["word"]).startswith(first[:4])), 0.15) if first else 0.15
+            at = min(at, max(0.1, dur - 1.6))     # on the word, but always long enough to read
+            items = ([items[0]] if i == 0 and items else []) or [{"value": line, "role": "headline", "position": "bottom",
+                                                                   "start": round(max(at, 0.05), 3), "end": round(dur, 3), "animate": "pop",
+                                                                   "color": th["text"], "statement": not any(ch.isdigit() for ch in line)}]
         if items:
             clip["text"] = items
         clips.append(clip)
@@ -503,7 +525,7 @@ def gradient(theme_name=None, size=(1080, 1920), seed=7):
     return Image.blend(img, Image.merge("RGB", (noise, noise, noise)), 0.025)
 
 
-def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=None, panel=None, layer_only=False):
+def card(src, out, theme_name=None, size=(1080, 1920), width=0.52, y=0.34, mono=None, panel=None, layer_only=False, soft=True):
     """Put a real-photo cutout on the theme gradient with a soft 2D/3D touch: a contact shadow,
     a soft drop shadow, a faint light wrap from the background and a subtle floor reflection.
     `src` is a cutout PNG (with alpha) or a photo; photos are cut out first (rembg)."""
@@ -524,6 +546,15 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
     box = obj.getbbox()
     if box:
         obj = obj.crop(box)
+    else:                                   # an empty object ("Less is more"): a clean frame, no stray shadow
+        empty = Image.new("RGBA", size, (0, 0, 0, 0)) if layer_only else gradient(t["id"], size).convert("RGBA")
+        out = Path(out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        (empty.save(out) if layer_only else empty.convert("RGB").save(out, quality=94))
+        write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"]})
+        return str(out)
+    if soft:
+        obj = soft2d(obj)
     import numpy as np
     al = np.array(obj.split()[3])
     flat_bottom = (al[-3:] > 200).mean() > 0.35          # photo cut off at the bottom (a dog's bust, a person)
@@ -535,7 +566,7 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.34, mono=
     # Layout (owner 2026-11-13: an object and its text never overlap): a whole object sits in the
     # upper zone (about 16-52 % of the height) with its text below; a photo cut off at the bottom
     # rises from the frame edge (bottom 48 %) with its text in the top zone.
-    scale = min(W * max(width, 0.85) / obj.width, H * 0.48 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.34 / obj.height)
+    scale = min(W * max(width, 0.80) / obj.width, H * 0.44 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.28 / obj.height)   # smaller reads as more professional
     obj = obj.resize((max(1, int(obj.width * scale)), max(1, int(obj.height * scale))), Image.LANCZOS)
     bg = Image.new("RGBA", size, (0, 0, 0, 0)) if layer_only else gradient(t["id"], size).convert("RGBA")
     if flat_bottom:
@@ -652,6 +683,8 @@ def fit_text(edl, max_width=0.70, max_lines=2):
     for c in edl["clips"]:
         for it in E.as_list(c.get("text")):
             chain = {"title": ["title", "headline", "body"], "headline": ["headline", "body"]}.get(it.get("role"), [it.get("role")])
+            if it.get("position") in ("bottom", "lower", "glass-lower") and chain[0] == "title":
+                chain = chain[1:]                     # the lower zone holds headline size at most
             for role in chain:
                 trial = dict(it, role=role)
                 size, file_, _ = craft.resolve_text(edl, trial)
@@ -714,6 +747,7 @@ def kind_of_text(i, g, key_value, turn):
 
 
 CANDIDATES = {"hook": ["bgword", "emphasis", "plain"], "number": ["glass", "tag", "emphasis"],
+              "statement": ["plain", "emphasis", "tag", "glass"],
               "name": ["tag", "glass", "emphasis"], "turn": ["emphasis", "plain", "tag"]}
 
 
@@ -804,6 +838,8 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
         items = E.as_list(c.get("text"))
         key = items[0]["value"].replace("\n", " ") if items and i else None
         kind = None if card_end else kind_of_text(i, words_by_clip.get(c["id"], []), key, "flash" in E.as_list(c.get("fx")))
+        if kind == "name" and items and items[0].get("statement"):
+            kind = "statement"
         place = src in objects_place
         treatment = ("glass" if items else None) if card_end else (choose(kind, history, photo=place) if kind else None)
         if treatment and not card_end:
@@ -846,3 +882,26 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
     used = [h for h in history]
     edl.setdefault("notes", []).append("Direction: treatments {} · no treatment or entrance repeats back to back.".format(", ".join(used)))
     return edl
+
+
+
+def soft2d(img):
+    """Owner rule 2026-11-13: real, but with a soft 2D finish (smooth, clean, a little cute), never a
+    paper cutout. An edge-preserving smooth keeps the shapes real while it simplifies the texture;
+    a touch more colour and a faint glow soften it. Alpha is kept."""
+    try:
+        import cv2
+    except ImportError:
+        return img
+    import numpy as np
+    from PIL import Image, ImageEnhance, ImageFilter
+    a = img.split()[3] if img.mode == "RGBA" else None
+    rgb = np.array(img.convert("RGB"))[:, :, ::-1]
+    sm = cv2.edgePreservingFilter(rgb, flags=1, sigma_s=60, sigma_r=0.45)
+    p = Image.fromarray(sm[:, :, ::-1])
+    p = ImageEnhance.Contrast(ImageEnhance.Color(p).enhance(1.15)).enhance(0.95)
+    p = Image.blend(p, p.filter(ImageFilter.GaussianBlur(6)), 0.18)
+    p = p.convert("RGBA")
+    if a is not None:
+        p.putalpha(a)
+    return p

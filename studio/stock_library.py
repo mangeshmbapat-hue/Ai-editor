@@ -41,6 +41,8 @@ ITEMS = {
     "city-mumbai": "Mumbai skyline", "city-delhi": "India Gate New Delhi", "road-traffic": "traffic India road",
     "rocket-launch": "rocket launch", "satellite": "satellite in orbit", "factory": "factory industry",
     "gold": "gold bars", "chart-paper": "financial newspaper chart", "car": "car on road",
+    "colour-swatches": "paint colour sample cards", "wristwatch": "luxury wristwatch photograph",
+    "editing-suite": "video editing workstation monitors", "headphones": "studio headphones",
 }
 
 
