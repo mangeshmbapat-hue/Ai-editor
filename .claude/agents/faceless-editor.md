@@ -96,6 +96,11 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - Or photos the owner sends.
 
   Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
+- **Design system v3.1** (owner rule 2026-11-13: think like a designer, do not just copy the colours the owner names):
+  - themes from `editor/faceless/palettes.json` (60-30-10), chosen by mood
+  - clean text in the theme roles; text on glass panels where it holds labels, numbers, names, the CTA or text over photos
+  - the object and its text never overlap
+  - hole-free cutouts checked by eye; replace any that look bad. Never force an ugly cutout; a clean alternative visual is always better.
 - **Look v3** (owner rule 2026-11-13):
   - one professional gradient colour theme per video (`faceless-themes`; `faceless-plan --theme <id>`)
   - every text colour comes from that theme
