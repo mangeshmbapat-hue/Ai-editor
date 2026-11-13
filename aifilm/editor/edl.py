@@ -64,7 +64,8 @@ FX = {
     "bw": "hue=s=0",
 }
 TEXT_ANIMATIONS = ("pop", "fade", "slam")
-TEXT_POSITIONS = {"top": "h*0.18", "center": "(h-text_h)/2", "bottom": "h*0.66"}
+TEXT_POSITIONS = {"top": "h*0.18", "center": "(h-text_h)/2", "lower": "h*0.57", "bottom": "h*0.66",
+                  "glass-top": "h*0.245-text_h/2", "glass-lower": "h*0.6225-text_h/2"}   # glass-*: centred in the faceless glass bands   # lower: two-line text that must end above the bottom safe zone
 SUB_COLOURS = {"white": "&H00FFFFFF", "yellow": "&H0000F0FF", "green": "&H0033FF66", "red": "&H003333FF", "cyan": "&H00FFFF00"}
 DEVANAGARI = re.compile("[ऀ-ॿ]")
 
@@ -142,7 +143,7 @@ def validate(root, edl):
             num(zoom.get("to", 1.0), cid + ".zoom.to", 1.0, 3.0)
         for text in as_list(clip.get("text")):
             require(isinstance(text.get("value"), str) and text["value"].strip(), cid + ": text needs a value")
-            require(text.get("position", "bottom") in TEXT_POSITIONS, cid + ": text position must be top/center/bottom")
+            require(text.get("position", "bottom") in TEXT_POSITIONS, cid + ": text position must be top/center/lower/bottom/glass-top/glass-lower")
             require(text.get("role") in (None, "title", "headline", "body", "caption", "label"), cid + ": text role must be title/headline/body/caption/label")
             require(text.get("animate") in (None,) + TEXT_ANIMATIONS, cid + ": text animate must be one of {}".format(list(TEXT_ANIMATIONS)))
         for ins in clip.get("inserts", []):
@@ -174,7 +175,7 @@ def validate(root, edl):
     subs = edl.get("subtitles")
     if subs:
         require(inside(root, subs["file"]).is_file(), "Subtitle file missing: " + subs["file"])
-        require(subs.get("position", "bottom") in TEXT_POSITIONS, "subtitles.position must be top/center/bottom")
+        require(subs.get("position", "bottom") in ("top", "center", "bottom"), "subtitles.position must be top/center/bottom")
         require(subs.get("color", "white") in SUB_COLOURS, "subtitles.color must be one of {}".format(sorted(SUB_COLOURS)))
         require(subs.get("animate") in (None,) + ANIMATIONS, "subtitles.animate must be one of {}".format(list(ANIMATIONS)))
         if subs.get("words"):
@@ -419,12 +420,23 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
             family = family if (family and file_) else family_of(file_ or font_for(item["value"], item.get("font")))
             weight = 700 if item.get("role") in (None, "title", "headline", "caption") else 500
             pos = item.get("position", "bottom")
-            an, y = {"top": (8, H * 0.18), "center": (5, H / 2.0), "bottom": (8, H * 0.66)}[pos]
+            an, y = {"top": (8, H * 0.18), "center": (5, H / 2.0), "lower": (8, H * 0.57), "bottom": (8, H * 0.66),
+                     "glass-top": (5, H * 0.245), "glass-lower": (5, H * 0.6225)}[pos]
             a = row["start"] + float(item.get("start", 0))
             b = row["start"] + float(item.get("end", row["duration"]))
             tags = "{{\\an{}\\pos({},{})\\fn{}\\fs{}\\b{}\\c{}\\bord{}}}".format(
                 an, int(W / 2), int(y), family, size, weight, ass_colour(item.get("color", "white")), max(2, size // 14))
-            events.append((a, b, "TxtBox" if item.get("box") else "Txt", tags + text_motion(item.get("animate")) + ass_text(item["value"])))
+            if item.get("clean"):      # classy text: no outline, a soft low shadow (faceless look v3)
+                tags = tags[:-1] + "\\bord0\\shad{}\\4c&H000000&\\4a&H70&}}".format(max(2, size // 28))
+            if item.get("box_color"):  # a solid tag: the box takes the colour (ASS BorderStyle 3 uses the outline colour)
+                tags = tags[:-1] + "\\3c{}\\3a&H00&\\bord{}\\shad0}}".format(ass_colour(item["box_color"]), max(10, size // 4))
+            body = ass_text(item["value"])
+            if item.get("accent_words"):   # a two-tone line: the key words in the accent colour
+                keys = {w.lower().strip(".,!?;:") for w in item["accent_words"]}
+                parts = re.split(r"(\s+)", item["value"])
+                body = "".join(("{{\\c{}}}{}{{\\c{}}}".format(ass_colour(item.get("accent_color", "yellow")), ass_text(p), ass_colour(item.get("color", "white")))
+                                if p.lower().strip(".,!?;:") in keys else ass_text(p)) for p in parts)
+            events.append((a, b, "TxtBox" if (item.get("box") or item.get("box_color")) else "Txt", tags + text_motion(item.get("animate")) + body))
     subs = edl.get("subtitles")
     cap = None
     if subs and subs.get("burn", True):

@@ -140,7 +140,8 @@ def text_bbox(fmt, value, size, position, font_file=None):
     lines = value.split("\n")
     width = max(text_width(l, size, font_file) for l in lines)
     height = size * 1.25 * len(lines)
-    y = {"top": H * 0.18, "center": (H - height) / 2, "bottom": H * 0.66}[position]
+    y = {"top": H * 0.18, "center": (H - height) / 2, "lower": H * 0.57, "bottom": H * 0.66,
+         "glass-top": H * 0.245 - height / 2, "glass-lower": H * 0.6225 - height / 2}[position]
     return {"x0": (W - width) / 2, "x1": (W + width) / 2, "y0": y, "y1": y + height}
 
 

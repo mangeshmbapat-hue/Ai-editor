@@ -127,3 +127,51 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **Social media = real logos.** When the VO names a platform or talks about social media, animate the owner's logos from `editor/library/social/` (Facebook, X/Twitter, Instagram, WhatsApp, Snapchat), not heart or message icons.
 - **Subtitles only on request.** Burn subtitles (Hindi or English) only when the owner asks for them for that video; some clients refuse them. The kinetic text graphics, effects, transitions and animation are always part of the style.
 - **Real photos for every object, animal and place.** Dogs, money, computers, mics, stages and the Earth are realistic stock photos (Pexels, Wikimedia Commons, NASA, all free-licensed, credited in `CREDITS.md`), never cartoon drawings. Faces follow the people rule above. TV channel logos come from the owner.
+
+## Look v3 (owner, 2026-11-13; this overrides the warm/yellow bokeh, wood-table and paper look above)
+- **Background:** a smooth, professional gradient from one theme in `editor/faceless/palettes.json`. The themes are midnight navy, crimson noir, black and white, emerald and gold, royal purple, slate and teal, and charcoal and orange. No yellow, no bokeh bubbles, no paper and no tables.
+- **One theme per video.** Choose it by topic (each theme's `use` says where it fits) and pass `faceless-plan --theme <id>`. All text colours come from the theme:
+  - the hook in the accent colour
+  - numbers in the highlight colour
+  - names and words in the text colour
+  - small labels in the muted colour
+- **Objects** are real-photo cutouts made with `faceless-card <photo> <out> --theme <id>`. Each gets a soft drop shadow, a contact shadow, a faint floor reflection and a light wrap from the background. A photo cut off at the bottom fades into the background. A flat object (a note, a card) gets a slight 3D tilt.
+- **Places and scenes** (court, parliament, crowd, street) are full-bleed photos with theme bands at the top and bottom for the text: `faceless-card --photo`.
+- **Black and white theme:** the photos are black and white too, and the text is white or grey only.
+
+## Design system v3.1 (owner, 2026-11-13; the theme list above is replaced by `editor/faceless/palettes.json`)
+- **Themes:** 8 designed themes, each following 60-30-10: navy-ivory (the default), graphite-crimson, mono-silver, teal-sand, plum-rose, forest-gold, midnight-electric, and ivory-navy-light. Choose one per video by mood (each theme has `use` and `mood`). Text is checked to at least 4.5:1.
+- **Text:**
+  - clean: no outline, a soft shadow, the Poppins and Hind pairing
+  - colours: primary off-white, the key word or number in the accent, labels muted
+  - one text block per scene, fitted to the real font width, at most two lines
+- **Glass:**
+  - `faceless-card --panel`: a 18 px blur, the theme surface at about 40 %, a hairline border and a soft shadow
+  - for labels, numbers, names, quotes, the CTA and text over photos; text positions `glass-top` and `glass-lower` centre it in the panel
+  - not for long text
+- **Layout:**
+  - a whole object sits in the upper zone with its text below
+  - a cut-bottom photo rises from the bottom with its text on top
+  - a cut-side photo enters from its side
+  - the object and its text never overlap
+- **Cutouts:** hole-free (`solid_cutout`) and checked by eye. Replace any that look bad.
+
+## Variety and direction (owner, 2026-11-13)
+`faceless-plan` runs a direction pass (`faceless.direct`) when the visuals are images. Put objects in `raw/`, places in `raw/places/`.
+
+**Text treatments, chosen by what the text is:**
+
+| Treatment | What it is | Used for |
+|---|---|---|
+| `plain` | clean off-white text | headlines, statements |
+| `emphasis` | a line with the key word in the accent colour | turns ("Lekin asli sawaal"), claims |
+| `tag` | solid accent box, text in the theme's ink | dates, places, names, categories |
+| `glass` | frosted card | numbers and stats, quotes, the CTA, any text over a busy photo |
+| `bgword` | a huge, faint word behind the object, plus the line itself | hooks, topic openers |
+
+**Variety rules:**
+- No treatment in two consecutive scenes, and none in more than about 35 % of a video.
+- Text over a photo always gets glass or a tag.
+- One text block per scene.
+
+**Entrances:** rise, slide-left, slide-right, pop (with a settle) and fade-up. All are eased over 0.6 s; the object then holds still and fades out over 0.3 s. Never the same entrance twice in a row, and never a shake.

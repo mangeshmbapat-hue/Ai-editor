@@ -35,7 +35,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - people with faces
   - the owner's logos
   - smooth motion and no shake
-  - quiet SFX and music under the VO
+  - no SFX, only slow corporate music under the VO
   - no subtitles unless asked
   - the end card
 - **What gets filled in without asking:**
@@ -78,7 +78,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
    - Match each visual to its words. A person's image arrives up to 0.6 s before they are named.
    - Choose the emotion words for serif italic.
    - Build the signature graphics as Hyperframes overlays (`mg-new`/`mg-render`): number rolls and counters, date builds, name tags on tape, a prop/paper collage with shadows, scattered words.
-   - Add an SFX on every transition (recorded samples) and a music bed ducked under the VO. Then run `faceless-level <edit>`: it sets the music and every SFX to the owner's voice-first levels (SFX at least 15 LU under the VO, music at least 14 LU) and removes banned FX.
+   - **No sound effects at all** (owner rule 2026-11-10). Put only a slow, soft corporate-style music bed under the VO, then run `faceless-level <edit>` so the music sits at least 14 LU under the VO. Never spend time searching for SFX.
    - **Never shake** (owner rule 2026-11-10). Scenes, images and text come in with a smooth animation, sit still and stable, and leave with a smooth animation. No `shake` FX and no jittery Hyperframes motion.
    - Run `validate` and `craft-check`, and fix every FAIL.
 6. **Storyboard gate:** the style is recorded as in the fast path. Make the `storyboard`, send the numbered frames, and **stop** until the owner says OK (`approve --words "<their words>"`). Silence is not approval. After the OK, go straight to step 7 without another check-in.
@@ -86,7 +86,7 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
 
 ## Owner rules checklist (check before every storyboard; details in `studio/LEARNINGS.md`)
 - **Subtitles:** only when the owner asks for them, in Hindi or English. Text graphics, effects, transitions and animation are always on.
-- **Sound:** SFX very quiet under the VO, and music never pressing on it. Run `faceless-level`.
+- **Sound:** no SFX at all; only a slow, soft corporate-style music bed under the VO, never pressing on it. Run `faceless-level`.
 - **Motion:** never shake. Everything comes in with a smooth animation, sits still, and leaves smoothly.
 - **Objects, animals and places are real photos, never cartoon** (owner rule 2026-11-10): dogs, money and note bundles, computers, mics, stages and the Earth all come from real, free-licensed photos:
   - **NASA** (`images-api.nasa.gov`, public domain) for the Earth, space and rockets. Checked on 2026-11-10.
@@ -96,6 +96,25 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - Or photos the owner sends.
 
   Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
+- **Vary every video** (owner rule 2026-11-13, never latch on to one effect):
+  - Choose the text treatment by content: plain, emphasis, tag, glass or background word.
+  - No treatment twice in a row, and none in more than about a third of the scenes.
+  - Glass only where it belongs: numbers, quotes, the CTA, text over photos.
+  - Rotate the smooth cutout entrances (rise, slide, pop, fade-up). `faceless-plan` does this when the visuals are images (objects in `raw/`, places in `raw/places/`); check the result and keep the variety when you refine.
+- **Design system v3.1** (owner rule 2026-11-13: think like a designer, do not just copy the colours the owner names):
+  - themes from `editor/faceless/palettes.json` (60-30-10), chosen by mood
+  - clean text in the theme roles; text on glass panels where it holds labels, numbers, names, the CTA or text over photos
+  - the object and its text never overlap
+  - hole-free cutouts checked by eye; replace any that look bad. Never force an ugly cutout; a clean alternative visual is always better.
+- **Look v3** (owner rule 2026-11-13):
+  - one professional gradient colour theme per video (`faceless-themes`; `faceless-plan --theme <id>`)
+  - every text colour comes from that theme
+  - objects are realistic cutouts with a soft shadow and reflection (`faceless-card <photo> <out> --theme <id>`)
+  - places are full-bleed photos with theme bands (`faceless-card --photo`)
+  - never a yellow, bokeh, paper or table background
+- **Cutouts never show their cut edge** (2026-11-13): a photo cut off at the bottom rises from the frame's bottom edge (`faceless-card` does this) or hides behind a foreground element.
+- **On the word, nothing extra:** an object's image and its text appear exactly when the VO says it. Nothing extra joins or runs along the bottom of the frame (no tickers, bars or stickers).
+- **Nothing fake:** every object, animal, place and device is a realistic photo. Drawn or AI figures are allowed only for people the owner does not supply.
 - **People:** realistic figures with visible faces, cartoon-like but real, of the right age and gender, generic people only. No white borders.
 - **No images sent:** draw the scenes yourself in the approved realistic lit look.
 - **Social media:** use the owner's logos from `editor/library/social/` (Facebook, X, Instagram, WhatsApp, Snapchat), never hearts or generic icons.
