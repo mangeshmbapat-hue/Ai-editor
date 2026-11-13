@@ -1,6 +1,10 @@
 # Product style: Animated explainer (corporate SaaS motion graphics)
 
-Status: **breakdown done, waiting for the owner's approval** (2026-11-13). Learned from 1 sample the owner called the best animation sample: a 52 s product explainer for an AI product-management tool. The file stays in the git-ignored `projects/_product-train/explainer-collato/` as study material. **Learn the style, never the sample's brand, logo, script, characters, UI or music.**
+Status: **breakdown done, waiting for the owner's approval** (2026-11-13). Learned from 2 owner samples, both kept as study material in the git-ignored `projects/_product-train/`:
+- **Sample 1, look A, "premium dark":** a 52 s explainer for an AI product-management tool (`explainer-collato/`). The owner called it the best animation sample.
+- **Sample 2, look B, "flat line-art":** a 98 s enterprise IT (virtual desktop) explainer (`explainer-jos/`), sent by the owner as "sab animation h ye".
+
+The line-by-line table, the measurements and the theme rule just below are sample 1 (look A). Sample 2 (look B) has its own section further down. **Learn the style, never the sample's brand, logo, script, characters, UI or music.**
 
 How it was studied: 1 fps and 4 fps frame sheets of the whole video, full-resolution stills for fonts and colours, OpenCV colour sampling, FFmpeg loudness, silence and cut detection, and word timings from offline speech recognition (pocketsphinx). The recognition was rough, so the script below was **reconstructed** by matching it to the on-screen text. Its word times are good to about 0.2 s; some words are my reading and are marked (?). The sound was measured, not heard.
 
@@ -76,10 +80,75 @@ How it was studied: 1 fps and 4 fps frame sheets of the whole video, full-resolu
 - A calm, clear voiceover at about 2.6 words per second over a soft bed, about −19 LUFS here. For our reels we deliver −14 LUFS with a −1 dBTP ceiling.
 - The ending is silent for 2 s on the CTA.
 
+## Sample 2, look B: flat line-art enterprise explainer (98 s)
+
+### Measured
+| | Value |
+|---|---|
+| Format | 1920×1080, 30 fps, 98.1 s |
+| Hard cuts | **0** (every change is a wipe, a draw-on, a zoom or a morph) |
+| Voice | nearly continuous, 0.7 → 96.4 s, about 2.7 words per second |
+| Loudness | −8.8 LUFS, peak +3.1 dBFS (very loud, it clips; we keep −14 LUFS / −1 dBTP) |
+| Ground | **white `#ffffff` 74 %**, with soft **mint glows** in the corners (`#dcf6f2`, 13 %) that drift slowly |
+| Accents | **teal `#11ebc4`/`#2ee4c3`**, **ocean blue `#11a0c3`**, light teal `#87e8d2`, a little green `#45dc82` |
+| Lines and text | dark slate `#3d4752` for outlines and headings, grey `#838990` for small labels, light grey `#b3d7d1` for unfinished outlines |
+| Skin | peach `#f8c49a` (the hands and the faces of the drawn people) |
+
+### The theme rule (look B)
+1. **White ground with mint glows, nothing else.** There is no dark scene at all. The only full-colour frames are the **wipes**: a teal circle iris, teal and blue diagonal stripes, and a teal diamond.
+2. **Two accents only, teal and blue.** Everything is drawn in slate line-art and **filled with teal or blue only**, plus peach skin. Real app logos (Gmail, Office, Salesforce, Drive) appear only when apps are named.
+3. **People are flat drawn characters with faces** (teal and blue clothes), shown at desks, in round or square frames with a label pill ("IT Department", "Team Lead", "IT Security Specialist", "IT Manager"). There are no photos.
+4. **One clean sans** for everything: slate headings, small grey icon labels, and dark pill labels with white text.
+
+### Line by line (spoken words reconstructed from rough recognition; times ±0.3 s)
+| Time (s) | Spoken | On screen | Motion |
+|---|---|---|---|
+| 0.7–3.9 | "With the rise of **hybrid work** as a long-term business strategy," | people in square frames (drawn, with faces) and the words **HYBRID / WORK / CULTURE** | the frames pop in one by one from 0.5 s; the letters drop in one by one on "hybrid" |
+| 4.6–8.6 | "managing complex and distributed **end-user devices** is challenging." | three people stand on an **"IT Department"** pedestal; monitors, laptops, phones and app windows fill the screen around them | the device outlines **draw on** as strokes and multiply until the screen is crowded ("challenging") |
+| 9.0–14.5 | "You need a **resilient**, **agile** and **efficient** model to match the changing needs." | a teal circle iris wipe; one tower drawn in line, with a **Resilient**, **Agile** and **Efficient** label and icon each popping beside it **on its word**; more towers draw on into a city | the strokes draw at about 0.5 s per building; the labels pop 0.1 s before their words |
+| 15.2–19.0 | "You need a tool to streamline your existing **IT ecosystem**." | a mind map of labelled icon cards (cybersecurity, work from anywhere, multiple devices, app modernisation …) | the cards blur in and connect on "ecosystem" |
+| 19.1–23.0 | "That's why you need a **Virtual Desktop Infrastructure**," | a laptop outline draws on; the name **types letter by letter** on screen; 4 feature icons pop around it: Highly Secure, Centralised Management, Seamless Collaboration, Cost Efficient | typing about 0.05 s per letter, starting on "virtual"; the icons 0.25 s apart |
+| 24.0–27.0 | "… designed and architected (?) for every industry (?)" | hands on a tablet dashboard; the industry labels Healthcare, Education, Manufacturing, Retail, Finance and Construction, each with an icon | the labels pop in one by one around the tablet |
+| 27.0–29.9 | "**secure** distributed (?) **cloud-based applications**," | **"Secure Distributed Workspace"** types in the centre of a dotted orbit ring of small icons | the ring rotates slowly; the icons fade in around it |
+| 29.9–34.6 | "deploying **seamless integration** and user experience to more than **30,000 users**." | a workspace window with a grid of **real app logos**, then a network of many face avatars linked by lines | the grid fills tile by tile on "integration"; the camera pulls back through the network on "30,000 users" |
+| 35.0–39.4 | "Our VDI solutions provide end-to-end **security** measures," | a woman at a desk with a laptop and a **"Team Lead"** pill; a big **padlock** draws on behind her | the padlock draws on with the word "security" (38.2 s) |
+| 39.7–43.3 | "**flexible scaling capabilities** and **simplified desktop management**," | **"Flexible Scaling Capabilities"** types, then **"Simplified Desktop Management"**; employee cards A to D arrive with arrows | each headline types on its first word |
+| 44.0–48.4 | "enabling you and your team to **work from anywhere**, on any device," | a man on a beach under a palm tree with a laptop, linked by a dotted line to a woman at an office desk | the dotted line runs from the beach to the office on "anywhere" |
+| 49.0–52.0 | "with a high-definition experience and seamless **collaboration**." | a dashboard monitor surrounded by people in frames with chat bubbles | the bubbles pop in turn, like a conversation |
+| 53.0–58.5 | "In the face of ever-growing **cyber threats**, we **safeguard** your IT infrastructure" | an **"IT Security Specialist"** with a tablet; a **globe with a lock** appears beside her, then **Cloud Based** and **On-Premise** labels with server icons | the globe arrives on "safeguard"; the labels draw on |
+| 59.2–63.0 | "…and the mission-critical **business applications**," | circuit lines carrying app nodes; two people point at a large app grid | the nodes travel along the circuit lines |
+| 63.4–65.0 | "assuring complete **data protection**." | a **"Data Protection"** lock module with icons orbiting it | the module scales in; the icons orbit |
+| 65.6–69.4 | "Act now. Free up your **IT teams** to focus on higher-value tasks" | an **"IT Manager"** in a frame with devices around him, then pointing at charts | the charts draw on as he points |
+| 70.4–73.0 | "by centralising end-user management." | (the manager scene continues) | a **teal diamond wipe** at about 73 s |
+| 73.6–75.7 | "No matter the **size of your organisation**," | a wall of many face avatars (the organisation's size) | the faces fill the frame, scaling in |
+| 76.1–78.3 | "choose from **cloud-based** and **on-premise** solutions" | a **Cloud Based** card, then an **On-Premise** card, over the faces | each card lands on its word (76.8 s, 77.6 s) |
+| 79.0–84.5 | "to support end-user devices and managed services, and **quickly customise** everything" | rows of people with devices and a big drawn hand that **ticks the checkboxes**; a settings dashboard | each tick on the beat; the hand slides in from the side |
+| 84.5–86.2 | "to maximise the **productivity** of your team." | a woman at a desk with a **5-star rating** bubble | the stars pop in |
+| 86.5–90.0 | "…optimise your **technology investments**" | **teal and blue diagonal stripes** wipe; a skyline **draws on** in line; a **$ coin** rolls in | the strokes draw building by building; the coin on "investments" |
+| 90.0–93.5 | "and **scale your business exponentially** with greater cost efficiency." | the skyline **fills with teal from the bottom up** | a liquid fill from the base on "scale … exponentially" |
+| 93.5–98.0 | "**Contact us** to find out more today." | concentric teal squares morph into the **square logo**; a dark **"Contact us today"** button; the URL | the logo scales in; the button lands on "contact"; the URL types last |
+
+### Signature moves (look B)
+- **Line draw-on:** buildings, devices, padlocks and laptops are drawn as strokes in real time (about 0.4–0.6 s each), then sometimes **filled with teal**.
+- **Typewriter headlines** in slate, typed letter by letter on the spoken phrase.
+- **Icon and label pops:** each named quality (Resilient, Agile, Secure, Cloud Based) is a line icon plus a word that pops on its word.
+- **Orbits and networks:** dotted rings with icons, and avatars linked by lines.
+- **Colour wipes** (circle iris, diagonal stripes, diamond) are the only big blocks of colour.
+- **The drawn hand** taps and ticks in the UI scenes.
+
+## Both samples: the rules that hold in each
+1. **Say it, show it:** every named person, role, thing, number, tool or quality appears **on its word** (0.1–0.4 s before it), and the headlines land on their keyword.
+2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue. The only colours outside the theme are the brand logo's own and the real app icons.
+3. **No hard cuts:** wipes in the theme's colours, camera moves, draw-ons, zooms into the UI, and morphs (an orb or squares into the logo, a URL into a button).
+4. **People always have faces:** photo badges (look A) or drawn characters (look B), with a role pill.
+5. **The end card is the logo, a CTA button and the URL,** held still, with the sound fading out.
+6. **One type family**, bold headlines and small labels; the "font change" is size and weight.
+
 ## What this means for our videos
 - Script first (VO or text). Mark **every noun and action** in it and give each one a visual on its word.
 - Pick **one brand theme** (dark ground + light ground + accents + one brand gradient) and use nothing outside it.
-- Use 16:9 as in the sample, or 9:16 for reels with the same rules.
+- **Choose the look per brand:** look A (premium dark, 3D cards, glows) or look B (white flat line-art, draw-ons, drawn characters). The owner picks it, or it follows the brand's colours.
+- Use 16:9 as in the samples, or 9:16 for reels with the same rules.
 
 ## Brand styles in this category
 _None yet._
