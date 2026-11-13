@@ -3,6 +3,7 @@
 Status: **breakdown done, waiting for the owner's approval** (2026-11-13). Learned from 2 owner samples, both kept as study material in the git-ignored `projects/_product-train/`:
 - **Sample 1, look A, "premium dark":** a 52 s explainer for an AI product-management tool (`explainer-collato/`). The owner called it the best animation sample.
 - **Sample 2, look B, "flat line-art":** a 98 s enterprise IT (virtual desktop) explainer (`explainer-jos/`), sent by the owner as "sab animation h ye".
+- **Sample 3, look C, "health-tech navy and sky":** a 110 s dental AI software explainer (`explainer-dental/`). The owner asked me to notice the cartoon faces, the single theme, spoken words becoming text, the same colours for the ground, text and bubbles, the doctor tapping screens that grow, the graphs, the light streaks, the doctor's actions and the names, and every transition.
 
 The line-by-line table, the measurements and the theme rule just below are sample 1 (look A). Sample 2 (look B) has its own section further down. **Learn the style, never the sample's brand, logo, script, characters, UI or music.**
 
@@ -136,18 +137,72 @@ How it was studied: 1 fps and 4 fps frame sheets of the whole video, full-resolu
 - **Colour wipes** (circle iris, diagonal stripes, diamond) are the only big blocks of colour.
 - **The drawn hand** taps and ticks in the UI scenes.
 
-## Both samples: the rules that hold in each
+## Sample 3, look C: health-tech explainer, sky-white and deep navy (110 s)
+
+### What the owner asked me to notice (owner's words, 2026-11-13)
+"agr face nhi h to kese usne cartoon face use kie h, kese 1 hi theme rkh rkhi h, kis trh se jo bolra h wo text a rhe h, color same h bg ka text ka bubble same theme chlri h, kese jb explain kr rhe h to dr. ek ek screen ko click kr rhi h to badi ho rhi h images, kese graphs ate h lightning ati h, kese dr. chize kr rha h unke nam or sbkuch ... ek ek transition effect theme"
+
+### Measured
+| | Value |
+|---|---|
+| Format | 1920×1080, 30 fps, 110.0 s |
+| Hard cuts | **0** |
+| Voice | 0.7 → 106.7 s, about 2.5 words per second; silence for the last 1.7 s |
+| Loudness | −17.9 LUFS, LRA 3.0, peak −3.6 dBFS |
+| Light scenes (121 samples) | white `#f8fafd` 61 %, **sky-blue glow `#d8e9f4`** 22 %, navy text and pills `#193447`, accent blue `#1067a7`, teal `#65c1d3`, pink skin `#eba1ab` |
+| Dark scenes (100 samples) | deep navy `#011621` → `#043247` → `#074668`, with a **teal-green glow `#12698c`/`#0e5b65`** rising from one corner; white text |
+| Accents overall | navy and ocean blues `#053d5f`, `#064e80`, `#0b73b9`, cyan `#3baed4`/`#6cd3e2`. **There is no colour outside blue, navy and teal** (apart from skin and hair). |
+
+### The theme rule (look C)
+1. **One blue family across 2 grounds:** a sky-white ground (white with soft sky-blue glows) for the story scenes, and a **deep navy with a teal glow** for the "problem" and "product" scenes. The switches are circle wipes in those same colours.
+2. **The same colours everywhere:** headlines in ocean blue on white and in white on navy; **bubbles and chips** are navy pills with white text on white grounds, or translucent teal glass panels on navy. The ground, the text and the bubbles always share one palette.
+3. **Cartoon faces instead of photos:** every person (the doctor, the patients) is the **same flat vector character style**: round white badges with a soft shadow, diverse skin tones, simple friendly faces, the doctor with glasses and scrubs. A **name tag** sits next to each patient badge (Elizabeth, Jennifer, Thomas, James, Michael, William).
+4. **Type:** one clean geometric sans. Headlines are semibold; the product line ("Oral Health Therapy") is a **light weight** under a bold name. Labels are small caps-style headings (NEEDS, CONDITIONS, RISK FACTORS) with chips under them.
+
+### Line by line (spoken words reconstructed from rough recognition; times ±0.3 s)
+| Time (s) | Spoken | On screen | Motion |
+|---|---|---|---|
+| 0.5–4.0 | "What if **every** preventive treatment were truly **individualized**?" | the doctor's cartoon face badge on top, a tooth icon below, joined by a line; **patient face badges with name tags** branch out of the line like a tree | the line grows from 0.5 s; the badges pop out along the branches at 1.5–3.5 s, one by one on "every … individualized" |
+| 4.5–8.0 | "The best possible treatment, one that adapts to …" | the tree holds, then all but one patient fade | the camera pushes towards one patient |
+| 8.0–12.5 | "… each patient's **needs**, **conditions** and **risk factors**." | one patient's big face badge in the centre; **NEEDS** with the chips Aligner Therapy, Deep Cleaning, Restorative Treatment; **CONDITIONS** with Malocclusion, Cavities, Gum Inflammation; **RISK FACTORS** with Poor Oral Hygiene, Allergies | each heading **types on its word** (needs 9.5, conditions 10.4, risk 11.8 s) and its chips pop 0.1 s apart |
+| 14.0–19.5 | "… personalized **diagnostics**, **procedures**, **accompanying therapy** and **routine check-ups** for every situation." | from the patient, a path line leads to icon circles: Diagnostic (X-ray), Procedure (tools), Accompanying Therapy (tube), Routine Check-up (mouth) | the camera **pans right along the line**; a green progress stroke draws round each circle as its label types on the word |
+| 19.7–23.5 | "But in today's dental practices …" | the doctor stands among **floating holographic screens** (X-rays, tooth scans, patient cards) in light blue glass | the screens fan out in 3D around her at 21–22 s |
+| 23.7–29.9 | "… a **shortage of skilled staff**, **time pressure** and a **one-size-fits-all approach** …" | chips with icons appear at the top: **Shortage of Staff**, **Time Pressure**, **One-fit-all Approach** | each chip on its phrase (23.7, 26.2, 27.5 s); meanwhile the doctor **taps a screen and it grows** about 1.3× and brightens, then the next one, about every 1.5 s |
+| 30.0–39.0 | "… information is collected: **personal data**, **saliva**, **microbiome**, **X-rays**, **medical history**, the **digital patient record**, **intraoral scanner data**, **current findings** …" | the doctor treats a patient in the chair; data chips around them, grey and faded until **each one turns into a navy pill on its word** | the active chips pop, and the old ones fade back to grey |
+| 39.9–42.9 | "**Result?** The **same standard procedure** …" | **"Result?"** in blue, then **"Same Standard Procedure"** with a small card "PROCEDURE 02 +15" with avatars | the headline types; the card pops in |
+| 43.0–46.0 | "… **fluctuating quality** …" | a **navy circle wipe** grows from the corner; a **jagged line graph draws on**, its points pop; **"Fluctuating Quality"** in white | the wipe at 44.0 s; the graph draws left to right; "Fluctuating" at 44.25 s and "Quality" at 44.75 s |
+| 46.0–50.0 | "… and **inconsistent patient experience**." | many **review cards with 3, 4 and 5 stars** float across the navy | the cards rise with parallax at different speeds |
+| 50.0–55.0 | "**VivaDent Oral Health Therapy** (the product) was created to **change that**." | **"VivaDent"** bold white, then **"Oral Health Therapy"** light, in the centre of the navy | the name lands on its word; the subline fades up on "health" |
+| 55.1–58.3 | "Its centrepiece: **the Matrix**." | **light streaks**: glowing data lines pour down from the top into a **wireframe globe of nodes**, and the giant ghost word **MATRIX** sits behind it | the beams flow downwards continuously (the "lightning"); the globe pulses; the word fades in on "matrix" (57.6 s) |
+| 58.6–65.3 | "An **intelligent**, evidence-grounded **decision engine** that serves as a co-pilot to the specialists." | the doctor (cartoon) on navy beside a **glass patient-list panel** | the panel slides in; the rows **highlight one by one**, as if selected |
+| 65.3–75.6 | "It uses **personal data**, **history**, **habits**, **clinical findings**, **saliva data** and **risk factors** …" | a glass dashboard: white cards **Personal Data**, **History**, **Habits**, **Clinical Findings**, **Saliva Data**, **Risk Factors** | **one card per word, exactly on the word** (habits 70.5 s, risk factors 74.5 s); each card scales up from the panel |
+| 75.6–84.0 | "… into a **structured, personalized protocol** with clear guidance and seamless documentation." | a **white circle wipe** from the right; the doctor with the patient; navy bubbles **PROCEDURE**, **RISK FACTORS** and the patient's name card **"James"** | the bubbles pop next to the people, on their words |
+| 84.0–91.0 | "… consistency … patient experience … less repetitive tasks." | **"Saving Time Per Session"** in blue next to the doctor | the headline types word by word |
+| 91.0–100.0 | "With VivaDent, prevention becomes **scalable**, individual and measurably better, no matter **who** performs it." | a **navy iris** opens; the wireframe globe with **patient face badges orbiting** it | the faces join the orbit one by one on "scalable … who" |
+| 100.0–110.0 | "VivaDent … intelligence-driven …" | a planet-like dot travels an orbit line and becomes the **"VivaDent / Oral Health Therapy"** end title | the letters type in; a still hold, and silence for the last 1.7 s |
+
+### Signature moves (look C)
+- **Tap to grow:** the character taps a floating screen, and it scales up about 1.3× and glows while the others stay. Use it when the voice says "check", "open", "review" or "analyse".
+- **Grey to active chips:** all the options sit faded, and the one being said turns into a solid navy pill on its word.
+- **The path pan:** a line leads from a person through icon circles, the camera follows it, and each stop types its label as it is said.
+- **Graph draw-on** for a problem ("fluctuating"): a jagged line with points popping, on navy.
+- **Light streaks into a node globe** for the "AI engine" moment (the "lightning").
+- **Orbit of faces** for "scalable" and "every patient".
+- **Circle wipes** in the theme's colours (a navy circle from the corner, a white circle from the side, a navy iris) for every change between light and dark.
+
+## All three samples: the rules that hold in each
 1. **Say it, show it:** every named person, role, thing, number, tool or quality appears **on its word** (0.1–0.4 s before it), and the headlines land on their keyword.
-2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue. The only colours outside the theme are the brand logo's own and the real app icons.
+2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue; sample 3 is sky-white with deep navy and teal. The only colours outside the theme are the brand logo's own and the real app icons.
 3. **No hard cuts:** wipes in the theme's colours, camera moves, draw-ons, zooms into the UI, and morphs (an orb or squares into the logo, a URL into a button).
-4. **People always have faces:** photo badges (look A) or drawn characters (look B), with a role pill.
+4. **People always have faces:** photo badges (look A), or, when there is no photo, **one consistent cartoon character style** (looks B and C), always with a role pill or a name tag.
+7. **The bubbles and chips use the theme's colours** (navy pill with white text, or glass in the dark scenes), never a new colour.
 5. **The end card is the logo, a CTA button and the URL,** held still, with the sound fading out.
 6. **One type family**, bold headlines and small labels; the "font change" is size and weight.
 
 ## What this means for our videos
 - Script first (VO or text). Mark **every noun and action** in it and give each one a visual on its word.
 - Pick **one brand theme** (dark ground + light ground + accents + one brand gradient) and use nothing outside it.
-- **Choose the look per brand:** look A (premium dark, 3D cards, glows) or look B (white flat line-art, draw-ons, drawn characters). The owner picks it, or it follows the brand's colours.
+- **Choose the look per brand:** look A (premium dark, 3D cards, glows), look B (white flat line-art, draw-ons, drawn characters) or look C (sky-white and navy health-tech, cartoon people, glass UI, tap-to-grow). The owner picks it, or it follows the brand's colours.
 - Use 16:9 as in the samples, or 9:16 for reels with the same rules.
 
 ## Brand styles in this category
