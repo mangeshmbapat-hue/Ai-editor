@@ -35,6 +35,13 @@
       "status": "learned 2026-11-10 from the owner's 4 app-promo samples; the Chamosa promo made with it was rejected on 2026-11-13",
       "sheet": "editor/styles/animation-product-promo/STYLE_SHEET.md",
       "brands": {}
+    },
+    "animated-explainer": {
+      "name": "Animated explainer (corporate SaaS motion graphics)",
+      "products": "software, apps, AI tools, services explained with a voiceover",
+      "status": "breakdown done 2026-11-13, waiting for the owner's approval",
+      "sheet": "editor/product-styles/animated-explainer/STYLE_SHEET.md",
+      "brands": {}
     }
   }
 }

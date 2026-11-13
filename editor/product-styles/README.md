@@ -8,6 +8,7 @@ Every product category is animated differently, so each one has its own style sh
 | Food & drinks | snacks, chai and coffee, cold drinks, packaged food | not learned | `food-drinks/STYLE_SHEET.md` |
 | Fashion & clothing | clothes, shoes, sportswear, bags | not learned | `fashion-clothing/STYLE_SHEET.md` |
 | Automobile | cars, bikes, EVs | not learned | `automobile/STYLE_SHEET.md` |
+| Animated explainer | corporate SaaS explainer with a VO, everything said appears on its word | breakdown done, waiting for approval | `animated-explainer/STYLE_SHEET.md` |
 | Apps & digital | apps, websites, software | learned 2026-11-10 (Chamosa result rejected) | `../styles/animation-product-promo/STYLE_SHEET.md` |
 
 `LIBRARY.json` is the registry the agent reads. A new category is added when the owner asks for one.
