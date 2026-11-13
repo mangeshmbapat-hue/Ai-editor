@@ -19,7 +19,7 @@ from .tools import vendor_gsap
 
 HERE = Path(__file__).resolve().parent / "anim"
 HOUSE_STYLE = "animation-product-promo"
-ASPECTS = {"1:1": (1080, 1080), "9:16": (1080, 1920), "4:5": (1080, 1350)}
+ASPECTS = {"1:1": (1080, 1080), "9:16": (1080, 1920), "4:5": (1080, 1350), "16:9": (1920, 1080)}
 SCENE_TYPES = {"logo", "search", "cards", "button", "status", "pill", "chips", "rows", "orbit", "counter", "words", "swap", "endcard"}
 END_SILENCE = 2.4   # the samples' sound stops about 2.4 s before the end card finishes (measured on all 4)
 
@@ -98,6 +98,8 @@ def resolve_theme(spec):
 
 
 def assets_of(spec):
+    if spec.get("composition"):  # hand-built: every file under assets/ is an input
+        return sorted(spec.get("_assets", []))
     names = []
     for s in spec["scenes"]:
         for key in ("image", "icon"):
@@ -113,6 +115,8 @@ def assets_of(spec):
 
 
 def validate(spec):
+    if spec.get("composition"):
+        return validate_custom(spec)
     require(isinstance(spec.get("scenes"), list) and spec["scenes"], "spec.json needs a non-empty `scenes` list")
     require(spec.get("aspect", "1:1") in ASPECTS, "aspect must be one of " + ", ".join(ASPECTS))
     for i, s in enumerate(spec["scenes"]):
@@ -131,6 +135,16 @@ def validate(spec):
     return total
 
 
+def validate_custom(spec):
+    """A hand-built composition (an explainer laid on the owner's VO): its HTML file, its length and the storyboard times."""
+    require(spec.get("aspect", "16:9") in ASPECTS, "aspect must be one of " + ", ".join(ASPECTS))
+    require(isinstance(spec.get("duration"), (int, float)) and 1 <= spec["duration"] <= 600, "a composition needs `duration` in seconds")
+    sb = spec.get("storyboard")
+    require(isinstance(sb, list) and sb and all(isinstance(r.get("t"), (int, float)) and r.get("what") for r in sb),
+            "a composition needs a `storyboard` list of {t, what}")
+    return float(spec["duration"])
+
+
 def project_dir(edit_root, name):
     return Path(edit_root) / "anim" / name
 
@@ -141,6 +155,12 @@ def build(edit_root, name="promo"):
     proj = project_dir(root, name)
     spec = read_json(proj / "spec.json")
     total = validate(spec)
+    if spec.get("composition"):
+        W, H = ASPECTS[spec.get("aspect", "16:9")]
+        require((proj / spec["composition"]).is_file(), "Composition {} is missing in {}".format(spec["composition"], proj))
+        vendor_gsap(proj)
+        rows = [{"n": i + 1, "type": "beat", "start": r["t"], "dur": 0, "what": r["what"][:70]} for i, r in enumerate(spec["storyboard"])]
+        return {"project": str(proj), "page": str(proj / spec["composition"]), "duration": round(total, 2), "size": "{}x{}".format(W, H), "scenes": rows}
     W, H = ASPECTS[spec.get("aspect", "1:1")]
     theme = resolve_theme(spec)
     (proj / "assets").mkdir(parents=True, exist_ok=True)
@@ -187,6 +207,10 @@ def anim_new(edit_root, spec_file, name="promo"):
 def anim_fingerprint(edit_root, name):
     proj = project_dir(edit_root, name)
     spec = read_json(proj / "spec.json")
+    if spec.get("composition"):
+        files = {str(p.relative_to(proj)): file_hash(p) for p in sorted(proj.rglob("*"))
+                 if p.is_file() and "storyboard" not in p.relative_to(proj).parts and p.name != "spec.json" and p.suffix != ".mp4"}
+        return fingerprint({"spec": spec, "files": files})
     files = {a: file_hash(proj / "assets" / a) for a in assets_of(spec)}
     return fingerprint({"spec": spec, "assets": files, "runtime": file_hash(HERE / "runtime.js"), "template": file_hash(HERE / "template.html")})
 
@@ -206,14 +230,17 @@ def storyboard(edit_root, name="promo"):
     sb = proj / "storyboard"
     shutil.rmtree(sb, ignore_errors=True)
     sb.mkdir()
-    times = [round(r["start"] + r["dur"] * (0.65 if r["type"] != "endcard" else 0.5), 2) for r in info["scenes"]]
-    renderer(proj / "index.html", sb / "f", info["size"], ["--stills", ",".join(map(str, times))])
+    if info.get("page"):
+        times = [r["start"] for r in info["scenes"]]
+    else:
+        times = [round(r["start"] + r["dur"] * (0.65 if r["type"] != "endcard" else 0.5), 2) for r in info["scenes"]]
+    renderer(info.get("page") or proj / "index.html", sb / "f", info["size"], ["--stills", ",".join(map(str, times))])
     lines = ["# Storyboard: {} ({} s, {}, theme {})".format(name, info["duration"], info["size"], read_json(proj / "spec.json").get("theme")), "",
              "| # | time | scene | on screen | frame |", "|---|---|---|---|---|"]
     for r, t in zip(info["scenes"], times):
         f = "{:02d}.png".format(r["n"])
         (sb / "f_{:02d}.png".format(r["n"])).rename(sb / f)
-        lines.append("| {} | {:.2f}-{:.2f} s | {} | {} | storyboard/{} |".format(r["n"], r["start"], r["start"] + r["dur"], r["type"], r["what"], f))
+        lines.append("| {} | {:.2f}-{:.2f} s | {} | {} | storyboard/{} |".format(r["n"], r["start"], r["start"] + r["dur"], r["type"], r["what"].replace("|", "/"), f))
     lines += ["", "Fingerprint: `{}`. The full render needs the owner's approval of this exact spec (`anim-approve`).".format(anim_fingerprint(root, name))]
     (sb / "STORYBOARD.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"storyboard": str(sb / "STORYBOARD.md"), "frames": len(times)}
@@ -233,9 +260,10 @@ def require_anim_approval(root, name):
             "Storyboard not approved for this exact spec and assets. Run `anim-storyboard`, show the owner, and record their words with `anim-approve`.")
 
 
-def prepare_audio(src, duration, out):
-    """Music bed at the house level: -14 LUFS, -1 dBTP ceiling, faded out so the sound stops END_SILENCE s before the end."""
-    stop = max(1.0, duration - END_SILENCE)
+def prepare_audio(src, duration, out, end_silence=END_SILENCE):
+    """The audio at the house level: -14 LUFS, -1 dBTP ceiling, faded out so the sound stops `end_silence` s before the end
+    (a VO-led explainer passes the gap its own VO leaves, so the last word is never faded)."""
+    stop = max(1.0, duration - end_silence)
     chain = "loudnorm=I=-14:TP=-1.5:LRA=7,afade=t=in:d=0.05,afade=t=out:st={:.3f}:d=1.0,apad,atrim=0:{:.3f}".format(stop - 1.0, duration)
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-af", chain, "-ar", "48000", "-ac", "2", str(out)], capture_output=True, text=True)
     require(r.returncode == 0, "audio prep failed: " + r.stderr[-400:])
@@ -253,6 +281,7 @@ def anim_render(edit_root, name="promo", audio=None, fps=30):
     with tempfile.TemporaryDirectory() as tmp:
         extra = ["--fps", str(fps)]
         if audio:
-            extra += ["--audio", str(prepare_audio(inside(root, audio), info["duration"], Path(tmp) / "bed.wav"))]
-        renderer(proj / "index.html", out, info["size"], extra)
+            gap = read_json(proj / "spec.json").get("end_silence", END_SILENCE)
+            extra += ["--audio", str(prepare_audio(inside(root, audio), info["duration"], Path(tmp) / "bed.wav", gap))]
+        renderer(info.get("page") or proj / "index.html", out, info["size"], extra)
     return {"video": str(out), "duration": info["duration"], "size": info["size"]}

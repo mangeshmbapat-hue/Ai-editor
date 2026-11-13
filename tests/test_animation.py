@@ -111,6 +111,24 @@ class BuildAndGateTest(unittest.TestCase):
         self.assertEqual(main(["anim-themes", "--brand", "#00aa88"]), 0)
 
 
+class CompositionModeTest(unittest.TestCase):
+    def test_hand_built_composition_is_gated_on_its_files(self):
+        tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp)
+        edit = tmp / "edit"; proj = A.project_dir(edit, "x"); (proj / "assets").mkdir(parents=True)
+        (proj / "page.html").write_text("<html>SYNTHETIC</html>", encoding="utf-8")
+        (proj / "assets" / "a.png").write_bytes(b"synthetic")
+        write_json(proj / "spec.json", {"composition": "page.html", "aspect": "16:9", "duration": 10, "storyboard": [{"t": 1, "what": "beat"}]})
+        with mock.patch.object(A, "vendor_gsap", lambda p: None):
+            info = A.build(edit, "x")
+        self.assertEqual(info["size"], "1920x1080")
+        (proj / "storyboard").mkdir(); (proj / "storyboard" / "STORYBOARD.md").write_text("synthetic", encoding="utf-8")
+        A.anim_approve(edit, "x", "SYNTHETIC test approval")
+        A.require_anim_approval(edit, "x")
+        (proj / "assets" / "a.png").write_bytes(b"changed")  # any asset change needs a new approval
+        with self.assertRaises(ProductionError):
+            A.require_anim_approval(edit, "x")
+
+
 class ProductLibraryTest(unittest.TestCase):
     def test_every_category_has_a_sheet_and_honest_status(self):
         lib = json.loads((REPO / "editor" / "product-styles" / "LIBRARY.json").read_text(encoding="utf-8"))
