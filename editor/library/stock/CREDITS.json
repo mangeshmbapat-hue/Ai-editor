@@ -214,5 +214,23 @@
   "author": "Ibex73",
   "file": "gold.jpg",
   "fetched": "2026-11-10"
+ },
+ "ruler": {
+  "title": "File:Ruler on table.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Ruler_on_table.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Ruler_on_table.jpg",
+  "licence": "CC0",
+  "author": "Douglas Perkins",
+  "file": "ruler.jpg",
+  "fetched": "2026-11-13"
+ },
+ "diamond": {
+  "title": "File:Round Brilliant Cut Diamond.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/20/Round_Brilliant_Cut_Diamond.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Round_Brilliant_Cut_Diamond.jpg",
+  "licence": "CC BY-SA 4.0",
+  "author": "Petragems",
+  "file": "diamond.jpg",
+  "fetched": "2026-11-13"
  }
 }

@@ -43,6 +43,8 @@ ITEMS = {
     "gold": "gold bars", "chart-paper": "financial newspaper chart", "car": "car on road",
     "colour-swatches": "paint colour sample cards", "wristwatch": "luxury wristwatch photograph",
     "editing-suite": "video editing workstation monitors", "headphones": "studio headphones",
+    "ruler": "wooden ruler centimetre", "diamond": "brilliant cut diamond gemstone", "megaphone": "megaphone loudspeaker",
+    "perfume": "perfume bottle glass", "magnifier": "magnifying glass", "spotlight": "stage spotlight lamp",
 }
 
 

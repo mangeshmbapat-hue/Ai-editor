@@ -553,20 +553,25 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.52, y=0.34, mono=
         (empty.save(out) if layer_only else empty.convert("RGB").save(out, quality=94))
         write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"]})
         return str(out)
-    if soft:
+    if soft and not src.name.startswith("design-"):    # designed graphics stay crisp
         obj = soft2d(obj)
     import numpy as np
     al = np.array(obj.split()[3])
     flat_bottom = (al[-3:] > 200).mean() > 0.35          # photo cut off at the bottom (a dog's bust, a person)
-    cut_side = None if flat_bottom else ("left" if (al[:, :3] > 200).mean() > 0.30 else ("right" if (al[:, -3:] > 200).mean() > 0.30 else None))
+    left_cut, right_cut = (al[:, :3] > 200).mean() > 0.30, (al[:, -3:] > 200).mean() > 0.30
+    cut_side = None if (flat_bottom or left_cut == right_cut) else ("left" if left_cut else "right")   # cut on both sides: a whole flat object
+    designed = src.name.startswith("design-")
+    if designed:
+        flat_bottom, cut_side = False, None
+        width = max(width, 0.84)
     if flat_bottom:
         pass                                             # placed on the frame's bottom edge below, so the cut never shows
-    elif obj.width / float(obj.height) > 1.8:            # flat objects (a note, a card) get a slight 3D tilt
+    elif obj.width / float(obj.height) > 1.8 and not ((al[:, :3] > 200).mean() > 0.30 or (al[:, -3:] > 200).mean() > 0.30):   # tilt only whole flat objects            # flat objects (a note, a card) get a slight 3D tilt
         obj = obj.rotate(-7, resample=Image.BICUBIC, expand=True)
     # Layout (owner 2026-11-13: an object and its text never overlap): a whole object sits in the
     # upper zone (about 16-52 % of the height) with its text below; a photo cut off at the bottom
     # rises from the frame edge (bottom 48 %) with its text in the top zone.
-    scale = min(W * max(width, 0.80) / obj.width, H * 0.44 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.28 / obj.height)   # smaller reads as more professional
+    scale = min(W * max(width, 0.80) / obj.width, H * 0.44 / obj.height) if flat_bottom else min(W * width / obj.width, H * (0.38 if designed else 0.28) / obj.height)   # objects modest; designed demos large enough to read
     obj = obj.resize((max(1, int(obj.width * scale)), max(1, int(obj.height * scale))), Image.LANCZOS)
     bg = Image.new("RGBA", size, (0, 0, 0, 0)) if layer_only else gradient(t["id"], size).convert("RGBA")
     if flat_bottom:
@@ -599,8 +604,8 @@ def card(src, out, theme_name=None, size=(1080, 1920), width=0.52, y=0.34, mono=
     cs = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(cs).ellipse([x + obj.width * 0.12, top + obj.height * 0.95, x + obj.width * 0.88, top + obj.height * 1.05], fill=(0, 0, 0, 120))
     bg = Image.alpha_composite(bg, cs.filter(ImageFilter.GaussianBlur(max(6, obj.width // 30))))
-    # faint floor reflection
-    refl = ImageOps.flip(obj)
+    # faint floor reflection (real objects only; a designed graphic gets none)
+    refl = ImageOps.flip(obj) if not designed else Image.new("RGBA", obj.size, (0, 0, 0, 0))
     ra = refl.split()[3].point(lambda v: int(v * 0.08))
     fade = Image.linear_gradient("L").resize(refl.size).point(lambda v: 255 - v)
     from PIL import ImageChops
@@ -905,3 +910,166 @@ def soft2d(img):
     if a is not None:
         p.putalpha(a)
     return p
+
+
+# ---- designed demo graphics (owner rule 2026-11-13: abstract ideas get a graphic that shows the idea) ----
+
+def _font(size, weight=700):
+    from PIL import ImageFont
+    from . import fonts as FN
+    f = FN.resolve("Poppins", weight) or FN.resolve("Poppins", 700)
+    return ImageFont.truetype(f, size) if f else ImageFont.load_default()
+
+
+def _shadowed(layer, blur=18, offset=(0, 18), alpha=110):
+    from PIL import Image, ImageFilter
+    sh = Image.new("RGBA", layer.size, (0, 0, 0, 0))
+    sh.paste((0, 0, 0, alpha), offset, layer.split()[3])
+    out = sh.filter(ImageFilter.GaussianBlur(blur))
+    out.alpha_composite(layer)
+    return out
+
+
+def _icon(d, box, kind, fill, ink):
+    x0, y0, x1, y1 = box
+    r = (x1 - x0) * 0.24
+    d.rounded_rectangle(box, radius=r, fill=fill)
+    cx, cy, s = (x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0) * 0.26
+    if kind == "play":
+        d.polygon([(cx - s * 0.7, cy - s), (cx - s * 0.7, cy + s), (cx + s, cy)], fill=ink)
+    elif kind == "circle":
+        d.ellipse([cx - s, cy - s, cx + s, cy + s], outline=ink, width=max(4, int(s * 0.28)))
+    elif kind == "bars":
+        for k, h in enumerate((0.6, 1.0, 0.8)):
+            bx = cx - s + k * s * 0.75
+            d.rounded_rectangle([bx, cy + s - 2 * s * h, bx + s * 0.5, cy + s], radius=s * 0.12, fill=ink)
+    else:  # star-ish diamond
+        d.polygon([(cx, cy - s), (cx + s * 0.8, cy), (cx, cy + s), (cx - s * 0.8, cy)], fill=ink)
+
+
+def design(kind, out, theme_name=None, **kw):
+    """A designed demo graphic as a transparent PNG (`design-*.png`, so it gets no rembg and no soft2d):
+    timeline, icons (scale=1.0 oversized or 0.75 with a -25 % badge), effects (overload=True or one clean glow),
+    checklist (items=[...]), cards3 (labels=[...]), beforeafter, spotlight, palette (colors=[...], labels=[...])."""
+    from PIL import Image, ImageDraw, ImageFilter
+    t = theme(theme_name)
+    W, H = kw.get("size", (1000, 900))
+    surf, acc, txt, mut = _rgb(t.get("surface", t["bg"][0])), _rgb(t["accent"]), _rgb(t["text"]), _rgb(t["muted"])
+    card_fill = tuple(min(255, c + 22) for c in surf) + (255,)
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    if kind == "timeline":
+        clutter = kw.get("clutter", False)
+        d.rounded_rectangle([20, 140, W - 20, H - 140], 36, fill=card_fill)
+        for k in range(4):
+            y = 220 + k * 120
+            d.rounded_rectangle([60, y, W - 60, y + 80], 18, fill=tuple(max(0, c - 10) for c in surf) + (255,))
+            segs = [(80, 380), (400, 620), (640, 900)] if k % 2 == 0 else [(80, 260), (280, 700), (720, 900)]
+            for j, (a, b) in enumerate(segs):
+                col = acc if (j + k) % 3 == 0 else mut
+                d.rounded_rectangle([a, y + 10, min(b, W - 80), y + 70], 14, fill=col + (255,))
+        d.rectangle([520, 170, 526, H - 170], fill=txt + (255,))
+        d.polygon([(504, 160), (542, 160), (523, 186)], fill=txt + (255,))
+        if clutter:   # oversized icons and shapes crowd the frame: the beginner look
+            for (x, y, s, k) in [(40, 60, 300, "play"), (420, 20, 260, "circle"), (700, 420, 300, "bars"), (120, 520, 260, "diamond")]:
+                _icon(d, [x, y, x + s, y + s], k, acc + (255,) if k in ("play", "bars") else (230, 70, 70, 255), (255, 255, 255, 255))
+    elif kind == "icons":
+        sc = float(kw.get("scale", 1.0))
+        base = 300 * sc
+        gap = 40 * sc
+        total = 3 * base + 2 * gap
+        x = (W - total) / 2
+        for k, (kk, col) in enumerate([("play", acc), ("circle", mut), ("bars", acc)]):
+            _icon(d, [x + k * (base + gap), H / 2 - base / 2, x + k * (base + gap) + base, H / 2 + base / 2], kk, col + (255,), surf + (255,))
+        if sc < 1.0:
+            f = _font(64)
+            d.rounded_rectangle([W / 2 - 150, H - 200, W / 2 + 150, H - 100], 50, fill=acc + (255,))
+            d.text((W / 2, H - 150), "-25%", font=f, fill=_rgb(t["accent_ink"]) + (255,), anchor="mm")
+    elif kind == "effects":
+        over = kw.get("overload", True)
+        box = [W / 2 - 220, H / 2 - 150, W / 2 + 220, H / 2 + 150]
+        if over:
+            for k, col in enumerate([(255, 0, 80), (0, 200, 255), (255, 220, 0), (160, 0, 255)]):
+                g = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(g).rounded_rectangle([box[0] - 30 - k * 14, box[1] - 30 - k * 14, box[2] + 30 + k * 14, box[3] + 30 + k * 14], 60, outline=col + (200,), width=18)
+                img.alpha_composite(g.filter(ImageFilter.GaussianBlur(10 + k * 6)))
+            d = ImageDraw.Draw(img)
+            d.rounded_rectangle(box, 48, fill=(255, 40, 120, 255), outline=(255, 255, 0, 255), width=10)
+            f = _font(80, 800)
+            d.text((W / 2 + 8, H / 2 + 8), "WOW", font=f, fill=(0, 255, 255, 255), anchor="mm")
+            d.text((W / 2, H / 2), "WOW", font=f, fill=(255, 255, 255, 255), anchor="mm")
+        else:
+            g = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            ImageDraw.Draw(g).rounded_rectangle([box[0] - 10, box[1] - 10, box[2] + 10, box[3] + 10], 56, fill=acc + (90,))
+            img.alpha_composite(g.filter(ImageFilter.GaussianBlur(30)))
+            d = ImageDraw.Draw(img)
+            d.rounded_rectangle(box, 48, fill=card_fill)
+            d.text((W / 2, H / 2), "Clean", font=_font(80, 700), fill=txt + (255,), anchor="mm")
+    elif kind == "checklist":
+        items = kw.get("items", ["Size", "Effects", "Colour"])
+        f = _font(64, 600)
+        d.rounded_rectangle([60, 80, W - 60, H - 80], 40, fill=card_fill)
+        for k, it in enumerate(items):
+            y = 200 + k * 200
+            d.ellipse([130, y - 50, 230, y + 50], fill=acc + (255,))
+            d.line([(155, y), (175, y + 22), (208, y - 22)], fill=_rgb(t["accent_ink"]) + (255,), width=14, joint="curve")
+            d.text((280, y), it, font=f, fill=txt + (255,), anchor="lm")
+    elif kind == "cards3":
+        labels = kw.get("labels", ["Size", "Effects", "Colour"])
+        f = _font(54, 700)
+        for k, lab in enumerate(labels):
+            c = Image.new("RGBA", (280, 380), (0, 0, 0, 0))
+            cd = ImageDraw.Draw(c)
+            cd.rounded_rectangle([0, 0, 279, 379], 34, fill=card_fill)
+            cd.ellipse([90, 70, 190, 170], fill=(acc if k != 1 else mut) + (255,))
+            cd.text((140, 270), lab, font=f, fill=txt + (255,), anchor="mm")
+            c = c.rotate((k - 1) * -7, resample=Image.BICUBIC, expand=True)
+            img.alpha_composite(c, (int(40 + k * 300), int(200 + abs(k - 1) * 40)))
+    elif kind == "beforeafter":
+        f = _font(48, 700)
+        for k, (lab, clutter) in enumerate([("Beginner", True), ("Pro", False)]):
+            x0 = 30 + k * 490
+            d.rounded_rectangle([x0, 140, x0 + 450, H - 140], 34, fill=card_fill)
+            d.text((x0 + 225, 200), lab, font=f, fill=(mut if clutter else acc) + (255,), anchor="mm")
+            if clutter:
+                for (x, y, s, kk, col) in [(x0 + 30, 260, 230, "play", (230, 60, 60)), (x0 + 200, 330, 220, "circle", (255, 200, 0)), (x0 + 60, 470, 240, "bars", (0, 180, 255))]:
+                    _icon(d, [x, y, x + s, y + s], kk, col + (255,), (255, 255, 255, 255))
+            else:
+                for j, kk in enumerate(("play", "circle", "bars")):
+                    _icon(d, [x0 + 70 + j * 110, 420, x0 + 160 + j * 110, 510], kk, (acc if j != 1 else mut) + (255,), surf + (255,))
+    elif kind == "spotlight":
+        g = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(g).ellipse([W / 2 - 260, H / 2 - 260, W / 2 + 260, H / 2 + 260], fill=acc + (110,))
+        img.alpha_composite(g.filter(ImageFilter.GaussianBlur(60)))
+        d = ImageDraw.Draw(img)
+        for j, (x, kk) in enumerate([(W / 2 - 330, "circle"), (W / 2 - 110, "play"), (W / 2 + 130, "bars")]):
+            s = 220 if j == 1 else 150
+            _icon(d, [x + (0 if j == 1 else 35), H / 2 - s / 2, x + (0 if j == 1 else 35) + s, H / 2 + s / 2], kk, (acc if j == 1 else mut) + (255,), surf + (255,))
+    elif kind == "palette":
+        cols = kw.get("colors", [(79, 109, 122), (107, 143, 113), (194, 184, 163)])
+        labels = kw.get("labels", ["Blue", "Green", "Sand"])
+        f = _font(38, 600)
+        for k, (c, lab) in enumerate(zip(cols, labels)):
+            cc = Image.new("RGBA", (300, 520), (0, 0, 0, 0))
+            cd = ImageDraw.Draw(cc)
+            cd.rounded_rectangle([0, 0, 299, 519], 26, fill=(250, 248, 243, 255))
+            cd.rounded_rectangle([18, 18, 281, 390], 16, fill=tuple(c) + (255,))
+            cd.text((150, 455), lab, font=f, fill=(70, 70, 70, 255), anchor="mm")
+            cc = cc.rotate((k - 1) * -8, resample=Image.BICUBIC, expand=True)
+            img.alpha_composite(cc, (int(40 + k * 300), int(150 + abs(k - 1) * 40)))
+    elif kind == "ruler":
+        d.rounded_rectangle([40, H / 2 - 120, W - 40, H / 2 + 120], 22, fill=acc + (255,))
+        f = _font(44, 700)
+        for k in range(0, 31):
+            x = 80 + k * (W - 160) / 30.0
+            h = 90 if k % 5 == 0 else (60 if k % 5 == 0 else 40)
+            d.line([(x, H / 2 - 120), (x, H / 2 - 120 + h)], fill=_rgb(t["accent_ink"]) + (255,), width=5 if k % 5 == 0 else 3)
+            if k % 5 == 0:
+                d.text((x, H / 2 + 40), str(k // 5), font=f, fill=_rgb(t["accent_ink"]) + (255,), anchor="mm")
+    else:
+        raise E.ProductionError("Unknown design kind " + kind)
+    img = _shadowed(img)
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out)
+    return str(out)
