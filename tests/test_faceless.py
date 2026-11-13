@@ -81,6 +81,28 @@ class PlanLogicTest(unittest.TestCase):
         self.assertFalse([m for m in found if m["scene"] == 2])
         self.assertTrue(all(m["file"].startswith("editor/library/social/") for m in found))
 
+    def test_colour_themes_are_complete_and_drive_the_card(self):
+        data = F.themes()
+        self.assertIn(data["default"], data["themes"])
+        for tid, t in data["themes"].items():
+            for key in ("bg", "light", "text", "accent", "highlight", "muted"):
+                self.assertIn(key, t, tid)
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as d:
+            obj = Image.new("RGBA", (400, 200), (0, 0, 0, 0))
+            for x in range(60, 340):
+                for y in range(40, 160):
+                    obj.putpixel((x, y), (230, 230, 230, 255))
+            obj.save(Path(d) / "obj.png")
+            out = F.card(Path(d) / "obj.png", Path(d) / "card.jpg", "midnight-navy", size=(270, 480))
+            img = Image.open(out).convert("RGB")
+            self.assertEqual(img.size, (270, 480))
+            r, g, b = img.getpixel((5, 470))
+            self.assertGreater(b, r, "navy gradient background, not yellow")
+            mono = Image.open(F.card(Path(d) / "obj.png", Path(d) / "mono.jpg", "mono-classic", size=(270, 480))).convert("RGB")
+            r, g, b = mono.getpixel((5, 470))
+            self.assertLessEqual(max(r, g, b) - min(r, g, b), 6, "black-and-white theme stays grey")
+
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
         self.assertEqual(E.text_motion(None), "")
@@ -126,6 +148,10 @@ class PlanMediaTest(unittest.TestCase):
         self.assertEqual(edl["clips"][-1]["text"][0]["value"], "Follow for\npart 2")
         self.assertEqual(edl["clips"][0]["text"][0]["role"] in ("title", "headline"), True)
         self.assertLessEqual(rows[1]["start"], 2.5, "the hook scene changes by 2.5 s")
+        th = F.theme(None)
+        self.assertEqual(edl["colour_theme"], th["id"])
+        colours = {t["color"] for c in edl["clips"] for t in c.get("text", []) if "color" in t}
+        self.assertLessEqual(colours, {th["text"], th["accent"], th["highlight"], th["muted"]}, "every text colour comes from the theme")
         values = [t["value"] for c in edl["clips"] for t in c.get("text", [])]
         self.assertIn("1892", values)
         self.assertIn("Edvard Munch", values)
