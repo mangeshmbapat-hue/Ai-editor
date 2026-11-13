@@ -55,6 +55,8 @@ Run the **faceless-editor** agent (`.claude/agents/faceless-editor.md`) with the
   - never random Google images
   - never a real person's face
 - **People** the owner does not supply may be drawn or AI figures: realistic, with visible faces of the right age and gender, generic, and without white borders.
+- **Finish:** real objects get the soft 2D finish (`soft2d`, on by default): real but smooth and a little cute, never a paper cutout. Objects stay modest in size (about half the frame width).
+- **Own text picks:** for tips and explainers, choose the key phrase of each scene yourself and pass it with `faceless-plan --texts texts.json` ({scene number: words}). The direction pass still picks the treatment.
 - **Cutouts:**
   - use `cutout` / `faceless-card`; they come out hole-free and get a soft shadow and reflection
   - the cut edge never shows
