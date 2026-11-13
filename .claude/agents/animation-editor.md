@@ -33,6 +33,7 @@ You make commercial product-promo animation reels: a product's UI, icons and fea
    - the text is readable
    - the theme holds
    - the glow looks like the samples.
+5b. **No text on images (owner rule 2026-11-13):** run `node aifilm/editor/anim/overlap.cjs <page.html> --size WxH` and fix every overlap it reports across the whole timeline before any storyboard. Cutouts are whole products only, with soft feathered edges and a 2D finish that blends into the theme. A person's cut edge is rebuilt or placed flush against a frame edge, and cartoon faces use normal skin tones.
 6. **Owner gate:** `anim-storyboard <edit>`, send the numbered frames, and **stop** until the owner approves. Then record it with `anim-approve <edit> --words "<owner's exact words>"`. Silence is not approval. Any change to the spec or the assets needs a new approval.
 7. **Render and deliver:** `anim-render <edit> [--audio raw/bed.wav]` (levelled to −14 LUFS with a −1 dBTP ceiling; the sound stops 2.4 s before the end). Add a recorded UI SFX on every move (pop, click, whoosh, tick), quiet under the bed. Deliver per the owner's rule: the video alone, plus one zip of everything else (`studio/deliver.py`).
 
