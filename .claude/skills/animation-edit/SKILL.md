@@ -1,7 +1,7 @@
 ---
 name: animation-edit
-argument-hint: "[explainer|promo] [brand/product] + script or VO + logo/product images [+ look A|B|C] [+ 16:9|9:16]"
-description: Make an animated brand or product video with the Animation Editor agent, in the styles the owner taught - (1) a corporate ANIMATED EXPLAINER on the owner's voiceover, where every spoken name, number, product and action appears on screen on its word, in one brand theme (look A premium dark, B flat line-art, C health-tech or D soft pastel SaaS), with soft whole-product cutouts, cartoon face badges, circle wipes and no text on any image (the McDonald's explainer is the reference); or (2) a short PRODUCT PROMO reel of app UI, icons and text. Use when the owner says "animation editor", "explainer banao", "animation video banao", "product promo banao", "brand ki story animate karo", or sends a script/VO with a logo and product images.
+argument-hint: "[explainer|promo] [brand/product] + script or VO + logo/product images [+ look A|B|C|D|E] [+ 16:9|9:16]"
+description: Make an animated brand or product video with the Animation Editor agent, in the styles the owner taught - (1) a corporate ANIMATED EXPLAINER on the owner's voiceover, where every spoken name, number, product and action appears on screen on its word, in one brand theme (look A premium dark, B flat line-art, C health-tech, D soft pastel SaaS or E monochrome with one accent), with soft whole-product cutouts, cartoon face badges, circle wipes and no text on any image (the McDonald's explainer is the reference); or (2) a short PRODUCT PROMO reel of app UI, icons and text. Use when the owner says "animation editor", "explainer banao", "animation video banao", "product promo banao", "brand ki story animate karo", or sends a script/VO with a logo and product images.
 ---
 
 # Animation edit
@@ -15,7 +15,7 @@ Run the **animation-editor** agent (`.claude/agents/animation-editor.md`) with t
 
 ## 2. Collect, once
 - The script or VO, the logo, the product images (whole single products; PNG is best) and the people (photos, or cartoon badges are made).
-- The look (A, B, C or D; pick one from the brand's colours when the owner leaves it open) and the size (16:9 by default, or 9:16).
+- The look (A, B, C, D or E; pick one from the brand's colours when the owner leaves it open) and the size (16:9 by default, or 9:16).
 - The music (otherwise compose an original bed) and the CTA or handle.
 - Ask once for anything missing. A script the owner wrote is locked word for word. Without a script, the words go through `skills/ai-writer` and need the owner's approval first.
 

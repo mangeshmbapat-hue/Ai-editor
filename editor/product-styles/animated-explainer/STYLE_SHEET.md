@@ -4,6 +4,7 @@ Status: **breakdown done, waiting for the owner's approval** (2026-11-13). Learn
 - **Sample 1, look A, "premium dark":** a 52 s explainer for an AI product-management tool (`explainer-collato/`). The owner called it the best animation sample.
 - **Sample 2, look B, "flat line-art":** a 98 s enterprise IT (virtual desktop) explainer (`explainer-jos/`), sent by the owner as "sab animation h ye".
 - **Sample 4, look D, "soft pastel SaaS":** a 144 s enterprise procurement-software explainer (`explainer-aerchain/`). The owner asked me to learn its theme, text, animation and effects, what comes on which words, and the ways each effect is built.
+- **Sample 5, look E, "monochrome with one red accent":** a 52.6 s corporate-training explainer (`explainer-training/`), which the owner called short and very good. The owner asked me to study its background, how it animates, its faces, bodies and text, its colour and how the theme is kept.
 - **Sample 3, look C, "health-tech navy and sky":** a 110 s dental AI software explainer (`explainer-dental/`). The owner asked me to notice the cartoon faces, the single theme, spoken words becoming text, the same colours for the ground, text and bubbles, the doctor tapping screens that grow, the graphs, the light streaks, the doctor's actions and the names, and every transition.
 
 The line-by-line table, the measurements and the theme rule just below are sample 1 (look A). Sample 2 (look B) has its own section further down. **Learn the style, never the sample's brand, logo, script, characters, UI or music.**
@@ -262,9 +263,64 @@ Spoken words are reconstructed from a rough recognition; times are ±0.4 s.
 - **Timeline badges:** the line grows with `scaleY`; at each stop a badge pops and its label types out.
 - **Circle wipe in the theme colour:** a sky-blue dot grows over the frame (0.45 s, `power3.in`), then shrinks back to the half-circle stage.
 
-## All four samples: the rules that hold in each
+## Sample 5, look E: monochrome with one red accent (corporate training, 52.6 s)
+
+### What the owner asked me to notice (owner's words, 2026-11-13)
+"iska bg dekhna or ye kese animation kr rha h wo bhi dekhna faces body text color kitna acha h theme kese maintain kari h ... ye wali choti or achi h"
+
+### Measured
+| | Value |
+|---|---|
+| Format | 1920×1080, 30 fps, 52.6 s (short and tight) |
+| Hard cuts | **0** |
+| Voice | 0.6 → 51.9 s, about 2.6 words per second |
+| Loudness | −19.7 LUFS, peak −2.8 dBFS |
+| Light scenes (40 %) | soft greys: `#f2f1f1` paper white, `#d0caca` and `#a29f9e` mid greys, `#2b2626` near-black clothes |
+| Dark scenes (60 %) | charcoal `#202020` with a **radial vignette** to `#080808` at the edges, and white objects `#f7f7f7` |
+| The only colour | **red** `#be022c` (logo ball, CTA button, small dots, chart arrows, emoji reactions), with warm skin `#ee9d8b`/`#c65160` as the only other warmth |
+
+### The theme rule (look E)
+1. **The whole world is greyscale.** The buildings, rooms, furniture, clothes, UI cards and icons are white, grey or black.
+2. **Exactly one accent colour (the brand red),** and it marks only what matters: the brand's mark, the pain points (red question bubbles, a red curse bubble "#$&*? &%!&"), growth arrows, likes, the CTA. Because nothing else has colour, the eye always goes to the red.
+3. **Faces and skin are the only natural colour.** The characters are elegant semi-flat 2D people with realistic proportions and soft shading on their faces, in black, white and grey clothes. They read as premium, not cartoony.
+4. **Two grounds:**
+   - light scenes: a pale grey office or city, with depth from blurred grey background figures and a soft light flare
+   - dark scenes: charcoal with a spotlight vignette and floating red and white bokeh dots
+5. **Text:** white on dark or charcoal on light, in a clean sans. Small caption labels sit under the framed cards (Pressure Mounted, Engagement Slipped, Collaboration Stuck). The brand script logo is white.
+
+### Line by line (reconstructed; times ±0.4 s)
+| Time (s) | Spoken | On screen | Motion |
+|---|---|---|---|
+| 0.0–2.0 | "Think about the last time…" | a grey city skyline rises with a soft light flare and drifting clouds | the camera pushes up and in; the buildings grow up from the ground |
+| 2.0–4.0 | "… the frustration …" | an office meeting: a manager points; a **red curse bubble** and **red "?" bubbles** pop over the team | the bubbles pop one by one on the pain words |
+| 4.0–12.0 | "… deadlines missed … collaboration … engagement … even in great teams" | **framed scene cards** (polaroid-like, with corner brackets) float on charcoal: a stressed woman, a falling chart, a broken pie chart; labels **Pressure Mounted**, **Engagement Slipped**, **Collaboration Stuck** | each card flies in from depth on its phrase; the cards drift in a slow 3D float; red dots drift |
+| 12.0–15.5 | "… The Second City Works …" | a glowing **circular badge** with the white script logo; **white light arcs** orbit and swipe around it; it flips into the red **"YES AND"** ball | the arcs sweep (a light-streak swipe), then a card flip reveals the red ball |
+| 15.5–19.5 | "… signature series … powerful workshops …" | the red ball at the centre of a **wheel of 5 white icon circles**: Innovation, Leadership, Presentation Skills, Team Building, Navigating Change, each with a 2-line label | the circles spawn out of the hub and orbit into place; the labels type in on their words |
+| 19.0–20.0 | "… build real-life skills …" | a woman walks out from the middle of the wheel as the icons float around her | the character slides in from depth |
+| 20.0–27.0 | "… breakthrough thinking … confidently speaking …" | a close-up of a woman; the **red "YES AND" ball** flies along a **white arc trail** to her colleague; a whiteboard bar chart grows, red arrows rise, gold stars pop on top | the ball travels with a motion trail (the guide that links the beats); the bars grow up in a stagger; the stars pop |
+| 27.0–31.0 | "… working better together … what sets us apart …" | the team at a table; **red like/heart reactions** float up; the ball bounces across | emoji pop and float up like a live stream |
+| 31.0–36.5 | "… led by … the Fortune 500 …" | three leaders on a stage with a spotlight; a grey crowd silhouette; client logos fade in around them in grey (Google, Facebook, Microsoft, Adobe, Uber …) | the logos fade in staggered on "Fortune 500"; the ball rolls past the leaders' feet |
+| 36.5–43.0 | "… improv … science … facilitation … unlock your team's potential" | on charcoal, the ball **bounces** from white circle to circle: **Improv**, **Science**, **Facilitation** | each circle appears **where the ball lands**, on its word (a bouncing-ball guide), then zooms forward |
+| 43.0–48.0 | "In fact, they didn't just survive change, they thrived" | two hands reach and **shake** (a close-up); a person helps another up **rising white steps** like a bar chart | the hands slide in from the sides; the steps grow up while the person climbs |
+| 48.0–50.0 | "Ready for lasting results?" | the question types on above the red ball | word by word |
+| 50.0–52.6 | "Connect with us to book your workshop today" | two face badges joined by a **red heartbeat line**; the white logo; a red pill CTA **"Book Your Workshop Now!"** | the heartbeat line draws; the CTA types; a still hold |
+
+### Effect recipes (look E)
+- **One-accent grade:** design everything in greys and keep one brand colour for the meaning-carrying items only. Check that no other hue appears (sample the frames).
+- **Guide object:** one brand object (here the red ball) travels between the beats on an arc with a fading white trail (an SVG path drawn with `strokeDashoffset`, plus the ball on `motionPath`), and lands exactly where the next item appears. It ties the whole story together.
+- **Bouncing-ball reveal:** the guide drops onto a spot with a `bounce.out` hop; on landing, a white circle scales 0 → 1 and its label types in on the spoken word.
+- **Framed scene cards:** small illustrations in white frames with corner brackets and a caption label; they fly in from depth (`z`/`scale` 0.6 → 1 with a blur) and float slowly.
+- **Light-arc swipe:** thin white arcs (stroked circle segments) sweep around a badge with `rotation` and a `strokeDasharray` growth, then fade out. It works as a premium logo reveal.
+- **Badge flip:** `rotationY` 0 → 90 on the logo badge, swap the face, then 90 → 0 to reveal the brand object.
+- **Icon wheel:** satellites spawn at the hub and tween out to their ring slots (`power3.out`, 0.1 s apart) while the ring rotates slowly.
+- **Live reactions:** like and heart icons in the accent colour pop and float up 80–120 px while fading, staggered.
+- **Spotlight vignette:** a dark radial-gradient overlay with drifting bokeh dots (accent and white, low opacity) behind the subjects.
+- **Rising steps:** white blocks grow up with `scaleY` in a stagger while a character climbs them, for growth and support.
+- **Heartbeat connector:** two face badges joined by an accent line drawn as an ECG spike path.
+
+## All five samples: the rules that hold in each
 1. **Say it, show it:** every named person, role, thing, number, tool or quality appears **on its word** (0.1–0.4 s before it), and the headlines land on their keyword.
-2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue; sample 3 is sky-white with deep navy and teal; sample 4 is near-white with a sky-blue stage and one pastel family. The only colours outside the theme are the brand logo's own and the real app icons.
+2. **One theme per video, never left:** sample 1 is purple with white; sample 2 is white with teal and blue; sample 3 is sky-white with deep navy and teal; sample 4 is near-white with a sky-blue stage and one pastel family; sample 5 is greyscale with one red accent. The only colours outside the theme are the brand logo's own and the real app icons.
 3. **No hard cuts:** wipes in the theme's colours, camera moves, draw-ons, zooms into the UI, and morphs (an orb or squares into the logo, a URL into a button).
 4. **People always have faces:** photo badges (look A), or, when there is no photo, **one consistent cartoon character style** (looks B and C), always with a role pill or a name tag.
 7. **The bubbles and chips use the theme's colours** (navy pill with white text, or glass in the dark scenes), never a new colour.
@@ -274,7 +330,7 @@ Spoken words are reconstructed from a rough recognition; times are ±0.4 s.
 ## What this means for our videos
 - Script first (VO or text). Mark **every noun and action** in it and give each one a visual on its word.
 - Pick **one brand theme** (dark ground + light ground + accents + one brand gradient) and use nothing outside it.
-- **Choose the look per brand:** look A (premium dark, 3D cards, glows), look B (white flat line-art, draw-ons, drawn characters) look C (sky-white and navy health-tech, cartoon people, glass UI, tap-to-grow) or look D (white with a sky-blue half-circle stage, a pastel candy family, flat characters, playful physics: coins in a jar, a collapsing block tower, scanner sweeps, a typed wordmark). The owner picks it, or it follows the brand's colours.
+- **Choose the look per brand:** look A (premium dark, 3D cards, glows), look B (white flat line-art, draw-ons, drawn characters) look C (sky-white and navy health-tech, cartoon people, glass UI, tap-to-grow) look E (greyscale with one brand-colour accent, elegant 2D people, a guide object that travels between beats), or look D (white with a sky-blue half-circle stage, a pastel candy family, flat characters, playful physics: coins in a jar, a collapsing block tower, scanner sweeps, a typed wordmark). The owner picks it, or it follows the brand's colours.
 - Use 16:9 as in the samples, or 9:16 for reels with the same rules.
 
 ## Brand styles in this category
