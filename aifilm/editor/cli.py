@@ -133,9 +133,17 @@ def parser():
     p.add_argument("--captions", action="store_true", help="burn a word-highlight subtitle track; only when the owner asks for subtitles (owner rule 2026-11-10)")
     p.add_argument("--aspect", default="9:16")
     p.add_argument("--end-card", type=float, default=5.0)
+    p.add_argument("--theme", help="colour theme for the whole video (faceless-themes lists them)")
     p = c.add_parser("cutout", help="Faceless Editor: background-removed PNG of a real photo (rembg)")
     p.add_argument("src")
     p.add_argument("out")
+    p = c.add_parser("faceless-card", help="Faceless Editor: real-photo cutout on the theme gradient, with soft shadow and reflection")
+    p.add_argument("src")
+    p.add_argument("out")
+    p.add_argument("--theme")
+    p.add_argument("--width", type=float, default=0.68)
+    p.add_argument("--photo", action="store_true", help="full-bleed place/scene photo with theme bands instead of a cutout")
+    p = c.add_parser("faceless-themes", help="Faceless Editor: list the colour themes")
     p = c.add_parser("faceless-level", help="Faceless Editor: put music and every SFX at the owner's voice-first levels and drop banned FX")
     p.add_argument("edit")
     return root
@@ -235,10 +243,16 @@ def main(argv=None):
         elif cmd == "faceless-plan":
             from . import faceless as FL
             result = FL.plan(args.edit, args.voice, args.words, args.visuals, args.cta, args.title, args.captions, args.music,
-                             args.aspect, args.end_card)
+                             args.aspect, args.end_card, theme_name=args.theme)
         elif cmd == "cutout":
             from . import faceless as FL
             result = {"cutout": FL.cutout(args.src, args.out)}
+        elif cmd == "faceless-card":
+            from . import faceless as FL
+            result = {"card": FL.photo_card(args.src, args.out, args.theme) if args.photo else FL.card(args.src, args.out, args.theme, width=args.width)}
+        elif cmd == "faceless-themes":
+            from . import faceless as FL
+            result = {k: {"name": v["name"], "use": v["use"]} for k, v in FL.themes()["themes"].items()}
         elif cmd == "faceless-level":
             from . import faceless as FL
             result = FL.level(args.edit)

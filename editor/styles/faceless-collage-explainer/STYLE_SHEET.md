@@ -127,3 +127,14 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
 - **Social media = real logos.** When the VO names a platform or talks about social media, animate the owner's logos from `editor/library/social/` (Facebook, X/Twitter, Instagram, WhatsApp, Snapchat), not heart or message icons.
 - **Subtitles only on request.** Burn subtitles (Hindi or English) only when the owner asks for them for that video; some clients refuse them. The kinetic text graphics, effects, transitions and animation are always part of the style.
 - **Real photos for every object, animal and place.** Dogs, money, computers, mics, stages and the Earth are realistic stock photos (Pexels, Wikimedia Commons, NASA, all free-licensed, credited in `CREDITS.md`), never cartoon drawings. Faces follow the people rule above. TV channel logos come from the owner.
+
+## Look v3 (owner, 2026-11-13; this overrides the warm/yellow bokeh, wood-table and paper look above)
+- **Background:** a smooth, professional gradient from one theme in `editor/faceless/palettes.json`. The themes are midnight navy, crimson noir, black and white, emerald and gold, royal purple, slate and teal, and charcoal and orange. No yellow, no bokeh bubbles, no paper and no tables.
+- **One theme per video.** Choose it by topic (each theme's `use` says where it fits) and pass `faceless-plan --theme <id>`. All text colours come from the theme:
+  - the hook in the accent colour
+  - numbers in the highlight colour
+  - names and words in the text colour
+  - small labels in the muted colour
+- **Objects** are real-photo cutouts made with `faceless-card <photo> <out> --theme <id>`. Each gets a soft drop shadow, a contact shadow, a faint floor reflection and a light wrap from the background. A photo cut off at the bottom fades into the background. A flat object (a note, a card) gets a slight 3D tilt.
+- **Places and scenes** (court, parliament, crowd, street) are full-bleed photos with theme bands at the top and bottom for the text: `faceless-card --photo`.
+- **Black and white theme:** the photos are black and white too, and the text is white or grey only.

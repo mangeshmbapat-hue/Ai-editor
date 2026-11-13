@@ -153,9 +153,10 @@ def default_visuals(root):
 
 
 def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=False, music=None,
-         aspect="9:16", end_card=END_CARD, transition_s=0.3):
+         aspect="9:16", end_card=END_CARD, transition_s=0.3, theme_name=None):
     root = Path(root)
     W, H = E_size(aspect)
+    th = theme(theme_name)        # one colour theme for the whole video (owner rule 2026-11-13)
     vinfo = media.probe(inside(root, voice))
     require(vinfo["has_audio"], "Voiceover has no audio: " + voice)
     words = load_words(inside(root, words_file))
@@ -206,7 +207,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
                     break
             hook = hook if len(hook) <= 5 else hook[:3]   # a long first sentence keeps only its first words: "Destroying the moon"
             items.append({"value": wrap(title or " ".join(hook), 9, 5), "role": "title" if max(len(x) for x in hook) <= 7 else "headline", "position": "top", "start": 0.05, "end": round(dur, 3),
-                          "animate": "pop", "color": "#c44536"})
+                          "animate": "pop", "color": th["accent"]})
         runs, prev_key = [], False
         for w in g:
             key = is_key(w["word"], sentence_start)
@@ -224,7 +225,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
             except E.ProductionError:
                 continue                      # too long for a graphic; the agent places it by hand
             items.append({"value": value, "role": "headline", "position": "center", "start": round(max(run[0]["start"] - a, 0.0), 3),
-                          "end": round(dur, 3), "animate": "pop", "color": "yellow" if number else "white", "box": True})
+                          "end": round(dur, 3), "animate": "pop", "color": th["highlight"] if number else th["text"], "box": True})
         if items:
             clip["text"] = items
         clips.append(clip)
@@ -253,8 +254,8 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
     clips.append(card)
     edl = {"version": 1, "title": title or " ".join(w["word"] for w in groups[0])[:60], "style": HOUSE_STYLE,
            "format": {"width": W, "height": H, "fps": 30, "fit": "cover"}, "sources": sources, "clips": clips,
-           "typography": {"pairing": "rozha-hind", "theme": "earth-doc"},
-           "grade": {"preset": "warm-film", "vignette": True},
+           "typography": {"pairing": "rozha-hind"}, "colour_theme": th["id"],
+           "grade": {"preset": "bw-contrast" if th["id"] == "mono-classic" else "neutral"},
            "audio": {"keep_source": False, "source_gain_db": 0, "voice": {"file": voice, "gain_db": 0}},
            "master": {"lufs": -14, "true_peak": -1},
            "notes": ["Faceless plan from `{}` on {}: {} scenes at {:.2f}s average, cuts {}s before their word, key words as text on the spoken word.".format(
@@ -394,4 +395,139 @@ def cutout(src, out):
     img = remove(Image.open(src).convert("RGB"), session=new_session("u2net"))
     box = img.getbbox()
     (img.crop(box) if box else img).save(out)
+    return str(out)
+
+
+# ---- look v3 (owner rule 2026-11-13): professional gradients, one colour theme, realistic cutouts ----
+
+def themes():
+    from ..core import read_json
+    from .render import REPO
+    return read_json(REPO / "editor" / "faceless" / "palettes.json")
+
+
+def theme(name=None):
+    data = themes()
+    name = name or data["default"]
+    require(name in data["themes"], "Unknown theme {!r}; choose from {}".format(name, sorted(data["themes"])))
+    return dict(data["themes"][name], id=name)
+
+
+def _rgb(h):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def gradient(theme_name=None, size=(1080, 1920), seed=7):
+    """A smooth vertical gradient with a soft radial light near the top and a very light grain:
+    the clean, corporate background the owner asked for (no bokeh, no paper, no table)."""
+    from PIL import Image, ImageFilter
+    import random
+    t = theme(theme_name)
+    W, H = size
+    top, bottom, light = _rgb(t["bg"][0]), _rgb(t["bg"][1]), _rgb(t["light"])
+    import numpy as np
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    f = (yy / (H - 1))[..., None]
+    base = np.array(top, np.float32) + (np.array(bottom, np.float32) - np.array(top, np.float32)) * f
+    d = np.sqrt((xx - W * 0.5) ** 2 + (yy - H * 0.32) ** 2) / (max(W, H) * 0.55)
+    g = (np.clip(1.0 - d, 0, 1) ** 2 * 0.55)[..., None]
+    arr = base + (np.array(light, np.float32) - base) * g
+    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGB")
+    rnd = random.Random(seed)
+    noise = Image.effect_noise((W // 4, H // 4), 8).resize((W, H)).filter(ImageFilter.GaussianBlur(1))
+    return Image.blend(img, Image.merge("RGB", (noise, noise, noise)), 0.025)
+
+
+def card(src, out, theme_name=None, size=(1080, 1920), width=0.68, y=0.52, mono=None):
+    """Put a real-photo cutout on the theme gradient with a soft 2D/3D touch: a contact shadow,
+    a soft drop shadow, a faint light wrap from the background and a subtle floor reflection.
+    `src` is a cutout PNG (with alpha) or a photo; photos are cut out first (rembg)."""
+    from PIL import Image, ImageFilter, ImageOps
+    t = theme(theme_name)
+    W, H = size
+    src = Path(src)
+    obj = Image.open(src)
+    if obj.mode != "RGBA" or obj.getextrema()[3][0] == 255:
+        tmp = Path(out).with_suffix(".cut.png")
+        obj = Image.open(cutout(src, tmp)).convert("RGBA")
+    else:
+        obj = obj.convert("RGBA")
+    if mono if mono is not None else t["id"] == "mono-classic":
+        a = obj.split()[3]
+        obj = ImageOps.grayscale(obj.convert("RGB")).convert("RGBA")
+        obj.putalpha(a)
+    box = obj.getbbox()
+    if box:
+        obj = obj.crop(box)
+    import numpy as np
+    al = np.array(obj.split()[3])
+    flat_bottom = (al[-3:] > 200).mean() > 0.35          # photo cut off at the bottom (a dog's bust, a person)
+    if flat_bottom:
+        pass                                             # placed on the frame's bottom edge below, so the cut never shows
+    elif obj.width / float(obj.height) > 1.8:            # flat objects (a note, a card) get a slight 3D tilt
+        obj = obj.rotate(-7, resample=Image.BICUBIC, expand=True)
+    scale = min(W * max(width, 0.85) / obj.width, H * 0.58 / obj.height) if flat_bottom else min(W * width / obj.width, H * 0.5 / obj.height)
+    obj = obj.resize((max(1, int(obj.width * scale)), max(1, int(obj.height * scale))), Image.LANCZOS)
+    bg = gradient(t["id"], size).convert("RGBA")
+    if flat_bottom:
+        # Owner rule 2026-11-13: a photo cut off at the bottom rises from the frame's bottom edge,
+        # so the cut edge sits outside the picture and never looks odd.
+        x, top = (W - obj.width) // 2, H - obj.height + 2
+    else:
+        x, top = (W - obj.width) // 2, int(H * y - obj.height / 2)
+    alpha = obj.split()[3]
+    # soft drop shadow
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    sh.paste((0, 0, 0, 150), (x + int(obj.width * 0.03), top + int(obj.height * 0.05)), alpha)
+    bg = Image.alpha_composite(bg, sh.filter(ImageFilter.GaussianBlur(max(8, obj.width // 22))))
+    # contact shadow (an ellipse under the object) and floor reflection, only for whole objects
+    if flat_bottom:
+        bg.alpha_composite(obj, (x, top))
+        out = Path(out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        bg.convert("RGB").save(out, quality=94)
+        return str(out)
+    from PIL import ImageDraw
+    cs = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(cs).ellipse([x + obj.width * 0.12, top + obj.height * 0.95, x + obj.width * 0.88, top + obj.height * 1.05], fill=(0, 0, 0, 120))
+    bg = Image.alpha_composite(bg, cs.filter(ImageFilter.GaussianBlur(max(6, obj.width // 30))))
+    # faint floor reflection
+    refl = ImageOps.flip(obj)
+    ra = refl.split()[3].point(lambda v: int(v * 0.12))
+    fade = Image.linear_gradient("L").resize(refl.size).point(lambda v: 255 - v)
+    from PIL import ImageChops
+    refl.putalpha(ImageChops.multiply(ra, fade))
+    bg.alpha_composite(refl, (x, min(H - 1, top + obj.height + 4)))
+    # light wrap: a whisper of the theme light on the edges, so the cutout sits in the scene
+    edge = alpha.filter(ImageFilter.GaussianBlur(3))
+    wrap = Image.new("RGBA", obj.size, _rgb(t["light"]) + (0,))
+    wrap.putalpha(ImageChops.subtract(edge, alpha.filter(ImageFilter.MinFilter(5))).point(lambda v: int(v * 0.35)))
+    bg.alpha_composite(obj, (x, top))
+    bg.alpha_composite(wrap, (x, top))
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    bg.convert("RGB").save(out, quality=94)
+    return str(out)
+
+
+def photo_card(src, out, theme_name=None, size=(1080, 1920)):
+    """A place or scene photo (building, crowd, street) full-bleed, with the theme's gradient
+    laid over the top and bottom so text sits on a clean band and the colours stay in theme."""
+    from PIL import Image, ImageOps
+    t = theme(theme_name)
+    W, H = size
+    img = ImageOps.fit(Image.open(src).convert("RGB"), size, Image.LANCZOS)
+    if t["id"] == "mono-classic":
+        img = ImageOps.grayscale(img).convert("RGB")
+    top, bottom = _rgb(t["bg"][0]), _rgb(t["bg"][1])
+    import numpy as np
+    f = np.linspace(0, 1, H, dtype=np.float32)[:, None]
+    a = np.where(f < 0.32, 235 * (0.32 - f) / 0.32, np.where(f > 0.62, 245 * (f - 0.62) / 0.38, 0)).repeat(W, 1)
+    rgb = np.where((f < 0.5)[..., None], np.array(top, np.float32), np.array(bottom, np.float32)).repeat(W, 1)
+    ov = Image.fromarray(np.dstack([rgb, a[..., None]]).astype(np.uint8), "RGBA")
+    res = Image.alpha_composite(img.convert("RGBA"), ov).convert("RGB")
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    res.save(out, quality=94)
     return str(out)

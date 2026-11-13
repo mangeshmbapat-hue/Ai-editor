@@ -96,6 +96,15 @@ The owner sends a voiceover and wants the storyboard back, with no conversation.
   - Or photos the owner sends.
 
   Log each source, author and licence in the job's `CREDITS.md`. Never use random Google images. TV channel logos come only from the owner (`editor/library/media/`).
+- **Look v3** (owner rule 2026-11-13):
+  - one professional gradient colour theme per video (`faceless-themes`; `faceless-plan --theme <id>`)
+  - every text colour comes from that theme
+  - objects are realistic cutouts with a soft shadow and reflection (`faceless-card <photo> <out> --theme <id>`)
+  - places are full-bleed photos with theme bands (`faceless-card --photo`)
+  - never a yellow, bokeh, paper or table background
+- **Cutouts never show their cut edge** (2026-11-13): a photo cut off at the bottom rises from the frame's bottom edge (`faceless-card` does this) or hides behind a foreground element.
+- **On the word, nothing extra:** an object's image and its text appear exactly when the VO says it. Nothing extra joins or runs along the bottom of the frame (no tickers, bars or stickers).
+- **Nothing fake:** every object, animal, place and device is a realistic photo. Drawn or AI figures are allowed only for people the owner does not supply.
 - **People:** realistic figures with visible faces, cartoon-like but real, of the right age and gender, generic people only. No white borders.
 - **No images sent:** draw the scenes yourself in the approved realistic lit look.
 - **Social media:** use the owner's logos from `editor/library/social/` (Facebook, X, Instagram, WhatsApp, Snapchat), never hearts or generic icons.
