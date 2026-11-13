@@ -155,3 +155,23 @@ No plain hard cut sits on a sentence boundary without a move, a flash or an SFX.
   - a cut-side photo enters from its side
   - the object and its text never overlap
 - **Cutouts:** hole-free (`solid_cutout`) and checked by eye. Replace any that look bad.
+
+## Variety and direction (owner, 2026-11-13)
+`faceless-plan` runs a direction pass (`faceless.direct`) when the visuals are images. Put objects in `raw/`, places in `raw/places/`.
+
+**Text treatments, chosen by what the text is:**
+
+| Treatment | What it is | Used for |
+|---|---|---|
+| `plain` | clean off-white text | headlines, statements |
+| `emphasis` | a line with the key word in the accent colour | turns ("Lekin asli sawaal"), claims |
+| `tag` | solid accent box, text in the theme's ink | dates, places, names, categories |
+| `glass` | frosted card | numbers and stats, quotes, the CTA, any text over a busy photo |
+| `bgword` | a huge, faint word behind the object, plus the line itself | hooks, topic openers |
+
+**Variety rules:**
+- No treatment in two consecutive scenes, and none in more than about 35 % of a video.
+- Text over a photo always gets glass or a tag.
+- One text block per scene.
+
+**Entrances:** rise, slide-left, slide-right, pop (with a settle) and fade-up. All are eased over 0.6 s; the object then holds still and fades out over 0.3 s. Never the same entrance twice in a row, and never a shake.

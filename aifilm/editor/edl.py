@@ -428,7 +428,15 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
                 an, int(W / 2), int(y), family, size, weight, ass_colour(item.get("color", "white")), max(2, size // 14))
             if item.get("clean"):      # classy text: no outline, a soft low shadow (faceless look v3)
                 tags = tags[:-1] + "\\bord0\\shad{}\\4c&H000000&\\4a&H70&}}".format(max(2, size // 28))
-            events.append((a, b, "TxtBox" if item.get("box") else "Txt", tags + text_motion(item.get("animate")) + ass_text(item["value"])))
+            if item.get("box_color"):  # a solid tag: the box takes the colour (ASS BorderStyle 3 uses the outline colour)
+                tags = tags[:-1] + "\\3c{}\\3a&H00&\\bord{}\\shad0}}".format(ass_colour(item["box_color"]), max(10, size // 4))
+            body = ass_text(item["value"])
+            if item.get("accent_words"):   # a two-tone line: the key words in the accent colour
+                keys = {w.lower().strip(".,!?;:") for w in item["accent_words"]}
+                parts = re.split(r"(\s+)", item["value"])
+                body = "".join(("{{\\c{}}}{}{{\\c{}}}".format(ass_colour(item.get("accent_color", "yellow")), ass_text(p), ass_colour(item.get("color", "white")))
+                                if p.lower().strip(".,!?;:") in keys else ass_text(p)) for p in parts)
+            events.append((a, b, "TxtBox" if (item.get("box") or item.get("box_color")) else "Txt", tags + text_motion(item.get("animate")) + body))
     subs = edl.get("subtitles")
     cap = None
     if subs and subs.get("burn", True):
