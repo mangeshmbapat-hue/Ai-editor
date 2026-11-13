@@ -20,7 +20,7 @@ PRELAP = 0.15            # scene changes lead their word (measured on the sample
 SCENE_MIN, SCENE_MAX = 1.5, 2.2   # group spans; scenes land at 1.5-2.5 s (samples: a change every 1.5-2.5 s)
 END_CARD = 5.0
 HOOK_MAX = 2.1
-TRANSITIONS = ["fadewhite", "zoomin", "circleopen", "slideup", "fadeblack"]
+TRANSITIONS = ["fade", "smoothleft", "circleopen", "slideup", "smoothright"]   # smooth moves; no dips to black or white flashes on dark themes
 TURN_WORDS = {"but", "why", "however", "yet", "lekin", "magar", "kyun", "kyon", "लेकिन", "मगर", "क्यों"}   # not "par"/"पर": it also means "on"
 KEY = re.compile(r"^[\$₹€£]?[0-9०-९][0-9०-९,.:/]*(%|s|st|nd|rd|th|k|m|bn)?$|^[0-9०-९]+%$", re.I)
 SENTENCE_END = re.compile(r"[.!?।]$")
@@ -290,7 +290,7 @@ def plan(root, voice, words_file, visuals=None, cta=None, title=None, captions=F
         c["out"] = round(min(c["in"] + ends[i] - starts[i] + extra, src_dur), 3)
     last = visuals[(len(groups)) % len(visuals)]
     card = {"id": "C{:02d}".format(len(clips) + 1), "source": sid[last], "in": 0.0,
-            "out": round(min(end_card, probes[last]["duration"]), 3), "beat": "end card", "transition_in": {"type": "fadeblack", "duration": 0.4},
+            "out": round(min(end_card, probes[last]["duration"]), 3), "beat": "end card", "transition_in": {"type": "fade", "duration": 0.4},
             "zoom": {"from": 1.0, "to": 1.03}}
     if cta:
         card["text"] = [{"value": wrap(cta, 14, 4), "role": "headline", "position": "center", "start": 0.3, "end": round(card["out"] - 0.2, 3), "animate": "pop", "box": True}]
@@ -706,7 +706,8 @@ def fit_text(edl, max_width=0.70, max_lines=2):
                         cur = test
                 lines.append(cur)
                 limit = max_lines + 1 if (it.get("treatment") not in (None, "glass", "tag") and it.get("position") in ("top", "glass-top")) else max_lines   # open text at the top may take three lines
-                if len(lines) <= limit or role == chain[-1]:
+                too_wide = any(font.getlength(l) > W * max_width for l in lines)   # one long word ("High-end") at title size
+                if (len(lines) <= limit and not too_wide) or role == chain[-1]:
                     it["role"], it["value"] = role, "\n".join(lines)      # never drop the owner's words
                     break
             tr = it.get("treatment")
@@ -717,6 +718,8 @@ def fit_text(edl, max_width=0.70, max_lines=2):
                     it["position"] = "glass-top"
             elif it.get("position") in ("bottom", "lower"):
                 it["position"] = "lower" if "\n" in it["value"] else "bottom"
+            if it.get("position") == "center" and len(lines) > 3:
+                it["role"] = "headline"
     return edl
 
 
@@ -849,7 +852,24 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
         treatment = ("glass" if items else None) if card_end else (choose(kind, history, photo=place) if kind else None)
         if treatment and not card_end:
             history.append(treatment)
-        if is_image(src):
+        name = Path(src).name
+        if name.startswith("title-card") and treatment in ("glass", "tag", "bgword"):
+            treatment = "emphasis" if (not history or history[-1] != "emphasis") else "plain"   # a title card is open text
+            if history:
+                history[-1] = treatment
+        if is_image(src) and name.startswith("build-"):
+            kind_b = Path(src).stem[len("build-"):]
+            kind_b = {"timeline-clutter": "timeline", "palette-dull": "palette", "palette-harsh": "palette"}.get(kind_b, kind_b)
+            side = inside(root, src).with_suffix(".json")
+            kw = json.loads(side.read_text(encoding="utf-8")) if side.exists() else {}
+            clip_path = render_build(root, c["id"], t, c["out"] - c["in"], design_parts(kind_b, t["id"], **kw),
+                                     size=(edl["format"]["width"], edl["format"]["height"]), panel=(treatment == "glass"))
+            sid = "S" + c["id"][1:]
+            edl["sources"][sid] = str(Path(clip_path).relative_to(root))
+            c["source"], c["in"], c["out"] = sid, 0.0, round(c["out"] - c["in"], 3)
+            c.pop("zoom", None)
+            zone = "lower"
+        elif is_image(src):
             ent = ENTRANCES[(i + seed) % len(ENTRANCES)]
             if ent == last_entrance:
                 ent = ENTRANCES[(i + seed + 1) % len(ENTRANCES)]
@@ -861,12 +881,18 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
             sid = "S" + c["id"][1:]
             edl["sources"][sid] = str(Path(clip_path).relative_to(root))
             c["source"], c["in"], c["out"] = sid, 0.0, round(c["out"] - c["in"], 3)
-            c.pop("zoom", None)          # the object's own move replaces the frame drift
+            if i % 2:
+                c["zoom"] = {"from": 1.0, "to": 1.05}   # a slow camera push on every other object scene
+            else:
+                c.pop("zoom", None)
             zone = json.loads(Path(clip_path).with_suffix(".layout.json").read_text(encoding="utf-8"))["text_zone"]
         else:
             zone = "lower"
+        title_card = name.startswith("title-card")
         for it in items:
             it["clean"] = True
+            if treatment != "tag":
+                it.update(reveal="word", reveal_step=0.14)
             it["position"] = ("glass-top" if zone == "top" else "glass-lower") if treatment == "glass" else ("top" if zone == "top" else "bottom")
             if treatment == "tag":
                 it.update(box_color=t["accent"], color=t["accent_ink"], role="headline")
@@ -883,6 +909,9 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
                     it.update(accent_color=t["accent"], accent_words=[max(words, key=len)] if words else [])
             if treatment != "tag":
                 it.pop("box", None)          # only a tag has a box; glass, plain, emphasis and bgword text sit clean
+            if title_card:                       # a text-only scene: big kinetic words in the middle
+                short = len(it["value"].split()) <= 2 and max(len(w) for w in it["value"].split()) <= 8
+                it.update(position="center", role="title", size=int(edl["format"]["height"] * (0.095 if short else 0.075)))
             it["treatment"] = treatment
     used = [h for h in history]
     edl.setdefault("notes", []).append("Direction: treatments {} · no treatment or entrance repeats back to back.".format(", ".join(used)))
@@ -1073,3 +1102,221 @@ def design(kind, out, theme_name=None, **kw):
     out.parent.mkdir(parents=True, exist_ok=True)
     img.save(out)
     return str(out)
+
+
+# ---- build-ups (owner rule 2026-11-13: graphics build on the words, nothing is a static template) ----
+
+def design_parts(kind, theme_name=None, **kw):
+    """A designed graphic split into parts that animate one after another: [(RGBA canvas 1000x900, at seconds, anim)].
+    anim: fade-up, pop, slide-left, shrink (scale to 75 %), sweep (moves across), out (visible, then fades at `at`)."""
+    from PIL import Image, ImageDraw, ImageFilter
+    t = theme(theme_name)
+    W, H = 1000, 900
+    surf, acc, txt, mut = _rgb(t.get("surface", t["bg"][0])), _rgb(t["accent"]), _rgb(t["text"]), _rgb(t["muted"])
+    ink = _rgb(t["accent_ink"])
+    card_fill = tuple(min(255, c + 22) for c in surf) + (255,)
+
+    def canvas():
+        return Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+    def done(img):
+        return _shadowed(img, blur=16, offset=(0, 14), alpha=100)
+    parts = []
+    if kind == "checklist":
+        items = kw.get("items", ["Size", "Effects", "Colour"])
+        base = canvas()
+        ImageDraw.Draw(base).rounded_rectangle([60, 80, W - 60, H - 80], 40, fill=card_fill)
+        parts.append((done(base), 0.0, "fade-up"))
+        f = _font(64, 600)
+        for k, it in enumerate(items):
+            row = canvas()
+            d = ImageDraw.Draw(row)
+            y = 220 + k * 200
+            d.ellipse([130, y - 50, 230, y + 50], fill=acc + (255,))
+            d.line([(155, y), (175, y + 22), (208, y - 22)], fill=ink + (255,), width=14, joint="curve")
+            d.text((280, y), it, font=f, fill=txt + (255,), anchor="lm")
+            parts.append((row, 0.45 + k * 0.45, "slide-left"))
+    elif kind in ("palette",):
+        cols = kw.get("colors", [(79, 109, 122), (107, 143, 113), (194, 184, 163)])
+        labels = kw.get("labels", ["Blue", "Green", "Sand"])
+        f = _font(38, 600)
+        for k, (c, lab) in enumerate(zip(cols, labels)):
+            cc = Image.new("RGBA", (300, 520), (0, 0, 0, 0))
+            cd = ImageDraw.Draw(cc)
+            cd.rounded_rectangle([0, 0, 299, 519], 26, fill=(250, 248, 243, 255))
+            cd.rounded_rectangle([18, 18, 281, 390], 16, fill=tuple(c) + (255,))
+            cd.text((150, 455), lab, font=f, fill=(70, 70, 70, 255), anchor="mm")
+            cc = cc.rotate((k - 1) * -8, resample=Image.BICUBIC, expand=True)
+            img = canvas()
+            img.alpha_composite(cc, (int(40 + k * 300), int(150 + abs(k - 1) * 40)))
+            parts.append((done(img), 0.1 + k * 0.32, "pop"))
+    elif kind == "cards3":
+        labels = kw.get("labels", ["Size", "Effects", "Colour"])
+        f = _font(54, 700)
+        for k, lab in enumerate(labels):
+            c = Image.new("RGBA", (280, 380), (0, 0, 0, 0))
+            cd = ImageDraw.Draw(c)
+            cd.rounded_rectangle([0, 0, 279, 379], 34, fill=card_fill)
+            cd.ellipse([90, 70, 190, 170], fill=(acc if k != 1 else mut) + (255,))
+            cd.text((140, 270), lab, font=f, fill=txt + (255,), anchor="mm")
+            c = c.rotate((k - 1) * -7, resample=Image.BICUBIC, expand=True)
+            img = canvas()
+            img.alpha_composite(c, (int(40 + k * 300), int(200 + abs(k - 1) * 40)))
+            parts.append((done(img), 0.15 + k * 0.4, "fade-up"))
+    elif kind == "icons-shrink":
+        img = canvas()
+        d = ImageDraw.Draw(img)
+        base, gap = 300, 40
+        x = (W - (3 * base + 2 * gap)) / 2
+        for k, (kk, col) in enumerate([("play", acc), ("circle", mut), ("bars", acc)]):
+            _icon(d, [x + k * (base + gap), H / 2 - base / 2, x + k * (base + gap) + base, H / 2 + base / 2], kk, col + (255,), surf + (255,))
+        parts.append((done(img), 0.7, "shrink"))
+        badge = canvas()
+        bd = ImageDraw.Draw(badge)
+        bd.rounded_rectangle([W / 2 - 150, H - 170, W / 2 + 150, H - 70], 50, fill=acc + (255,))
+        bd.text((W / 2, H - 120), "-25%", font=_font(64), fill=ink + (255,), anchor="mm")
+        parts.append((badge, 1.3, "pop"))
+    elif kind == "icons-big":
+        sizes = [(40, 120, 380, "play", acc), (340, 300, 360, "circle", mut), (600, 80, 400, "bars", acc)]
+        for k, (x, y, s, kk, col) in enumerate(sizes):
+            img = canvas()
+            _icon(ImageDraw.Draw(img), [x, y, x + s, y + s], kk, col + (255,), surf + (255,))
+            parts.append((done(img), 0.05 + k * 0.28, "pop"))
+    elif kind == "shapes":
+        for k, (box, shape, col) in enumerate([([20, 60, 560, 600], "circle", (230, 90, 80)), ([380, 260, 980, 860], "rect", acc),
+                                                ([160, 420, 620, 880], "tri", mut)]):
+            img = canvas()
+            d = ImageDraw.Draw(img)
+            if shape == "circle":
+                d.ellipse(box, fill=col + (235,))
+            elif shape == "rect":
+                d.rounded_rectangle(box, 60, fill=col + (235,))
+            else:
+                d.polygon([(box[0], box[3]), ((box[0] + box[2]) / 2, box[1]), (box[2], box[3])], fill=col + (235,))
+            parts.append((done(img), 0.05 + k * 0.3, "pop"))
+    elif kind == "timeline":
+        clutter = kw.get("clutter", False)
+        base = canvas()
+        d = ImageDraw.Draw(base)
+        d.rounded_rectangle([20, 140, W - 20, H - 140], 36, fill=card_fill)
+        for k in range(4):
+            y = 220 + k * 120
+            d.rounded_rectangle([60, y, W - 60, y + 80], 18, fill=tuple(max(0, c - 10) for c in surf) + (255,))
+            segs = [(80, 380), (400, 620), (640, 900)] if k % 2 == 0 else [(80, 260), (280, 700), (720, 900)]
+            for j, (a, b) in enumerate(segs):
+                d.rounded_rectangle([a, y + 10, min(b, W - 80), y + 70], 14, fill=(acc if (j + k) % 3 == 0 else mut) + (255,))
+        parts.append((done(base), 0.0, "fade-up"))
+        ph = canvas()
+        pd = ImageDraw.Draw(ph)
+        pd.rectangle([497, 170, 503, H - 170], fill=txt + (255,))
+        pd.polygon([(481, 160), (519, 160), (500, 186)], fill=txt + (255,))
+        parts.append((ph, 0.0, "sweep"))
+        if clutter:
+            for k, (x, y, s, kk) in enumerate([(40, 60, 300, "play"), (420, 20, 260, "circle"), (700, 420, 300, "bars"), (120, 520, 260, "diamond")]):
+                img = canvas()
+                _icon(ImageDraw.Draw(img), [x, y, x + s, y + s], kk, acc + (255,) if kk in ("play", "bars") else (230, 70, 70, 255), (255, 255, 255, 255))
+                parts.append((done(img), 0.35 + k * 0.22, "pop"))
+    elif kind == "beforeafter":
+        f = _font(48, 700)
+        for k, (lab, clutter) in enumerate([("Beginner", True), ("Pro", False)]):
+            img = canvas()
+            d = ImageDraw.Draw(img)
+            x0 = 30 + k * 490
+            d.rounded_rectangle([x0, 140, x0 + 450, H - 140], 34, fill=card_fill)
+            d.text((x0 + 225, 200), lab, font=f, fill=(mut if clutter else acc) + (255,), anchor="mm")
+            if clutter:
+                for (x, y, s, kk, col) in [(x0 + 30, 260, 230, "play", (230, 60, 60)), (x0 + 200, 330, 220, "circle", (255, 200, 0)), (x0 + 60, 470, 240, "bars", (0, 180, 255))]:
+                    _icon(d, [x, y, x + s, y + s], kk, col + (255,), (255, 255, 255, 255))
+            else:
+                for j, kk in enumerate(("play", "circle", "bars")):
+                    _icon(d, [x0 + 70 + j * 110, 420, x0 + 160 + j * 110, 510], kk, (acc if j != 1 else mut) + (255,), surf + (255,))
+            parts.append((done(img), 0.1 + k * 0.8, "slide-left" if k == 0 else "fade-up"))
+    elif kind == "effects-switch":
+        over = Image.open(design("effects", "/tmp/_fx_over.png", t["id"], overload=True)).convert("RGBA").resize((W, H))
+        clean = Image.open(design("effects", "/tmp/_fx_clean.png", t["id"], overload=False)).convert("RGBA").resize((W, H))
+        parts.append((over, kw.get("switch", 0.9), "out"))
+        parts.append((clean, kw.get("switch", 0.9), "fade-up"))
+    elif kind == "effects-over":
+        parts.append((Image.open(design("effects", "/tmp/_fx_over.png", t["id"], overload=True)).convert("RGBA").resize((W, H)), 0.05, "pop"))
+    elif kind == "spotlight":
+        glow = canvas()
+        ImageDraw.Draw(glow).ellipse([W / 2 - 260, H / 2 - 260, W / 2 + 260, H / 2 + 260], fill=acc + (120,))
+        icons = canvas()
+        d = ImageDraw.Draw(icons)
+        for j, (x, kk) in enumerate([(W / 2 - 330, "circle"), (W / 2 - 110, "play"), (W / 2 + 130, "bars")]):
+            s = 220 if j == 1 else 150
+            _icon(d, [x + (0 if j == 1 else 35), H / 2 - s / 2, x + (0 if j == 1 else 35) + s, H / 2 + s / 2], kk, (acc if j == 1 else mut) + (255,), surf + (255,))
+        parts.append((done(icons), 0.0, "fade-up"))
+        parts.append((glow.filter(ImageFilter.GaussianBlur(60)), 0.7, "fade-up"))
+    elif kind == "journey":
+        f = _font(58, 700)
+        for k, (lab, x, col, tc) in enumerate([("Beginner", 230, mut, surf), ("Pro", 770, acc, ink)]):
+            img = canvas()
+            d = ImageDraw.Draw(img)
+            d.rounded_rectangle([x - 190, H / 2 - 70, x + 190, H / 2 + 70], 70, fill=col + (255,))
+            d.text((x, H / 2), lab, font=f, fill=tc + (255,), anchor="mm")
+            parts.append((done(img), 0.1 if k == 0 else 1.1, "pop"))
+        arrow = canvas()
+        ad = ImageDraw.Draw(arrow)
+        ad.line([(440, H / 2), (560, H / 2)], fill=txt + (255,), width=12)
+        ad.polygon([(560, H / 2 - 26), (600, H / 2), (560, H / 2 + 26)], fill=txt + (255,))
+        parts.append((arrow, 0.6, "slide-left"))
+    else:
+        raise E.ProductionError("No build-up for design kind " + kind)
+    return parts
+
+
+def render_build(root, cid, t, seconds, parts, size=(1080, 1920), fps=30, panel=False):
+    """A designed scene whose parts animate in on their own times (build-up), over the theme gradient,
+    holding still and fading out together at the end. No shake: every move is eased and settles."""
+    from PIL import Image
+    root = Path(root)
+    W, H = size
+    folder = root / "raw" / "scenes"
+    folder.mkdir(parents=True, exist_ok=True)
+    bgp = folder / (cid + ".bg.png")
+    bg = gradient(t["id"], size).convert("RGBA")
+    if panel:
+        glass(bg, "lower", t)
+    bg.save(bgp)
+    Wc = int(W * 0.86)
+    Hc = int(900 * Wc / 1000.0)
+    x0, y0 = (W - Wc) // 2, int(H * 0.33 - Hc / 2)
+    D = max(seconds, 0.5)
+    inputs = ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(bgp)]
+    graph, last = [], "0:v"
+    latest = max([float(at) for _, at, an in parts if an not in ("sweep",)] + [0.01])
+    squeeze = min(1.0, (D * 0.55) / latest)          # every part of the build lands within the first half of a short scene
+    for k, (img, at, anim) in enumerate(parts):
+        at = float(at) * squeeze
+        p = folder / "{}.part{}.png".format(cid, k)
+        img.resize((Wc, Hc), Image.LANCZOS).save(p)
+        inputs += ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(p)]
+        a = min(float(at), max(D - 0.6, 0.0))
+        e = "(1-pow(1-min(max((t-{a})/0.5,0),1),3))".format(a=a)
+        chain = ["format=rgba"]
+        if anim == "out":
+            chain += ["fade=t=in:st=0:d=0.3:alpha=1", "fade=t=out:st={:.3f}:d=0.3:alpha=1".format(a)]
+        else:
+            chain += ["fade=t=in:st={:.3f}:d=0.3:alpha=1".format(a if anim not in ("shrink", "sweep") else 0.0),
+                      "fade=t=out:st={:.3f}:d=0.3:alpha=1".format(max(D - 0.3, a + 0.3))]
+        x, y = str(x0), str(y0)
+        if anim == "fade-up":
+            y = "{}+60*(1-{})".format(y0, e)
+        elif anim == "slide-left":
+            x = "{}-{}*0.18*(1-{})".format(x0, W, e)
+        elif anim in ("pop", "shrink"):
+            k_ = "(0.86+0.14*{e})".format(e=e) if anim == "pop" else "(1-0.25*(1-pow(1-min(max((t-{a})/0.7,0),1),3)))".format(a=a)
+            chain.append("scale=w='{w}*{k}':h='{h}*{k}':eval=frame".format(w=Wc, h=Hc, k=k_))
+            x, y = "{}+({}-overlay_w)/2".format(x0, Wc), "{}+({}-overlay_h)/2".format(y0, Hc)
+        elif anim == "sweep":
+            x = "{}+{}*(-0.32+0.64*min(t/{:.3f},1))".format(x0, Wc, D)
+        graph.append("[{}:v]{}[p{}]".format(k + 1, ",".join(chain), k))
+        graph.append("[{}][p{}]overlay=x='{}':y='{}':eval=frame:format=auto[o{}]".format(last, k, x, y, k))
+        last = "o{}".format(k)
+    graph.append("[{}]format=yuv420p[v]".format(last))
+    out = folder / (cid + ".mp4")
+    media.run(["ffmpeg", "-hide_banner", "-y", *inputs, "-filter_complex", ";".join(graph), "-map", "[v]", "-r", str(fps),
+               "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-t", "{:.3f}".format(D), str(out)])
+    write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"], "build": len(parts)})
+    return out
