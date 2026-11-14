@@ -20,6 +20,24 @@ Run the **faceless-editor** agent (`.claude/agents/faceless-editor.md`) with the
 - **Subtitles:** only when the owner asks for them (Hindi or English): `faceless-plan --captions`.
 - **Target:** the storyboard reaches the owner within about 15 minutes.
 
+## 2a. Premium standard (owner, 2026-11-14): read `editor/styles/faceless-premium-poster/STYLE_SHEET.md` first
+- **Palette:** one strict palette with roles, e.g. black, red and gold, or monochrome with one hot accent.
+- **Hero images:**
+  - sharp, HD, cleanly cut (no holes, no halo), large in frame, lit with rim light and a contact shadow
+  - in the subject's colour world: a black void, cream paper, a white wall with a light beam, linen
+- **Poster detailing:** grain, a vignette, and small micro-typography at the edges.
+- **Fonts by role:** condensed caps for punches, an elegant serif for the voice line, a light italic for asides.
+- **Key word:** in the accent, or boxed or marked as it is spoken.
+- **Backing:** open text on calm backgrounds; a backing only over busy images or to underline meaning.
+- **Motion:**
+  - a slow push-in on every scene
+  - heroes rise, pull focus or turn in 3D
+  - text blurs in or types in
+  - one light sweep or bloom per video
+  - bloom, blur or paper-panel transitions
+- **Never use a blurry or cheap visual;** pick a different one.
+- **References:** the dog reel (silhouette-follow) and the media reel (media-watchdog) are the owner's liked references too.
+
 ## 2. Look: think like a designer (owner, 2026-11-13)
 - **Theme:** one designed theme per video from `editor/faceless/palettes.json`, chosen by the topic's mood (`faceless-themes` lists them):
   - navy-ivory: business, the default

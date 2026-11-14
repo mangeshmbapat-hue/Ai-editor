@@ -1,0 +1,73 @@
+{
+  "slug": "faceless-premium-poster",
+  "measured": true,
+  "basis": "Learned 2026-11-14 from the owner's 2 premium faceless samples (study only). Loudness, colour and speech rate measured; looks, text and motion observed at 6 fps.",
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.0,
+    "scene_change_seconds": [
+      1.5,
+      2.5
+    ],
+    "vo_words_per_second": 3.0,
+    "palettes": {
+      "power": [
+        "#080604",
+        "#8E1B1F",
+        "#C9A24A",
+        "#F1E5D0"
+      ],
+      "mono-accent": [
+        "#050506",
+        "#181819",
+        "#CFCECD",
+        "one accent"
+      ]
+    },
+    "hero_min_long_side_px": 1080,
+    "loudness_lufs": -14,
+    "true_peak_dbtp": -1
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "name": "You do not need everyone",
+      "duration": 18.51,
+      "loudness": {
+        "lufs": -13.57,
+        "true_peak": 0.12,
+        "lra": 16.8
+      },
+      "luma_mean": 137.79,
+      "saturation_mean": 0.19,
+      "palette": [
+        "#f1e5d0",
+        "#3e3730",
+        "#080604",
+        "#fafafa",
+        "#b1aaa0",
+        "#846d5d"
+      ]
+    },
+    {
+      "sample": 2,
+      "name": "Want to stand out online",
+      "duration": 20.81,
+      "loudness": {
+        "lufs": -13.67,
+        "true_peak": 0.59,
+        "lra": 16.6
+      },
+      "luma_mean": 86.07,
+      "saturation_mean": 0.04,
+      "palette": [
+        "#050506",
+        "#181819",
+        "#989796",
+        "#cfcecd",
+        "#6d6b6a",
+        "#474444"
+      ]
+    }
+  ]
+}
