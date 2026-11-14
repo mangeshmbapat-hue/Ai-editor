@@ -76,6 +76,16 @@ Status: **breakdown done, waiting for the owner's approval** (2026-11-14). Learn
 - **Badges for ideas:** abstract ideas (bombs, pistols, reason, blind faith) are small **round cutout badges with a white ring**, sometimes struck through in red.
 - **Floating windows for real footage:** modern video sits in a letterboxed window over black, with a soft edge and a vignette, never full-bleed next to the AI history scenes.
 
+## Owner corrections (2026-11-14, Amit Shah explainer)
+- **The giant word behind a person is the person's name** (NARENDRA MODI, AMIT SHAH), never a minor word.
+- **Echo cutouts:** the same person repeated 4–5 times behind them, each one bigger, fainter and in black and white, fading back like shadows.
+- **Readable type:**
+  - headlines at least 7–9 % of the frame height
+  - document lines at least 3.3 %
+  - names of important people big and bold
+- **People in one scene are treated as equals:** the same treatment and the same height.
+- **Full-body cutouts are shown large,** at about 85–95 % of the frame height.
+
 ## The history effect (what makes it feel historical)
 - A **sepia and bronze grade**, lantern and window light, haze, dust and film grain.
 - **Old paper** textures, serif display type, pinned prints, the period costume (hats, waistcoats, suspenders) and period props (a lantern, a fountain pen, a pamphlet, a throne).
