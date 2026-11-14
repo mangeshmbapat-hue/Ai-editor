@@ -774,7 +774,7 @@ def is_image(path):
     return Path(path).suffix.lower() in STILL_EXT
 
 
-def render_scene(root, cid, image, t, seconds, treatment, entrance, place=False, bg_word=None, size=(1080, 1920), fps=30):
+def render_scene(root, cid, image, t, seconds, treatment, entrance, place=False, bg_word=None, size=(1080, 1920), fps=30, sweep=False):
     """One scene as a clip: the theme background (with a glass panel or a faint background word when
     the treatment asks for one) and the real-photo object animating in on `entrance`, holding still,
     and fading out smoothly. A place photo fills the frame instead. Returns the clip path (in raw/scenes)."""
@@ -808,6 +808,8 @@ def render_scene(root, cid, image, t, seconds, treatment, entrance, place=False,
                 wy = H * (0.70 if zone == "top" else 0.30)          # behind the object, away from the text zone
                 ImageDraw.Draw(word_layer).text((W / 2, wy), word, font=font, fill=_rgb(t["text"]) + (26,), anchor="mm")
                 bg.alpha_composite(word_layer)      # blended, so the word stays faint behind the object
+        if t.get("premium"):
+            bg = vignette_grain(poster_details(bg, t, seed=sum(map(ord, cid))))
         if treatment == "glass":
             glass(bg, zone, t)
         bgp = folder / (cid + ".bg.png")
@@ -821,12 +823,27 @@ def render_scene(root, cid, image, t, seconds, treatment, entrance, place=False,
         inputs = ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(bgp)]
     else:
         inputs = ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(bgp), "-loop", "1", "-t", "{:.3f}".format(D), "-i", str(layer)]
-        fade = "format=rgba,fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={:.3f}:d=0.3:alpha=1".format(max(D - 0.3, 0.4))
-        pos = {"rise": ("0", "{h}*0.30*(1-{e})"), "slide-left": ("-{w}*0.6*(1-{e})", "0"), "slide-right": ("{w}*0.6*(1-{e})", "0"),
-               "fade-up": ("0", "70*(1-{e})"), "pop": ("(main_w-overlay_w)/2", "(main_h-overlay_h)/2")}[entrance]
-        x, y = (p.format(w=W, h=H, e=ease) for p in pos)
-        scale = ",scale=w='iw*(0.86+0.14*{e})':h='ih*(0.86+0.14*{e})':eval=frame".format(e=ease) if entrance == "pop" else ""
-        graph = "[1:v]{}{}[o];[0:v][o]overlay=x='{}':y='{}':eval=frame:format=auto,format=yuv420p[v]".format(fade, scale, x, y)
+        out_fade = "fade=t=out:st={:.3f}:d=0.3:alpha=1".format(max(D - 0.3, 0.4))
+        if entrance == "focus":     # focus pull: a soft copy resolves into the sharp hero
+            from PIL import Image as _I, ImageFilter as _F
+            soft = folder / (cid + ".obj-soft.png")
+            _I.open(lay).filter(_F.GaussianBlur(22)).save(soft)
+            inputs += ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(soft)]
+            graph = ("[2:v]format=rgba,fade=t=in:st=0:d=0.2:alpha=1,fade=t=out:st=0.25:d=0.5:alpha=1[s];"
+                     "[1:v]format=rgba,fade=t=in:st=0.15:d=0.55:alpha=1,{}[o];"
+                     "[0:v][s]overlay=0:0:format=auto[b];[b][o]overlay=0:0:format=auto,format=yuv420p[v]").format(out_fade)
+        else:
+            fade = "format=rgba,fade=t=in:st=0:d=0.35:alpha=1," + out_fade
+            pos = {"rise": ("0", "{h}*0.30*(1-{e})"), "slide-left": ("-{w}*0.6*(1-{e})", "0"), "slide-right": ("{w}*0.6*(1-{e})", "0"),
+                   "fade-up": ("0", "70*(1-{e})"), "pop": ("(main_w-overlay_w)/2", "(main_h-overlay_h)/2")}[entrance]
+            x, y = (p.format(w=W, h=H, e=ease) for p in pos)
+            scale = ",scale=w='iw*(0.86+0.14*{e})':h='ih*(0.86+0.14*{e})':eval=frame".format(e=ease) if entrance == "pop" else ""
+            graph = "[1:v]{}{}[o];[0:v][o]overlay=x='{}':y='{}':eval=frame:format=auto,format=yuv420p[v]".format(fade, scale, x, y)
+        if sweep:                   # one light sweep across the scene (premium)
+            band = light_sweep_png(folder / (cid + ".sweep.png"), size)
+            n = 3 if entrance == "focus" else 2
+            inputs += ["-loop", "1", "-t", "{:.3f}".format(D), "-i", str(band)]
+            graph = graph.replace(",format=yuv420p[v]", "[pre]") + ";[pre][{n}:v]overlay=x='-{w}+{w}*1.6*min(t/{d:.3f},1)':y=0:eval=frame:format=auto,format=yuv420p[v]".format(n=n, w=W, d=D)
     media.run(["ffmpeg", "-hide_banner", "-y", *inputs, "-filter_complex", graph, "-map", "[v]", "-r", str(fps),
                "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-t", "{:.3f}".format(D), str(out)])
     write_json(out.with_suffix(".layout.json"), {"text_zone": zone, "theme": t["id"], "treatment": treatment, "entrance": entrance})
@@ -839,7 +856,7 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
     entrance for its object, never the same twice in a row; render image scenes as animated clips;
     and dress the text items in the chosen treatment and the theme's roles."""
     t = theme(edl.get("colour_theme"))
-    history, last_entrance = [], None
+    history, last_entrance, swept = [], None, False
     for i, c in enumerate(edl["clips"]):
         card_end = c.get("beat") == "end card"
         src = edl["sources"][c["source"]]
@@ -870,14 +887,17 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
             c.pop("zoom", None)
             zone = "lower"
         elif is_image(src):
-            ent = ENTRANCES[(i + seed) % len(ENTRANCES)]
+            ents = ["focus", "rise", "fade-up", "pop", "slide-left"] if t.get("premium") else ENTRANCES
+            ent = ents[(i + seed) % len(ents)]
             if ent == last_entrance:
-                ent = ENTRANCES[(i + seed + 1) % len(ENTRANCES)]
+                ent = ents[(i + seed + 1) % len(ents)]
             last_entrance = ent
             words_here = (key or (items[0]["value"] if items else "")).replace("\n", " ").split()
             topic = max(words_here, key=len).strip(".,!?") if (treatment == "bgword" and words_here) else None   # the strongest word, not "Ek"
+            do_sweep = bool(t.get("premium")) and not swept and i >= 2 and not place
+            swept = swept or do_sweep
             clip_path = render_scene(root, c["id"], src, t, c["out"] - c["in"], treatment, ent, place=place, bg_word=topic,
-                                     size=(edl["format"]["width"], edl["format"]["height"]))
+                                     size=(edl["format"]["width"], edl["format"]["height"]), sweep=do_sweep)
             sid = "S" + c["id"][1:]
             edl["sources"][sid] = str(Path(clip_path).relative_to(root))
             c["source"], c["in"], c["out"] = sid, 0.0, round(c["out"] - c["in"], 3)
@@ -909,6 +929,17 @@ def direct(root, edl, words_by_clip, objects_place=(), seed=0):
                     it.update(accent_color=t["accent"], accent_words=[max(words, key=len)] if words else [])
             if treatment != "tag":
                 it.pop("box", None)          # only a tag has a box; glass, plain, emphasis and bgword text sit clean
+            if t.get("premium"):                 # premium: fonts by role and the blur-to-sharp reveal
+                role_font = {"tag": "punch", "bgword": "punch", "glass": "sans"}.get(treatment, "serif")
+                if title_card and treatment == "plain":
+                    role_font = "punch"
+                ff = font_file(role_font, it["value"])
+                if ff:
+                    it["font"] = ff
+                if FONT_ROLES[role_font][4] and not E.DEVANAGARI.search(it["value"]):
+                    it["value"] = it["value"].upper()
+                if treatment in ("plain", "glass") or title_card:
+                    it.update(reveal="blur")
             if title_card:                       # a text-only scene: big kinetic words in the middle
                 short = len(it["value"].split()) <= 2 and max(len(w) for w in it["value"].split()) <= 8
                 it.update(position="center", role="title", size=int(edl["format"]["height"] * (0.095 if short else 0.075)))
@@ -1276,6 +1307,8 @@ def render_build(root, cid, t, seconds, parts, size=(1080, 1920), fps=30, panel=
     folder.mkdir(parents=True, exist_ok=True)
     bgp = folder / (cid + ".bg.png")
     bg = gradient(t["id"], size).convert("RGBA")
+    if t.get("premium"):
+        bg = vignette_grain(poster_details(bg, t, seed=sum(map(ord, cid))))
     if panel:
         glass(bg, "lower", t)
     bg.save(bgp)
@@ -1320,3 +1353,73 @@ def render_build(root, cid, t, seconds, parts, size=(1080, 1920), fps=30, panel=
                "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-t", "{:.3f}".format(D), str(out)])
     write_json(out.with_suffix(".layout.json"), {"text_zone": "lower", "theme": t["id"], "build": len(parts)})
     return out
+
+
+
+# ---- premium standard (owner, 2026-11-14; editor/styles/faceless-premium-poster/) ----
+
+FONT_ROLES = {   # role -> (Latin family, weight, Devanagari family, weight, caps)
+    "punch": ("Oswald", 700, "Khand", 700, True),        # tall condensed caps: YOU DON'T NEED!, UNDERSTAND
+    "serif": ("Playfair Display", 600, "Rozha One", 400, False),   # the elegant voice line: stand out, the crowd
+    "sans": ("Inter", 600, "Hind", 600, False),          # clean statements: turn that attention.
+}
+
+
+def font_file(role, text=""):
+    from . import fonts as FN
+    lat, lw, dev, dw, _ = FONT_ROLES[role]
+    return FN.resolve(dev, dw) if E.DEVANAGARI.search(text or "") else FN.resolve(lat, lw)
+
+
+def poster_details(img, t, seed=3):
+    """Small editorial micro-typography at the frame edges (issue number, date, thin rules, a dotted row,
+    crop marks, a barcode), low-contrast so it never competes with the message: the 'magazine page' feel."""
+    from PIL import ImageDraw, ImageFont
+    import random
+    W, H = img.size
+    rnd = random.Random(seed)
+    col = _rgb(t["muted"]) + (70,)
+    d = ImageDraw.Draw(img)
+    f = _font(int(H * 0.011), 600)
+    d.text((W * 0.05, H * 0.035), "NO. {:03d}".format(rnd.randint(1, 240)), font=f, fill=col)
+    d.text((W * 0.95, H * 0.035), "{:02d}.{:02d}.26".format(rnd.randint(1, 28), rnd.randint(1, 12)), font=f, fill=col, anchor="ra")
+    d.line([(W * 0.05, H * 0.055), (W * 0.30, H * 0.055)], fill=col, width=2)
+    for k in range(5):
+        d.ellipse([W * 0.70 + k * 26, H * 0.05, W * 0.70 + k * 26 + 12, H * 0.05 + 12], fill=col)
+    for (x, y, dx, dy) in [(0.04, 0.10, 1, 1), (0.96, 0.10, -1, 1), (0.04, 0.90, 1, -1), (0.96, 0.90, -1, -1)]:
+        d.line([(W * x, H * y), (W * x + dx * 28, H * y)], fill=col, width=2)
+        d.line([(W * x, H * y), (W * x, H * y + dy * 28)], fill=col, width=2)
+    bx, by = W * 0.72, H * 0.935
+    for k in range(34):
+        w_ = rnd.choice((2, 2, 4, 6))
+        d.rectangle([bx, by, bx + w_, by + H * 0.022], fill=col)
+        bx += w_ + rnd.choice((2, 3, 4))
+    for k in range(4):
+        d.text((W * 0.05, H * (0.935 + k * 0.011)), "".join(rnd.choice("abcdefghijklmnopqrstuvwxyz ") for _ in range(26)), font=f, fill=_rgb(t["muted"]) + (45,))
+    return img
+
+
+def vignette_grain(img, strength=0.55, grain=0.035):
+    """A soft vignette and fine grain on the background only (the hero stays clean)."""
+    from PIL import Image, ImageFilter
+    import numpy as np
+    W, H = img.size
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    d = np.sqrt(((xx - W / 2) / (W * 0.75)) ** 2 + ((yy - H * 0.45) / (H * 0.70)) ** 2)
+    v = np.clip(1 - strength * np.clip(d - 0.35, 0, 1) ** 1.4, 0, 1)[..., None]
+    arr = np.array(img.convert("RGB")).astype(np.float32) * v
+    noise = np.random.RandomState(7).normal(0, 255 * grain, (H, W, 1)).astype(np.float32)
+    out = Image.fromarray(np.clip(arr + noise, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+    return out
+
+
+def light_sweep_png(path, size=(1080, 1920), alpha=70):
+    """A soft diagonal light band (wider than the frame) that slides across a scene once: the light sweep."""
+    from PIL import Image, ImageDraw, ImageFilter
+    W, H = size
+    band = Image.new("RGBA", (W * 2, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(band)
+    d.polygon([(W * 0.8, 0), (W * 1.05, 0), (W * 0.55, H), (W * 0.30, H)], fill=(255, 255, 255, alpha))
+    band = band.filter(ImageFilter.GaussianBlur(60))
+    band.save(path)
+    return str(path)

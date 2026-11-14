@@ -436,6 +436,8 @@ def ass_script(root, edl, shift=0.0, name=".mann-text.ass"):
                 parts = re.split(r"(\s+)", item["value"])
                 body = "".join(("{{\\c{}}}{}{{\\c{}}}".format(ass_colour(item.get("accent_color", "yellow")), ass_text(p), ass_colour(item.get("color", "white")))
                                 if p.lower().strip(".,!?;:") in keys else ass_text(p)) for p in parts)
+            if item.get("reveal") == "blur":   # premium: the line comes in from a soft blur to sharp
+                tags = tags[:-1] + "\\blur18\\fad(220,160)\\t(0,380,\\blur0)}"
             if item.get("reveal") == "word":   # kinetic text: each word fades up in turn
                 step = int(float(item.get("reveal_step", 0.16)) * 1000)
                 keys = {w.lower().strip(".,!?;:") for w in item.get("accent_words", [])}
