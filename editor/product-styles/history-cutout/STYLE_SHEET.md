@@ -78,7 +78,10 @@ Status: **breakdown done, waiting for the owner's approval** (2026-11-14). Learn
 
 ## Owner corrections (2026-11-14, Amit Shah explainer)
 - **The giant word behind a person is the person's name** (NARENDRA MODI, AMIT SHAH), never a minor word.
-- **Echo cutouts:** the same person repeated 4–5 times behind them, each one bigger, fainter and in black and white, fading back like shadows.
+- **No echo or shadow cutouts** (tried on 2026-11-14 and rejected by the owner). Use one clean cutout per person.
+- **A name is never hidden by its person:** split it over two lines above and below or beside the person (AMIT / SHAH), and treat every person the same way.
+- **Years are clean bold year type** (2014, 2019), not counters that roll through odd values.
+- **In a closing question, shrink the text, not the people.**
 - **Readable type:**
   - headlines at least 7–9 % of the frame height
   - document lines at least 3.3 %

@@ -144,11 +144,17 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 - 2026-11-14 · owner · History explainer with people photos: use each person's photos in three treatments across the video: black and white at times, natural colour at times, and merged into the theme (duotone or grade) at times. Cutouts must be clean and HD: never cut a shoulder or a face; everything must be clearly visible. Follow the Bhagat Singh sample's way of bringing in photos and text frames beat for beat, in your own colour combination, and show the storyboard first, quickly. Source: "kabhi unko black and white kar diya karna, kabhi color as it is ... kabhi theme mein merge kar dena. sabke cutouts bahut achhe se rakhna: kisi ke bhi kandhe vandhe kuch na katein, kisi ka face na kate ... bilkul HD rakhna ... thoda jaldi bana ke dena" (amit-shah)
 - 2026-11-14 · owner · History explainer corrections (Amit Shah):
   - The giant word behind a person is that person's NAME (e.g. NARENDRA MODI), not a minor word like "FACE".
-  - A good depth effect is the same person's cutout repeated 4-5 times behind them, fading back like shadows (echo cutouts), in black and white.
+  - ~~superseded 2026-11-14~~ A good depth effect is the same person's cutout repeated 4-5 times behind them (echo cutouts). The owner rejected the result: do not use echo cutouts.
   - Text must be big and bold enough to read: headlines and document lines were too small; important people deserve big, bold name type.
   - Treat people in the same scene equally: the same treatment (both black and white, or both merged into the theme) and the same height. Never one small and one big, or one in colour and the other in black and white.
   - A standing full-body cutout must be shown large, not small.
   - Cutouts always clean and HD. Source: "Narendra Modi hi kar dete ... Modi ka hi cutout teen-chaar-paanch baar peeche fade hota hota hai ... thode text bold karo, nazar aayein ... Modi ko bhi merge karo ... dono ko black and white kar do aur dono ko equal height mein rakho" (amit-shah)
+- 2026-11-14 · owner · History explainer (Amit Shah v3):
+  - No echo or shadow cutouts behind people; one clean cutout only.
+  - A person's name stays fully visible, never hidden behind them. Split a long name over two lines (AMIT above, SHAH below) placed around the person, the same way for every person.
+  - Years appear as clean, bold year type (like 2014 or 2019), not as rolling counters that land on odd numbers like 1970s→1980s.
+  - Two people in a split are the same apparent size: zoom the smaller full-body cutout to match while keeping quality.
+  - In a closing question scene, shrink the text rather than the people; both photos stay large and equal. Source: "jo shadows hain vo bhi hata do ... naam do mein divide karo: ami to upar karo aur shah neeche ... chhupna nahi chahiye ... modi ko bhi utna hi zoom kar do ... text beech ka chhota ho jaye vo chalega, par dono ki photo nahi chhoti karni" (amit-shah)
 
 ## Production
 - 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)
