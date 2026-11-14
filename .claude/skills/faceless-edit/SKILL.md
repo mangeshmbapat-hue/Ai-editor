@@ -37,6 +37,12 @@ Run the **faceless-editor** agent (`.claude/agents/faceless-editor.md`) with the
   - bloom, blur or paper-panel transitions
 - **Never use a blurry or cheap visual;** pick a different one.
 - **References:** the dog reel (silhouette-follow) and the media reel (media-watchdog) are the owner's liked references too.
+- **The premium standard is the default for every faceless video** (owner, 2026-11-14). In the engine:
+  - **Fonts:** at the start of a job, run `python3 -m aifilm.editor fonts-install Oswald "Playfair Display" Inter Khand --weights 400,600,700`. Roles: punch = Oswald caps (Khand for Hindi), serif voice = Playfair Display (Rozha One for Hindi), sans = Inter.
+  - **Theme:** `--theme noir-red-gold` (power, money, success, history) or `--theme mono-accent` (creators, branding, tech, advice). These themes add poster micro-typography, a vignette and grain.
+  - **Entrances:** heroes enter with a focus pull, rise, fade-up, pop or slide.
+  - **Light sweep:** one per video, added automatically.
+  - **Text:** blur-to-sharp reveals for open text; punch-caps tags.
 
 ## 2. Look: think like a designer (owner, 2026-11-13)
 - **Theme:** one designed theme per video from `editor/faceless/palettes.json`, chosen by the topic's mood (`faceless-themes` lists them):

@@ -157,6 +157,19 @@ class PlanLogicTest(unittest.TestCase):
             self.assertIn("\\c&H005BB6E2}sawaal", text)
             self.assertIn("\\3c&H005BB6E2", text)
 
+    def test_premium_themes_fonts_and_background(self):
+        from PIL import Image
+        for tid in ("noir-red-gold", "mono-accent"):
+            t = F.theme(tid)
+            self.assertTrue(t.get("premium"))
+            bg = F.vignette_grain(F.poster_details(F.gradient(tid, (270, 480)).convert("RGBA"), t))
+            self.assertEqual(bg.size, (270, 480))
+            import numpy as np
+            arr = np.array(bg.convert("RGB")).astype(float)
+            edge, middle = arr[200:240, 0:12].mean(), arr[200:240, 129:141].mean()   # same height: only the vignette differs
+            self.assertLess(edge, middle, "the vignette darkens the edges")
+        self.assertEqual(set(F.FONT_ROLES), {"punch", "serif", "sans"})
+
     def test_text_entrances_are_ass_tags(self):
         self.assertIn("\\t(", E.text_motion("pop"))
         self.assertEqual(E.text_motion(None), "")
