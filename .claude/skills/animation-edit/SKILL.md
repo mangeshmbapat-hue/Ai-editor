@@ -1,7 +1,7 @@
 ---
 name: animation-edit
 argument-hint: "[explainer|promo] [brand/product] + script or VO + logo/product images [+ look A|B|C|D|E] [+ 16:9|9:16]"
-description: Make an animated brand or product video with the Animation Editor agent, in the styles the owner taught - (1) a corporate ANIMATED EXPLAINER on the owner's voiceover, where every spoken name, number, product and action appears on screen on its word, in one brand theme (look A premium dark, B flat line-art, C health-tech, D soft pastel SaaS or E monochrome with one accent), with soft whole-product cutouts, cartoon face badges, circle wipes and no text on any image (the McDonald's explainer is the reference); or (2) a short PRODUCT PROMO reel of app UI, icons and text. Use when the owner says "animation editor", "explainer banao", "animation video banao", "product promo banao", "brand ki story animate karo", or sends a script/VO with a logo and product images.
+description: Make an animated brand or product video with the Animation Editor agent, in the styles the owner taught - (1) a corporate ANIMATED EXPLAINER on the owner's voiceover, where every spoken name, number, product and action appears on screen on its word, in one brand theme (look A premium dark, B flat line-art, C health-tech, D soft pastel SaaS or E monochrome with one accent), with soft whole-product cutouts, cartoon face badges, circle wipes and no text on any image (the McDonald's explainer is the reference); or (2) a short PRODUCT PROMO reel of app UI, icons and text. Also (3) a cinematic HISTORY explainer with cutouts (history to today). Use when the owner says "history explainer", "history wali video", "animation editor", "explainer banao", "animation video banao", "product promo banao", "brand ki story animate karo", or sends a script/VO with a logo and product images.
 ---
 
 # Animation edit
@@ -10,6 +10,7 @@ Run the **animation-editor** agent (`.claude/agents/animation-editor.md`) with t
 
 ## 1. Pick the kind
 - **Explainer:** the owner gives a script or a VO about a brand, product or story. Follow the agent's **Explainer** process. The style is `editor/product-styles/animated-explainer/STYLE_SHEET.md`. The reference standard is the McDonald's explainer (studio/LEARNINGS.md, 2026-11-13).
+- **History explainer:** a history or then-to-now story (a freedom fighter, an event, a social issue). Use `editor/product-styles/history-cutout/STYLE_SHEET.md`, which is separate from looks A–E. The rules: warm sepia acts with one loud red, giant words behind cutouts, a cutout breaking its frame, parchment and highlighted documents, polaroids and peeling photos, real footage in graded letterboxed windows, and a slow heavy camera. 16:9 or 9:16.
 - **Promo reel:** the owner gives a product name, a brand colour and lines, with no VO. Follow the agent's **Promo** process (`editor/styles/animation-product-promo/`).
 - **A product category** (makeup, food, fashion, cars): use only the category's sheet in `editor/product-styles/`. If it is `not learned`, say so in one line and ask for 3–4 sample ads.
 
