@@ -42,6 +42,13 @@
       "status": "in use 2026-11-13 (McDonald's explainer, look A); looks B-E learned from owner samples",
       "sheet": "editor/product-styles/animated-explainer/STYLE_SHEET.md",
       "brands": {}
+    },
+    "history-cutout": {
+      "name": "History cutout explainer (cinematic history-to-today)",
+      "products": "history, freedom fighters, events then and now, social-issue stories told with AI history scenes, cutouts, documents and real footage",
+      "status": "breakdown done 2026-11-14 from 1 owner sample, waiting for the owner's approval",
+      "sheet": "editor/product-styles/history-cutout/STYLE_SHEET.md",
+      "brands": {}
     }
   }
 }
