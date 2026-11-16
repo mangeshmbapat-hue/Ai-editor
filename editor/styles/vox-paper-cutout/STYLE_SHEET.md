@@ -124,6 +124,7 @@ Two type voices and one colour rule:
 - **Carriers** (text never floats bare on a busy picture): torn tape strip, brown sign on strings, red stamped card with a dotted border, small red paper tag, brown paper circle, clipboard.
 - **How text arrives:** word by word on its spoken word (sample 2 "to find out", clipboard phrases); letter-by-letter typewriter (sample 1 label, sample 2 `[in1974]`); a tag pops in with a short blur-to-sharp (~0.15 s); a card slides in rotated.
 - Captions on real footage: 1–2 words at a time, thin italic serif, lower-centre, keyword in yellow.
+- **Owner rule (2026-11-16, hara-kyun):** the script's closing key line is the hero text, the strongest treatment of the video: biggest type, the yellow chunky italic key word on a full-width red brush swipe, syllables or words punching in on their spoken word, then a held end frame. All other text must read big and clean, with a text animation on every line and strong contrast (dark ink on light paper, cream on dark paper, yellow only on red); cream text on mid kraft is too weak, so use darker paper or a carrier there.
 - 9:16 sizes at 480×864: kinetic sans ~45–60 px; punch word ~65–80 px; caption serif ~30 px. Scale proportionally at 1080×1920 (×2.25).
 
 ## Underline, highlight and circle (the annotation set)
