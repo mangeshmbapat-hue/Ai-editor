@@ -111,3 +111,5 @@ For faceless videos (voiceover + images/clips, no presenter): `faceless-stills <
 ## Animation Editor
 
 For product-promo animation reels (no footage): write a scene list (`styles/animation-product-promo/spec.example.json` is a synthetic example), then `anim-new <edit> spec.json` builds `anim/promo/index.html`, a HyperFrames composition driven by the house motion runtime (`aifilm/editor/anim/runtime.js`), in one of the four learned themes (`anim-themes`, or `--brand '#hex'` for a new product). `anim-storyboard` renders one frame per scene with the local Chromium. `anim-render` renders `renders/promo.mp4` only after `anim-approve --words` records the owner's approval for that exact spec. Agent: `.claude/agents/animation-editor.md`.
+
+For Vox-style paper-cutout explainers (16:9 and 9:16): the style is learned from owner samples in `styles/vox-paper-cutout/` (log in `SAMPLES.md`). Each video is a hand-built page in `anim/<name>/` rendered through `anim-storyboard`, `anim-approve` and `anim-render`. Agent: `.claude/agents/vox-editor.md` (`/vox-edit`, with a TEACH mode for new samples).

@@ -1,0 +1,132 @@
+{
+  "slug": "vox-paper-cutout",
+  "measured": true,
+  "targets": {
+    "aspect": "16:9",
+    "average_shot_seconds": 6.1,
+    "median_shot_seconds": 6.1,
+    "cuts_per_10s": 0.0,
+    "first_cut_seconds": 6.1,
+    "grade_preset": "warm-film",
+    "palette": [
+      "#eae2d8",
+      "#524b3c",
+      "#f3c93f",
+      "#968c76",
+      "#e2d4c0",
+      "#c9baab"
+    ],
+    "loudness_lufs": -20.12
+  },
+  "analysis": {
+    "name": "Vox paper cutout explainer",
+    "analyzed": "2026-11-16T11:16:24.239190+00:00",
+    "source": {
+      "duration": 6.1,
+      "width": 864,
+      "height": 496,
+      "fps": 30.0,
+      "has_audio": true
+    },
+    "aspect": "16:9",
+    "scene_threshold": 0.2,
+    "pace": {
+      "shots": 1,
+      "shot_seconds": {
+        "mean": 6.1,
+        "median": 6.1,
+        "min": 6.1,
+        "max": 6.1
+      },
+      "cuts_per_10s": 0.0,
+      "first_cut_seconds": 6.1,
+      "fast_shots_under_1s": 0,
+      "long_shots_over_4s": 1,
+      "curve_per_10s": [
+        {
+          "from": 0.0,
+          "cuts": 0
+        }
+      ]
+    },
+    "colour": {
+      "palette": [
+        {
+          "hex": "#eae2d8",
+          "share": 0.449
+        },
+        {
+          "hex": "#524b3c",
+          "share": 0.185
+        },
+        {
+          "hex": "#f3c93f",
+          "share": 0.118
+        },
+        {
+          "hex": "#968c76",
+          "share": 0.09
+        },
+        {
+          "hex": "#e2d4c0",
+          "share": 0.079
+        },
+        {
+          "hex": "#c9baab",
+          "share": 0.079
+        }
+      ],
+      "luma": {
+        "mean": 185.4,
+        "median": 185.4,
+        "min": 185.4,
+        "max": 185.4
+      },
+      "saturation": {
+        "mean": 0.21,
+        "median": 0.21,
+        "min": 0.21,
+        "max": 0.21
+      },
+      "warmth_r_minus_b": {
+        "mean": 41.6,
+        "median": 41.6,
+        "min": 41.6,
+        "max": 41.6
+      }
+    },
+    "audio": {
+      "loudness": {
+        "lufs": -20.12,
+        "true_peak": -4.71,
+        "lra": 3.4
+      },
+      "silences_over_0_7s": []
+    },
+    "speech": {
+      "words_per_second": 2.48
+    }
+  },
+  "targets_9x16": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.0,
+    "median_shot_seconds": 1.23,
+    "cuts_per_10s": 6.47,
+    "first_cut_seconds": 1.667,
+    "grade_preset": "warm-film",
+    "palette": [
+      "#9b8a79",
+      "#b6a997",
+      "#7d7060",
+      "#d5cab7",
+      "#534b41",
+      "#231e1a"
+    ],
+    "loudness_lufs": -14.6,
+    "note": "hand-counted 21 scene changes in 43.3 s; detector value 1.49 s counts transition frames"
+  },
+  "samples": [
+    "sample 1: 16:9 10.2 s (Bill Gates)",
+    "sample 2: 9:16 47.4 s (Elizabeth Loftus)"
+  ]
+}

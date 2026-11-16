@@ -1,0 +1,114 @@
+{
+  "slug": "cinematic-ai-kinetic",
+  "measured": true,
+  "targets": {
+    "aspect": "9:16",
+    "average_shot_seconds": 1.17,
+    "median_shot_seconds": 0.3,
+    "cuts_per_10s": 7.65,
+    "first_cut_seconds": 0.433,
+    "grade_preset": "teal-orange",
+    "palette": [
+      "#15120f",
+      "#b9bebd",
+      "#41413e",
+      "#7c8076",
+      "#4b760b",
+      "#470908"
+    ],
+    "loudness_lufs": -14.33
+  },
+  "analysis": {
+    "name": "Cinematic AI kinetic explainer",
+    "analyzed": "2026-11-16T11:35:01.932558+00:00",
+    "source": {
+      "duration": 11.766667,
+      "width": 480,
+      "height": 864,
+      "fps": 30.0,
+      "has_audio": true
+    },
+    "aspect": "9:16",
+    "scene_threshold": 0.2,
+    "pace": {
+      "shots": 10,
+      "shot_seconds": {
+        "mean": 1.17,
+        "median": 0.3,
+        "min": 0.07,
+        "max": 5.87
+      },
+      "cuts_per_10s": 7.65,
+      "first_cut_seconds": 0.433,
+      "fast_shots_under_1s": 7,
+      "long_shots_over_4s": 1,
+      "curve_per_10s": [
+        {
+          "from": 0.0,
+          "cuts": 9
+        },
+        {
+          "from": 10.0,
+          "cuts": 0
+        }
+      ]
+    },
+    "colour": {
+      "palette": [
+        {
+          "hex": "#15120f",
+          "share": 0.217
+        },
+        {
+          "hex": "#b9bebd",
+          "share": 0.199
+        },
+        {
+          "hex": "#41413e",
+          "share": 0.193
+        },
+        {
+          "hex": "#7c8076",
+          "share": 0.176
+        },
+        {
+          "hex": "#4b760b",
+          "share": 0.157
+        },
+        {
+          "hex": "#470908",
+          "share": 0.058
+        }
+      ],
+      "luma": {
+        "mean": 92.63,
+        "median": 94.6,
+        "min": 24.0,
+        "max": 188.2
+      },
+      "saturation": {
+        "mean": 0.33,
+        "median": 0.14,
+        "min": 0.02,
+        "max": 0.8
+      },
+      "warmth_r_minus_b": {
+        "mean": 16.06,
+        "median": 3.0,
+        "min": -27.9,
+        "max": 59.0
+      }
+    },
+    "audio": {
+      "loudness": {
+        "lufs": -14.33,
+        "true_peak": -0.8,
+        "lra": 1.5
+      },
+      "silences_over_0_7s": []
+    },
+    "speech": {
+      "words_per_second": 3.22
+    }
+  }
+}
