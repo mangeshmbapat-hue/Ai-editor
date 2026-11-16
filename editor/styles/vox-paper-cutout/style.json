@@ -106,5 +106,27 @@
     "speech": {
       "words_per_second": 2.48
     }
-  }
+  },
+  "targets_9x16": {
+    "aspect": "9:16",
+    "average_shot_seconds": 2.0,
+    "median_shot_seconds": 1.23,
+    "cuts_per_10s": 6.47,
+    "first_cut_seconds": 1.667,
+    "grade_preset": "warm-film",
+    "palette": [
+      "#9b8a79",
+      "#b6a997",
+      "#7d7060",
+      "#d5cab7",
+      "#534b41",
+      "#231e1a"
+    ],
+    "loudness_lufs": -14.6,
+    "note": "hand-counted 21 scene changes in 43.3 s; detector value 1.49 s counts transition frames"
+  },
+  "samples": [
+    "sample 1: 16:9 10.2 s (Bill Gates)",
+    "sample 2: 9:16 47.4 s (Elizabeth Loftus)"
+  ]
 }
