@@ -155,6 +155,7 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
   - Years appear as clean, bold year type (like 2014 or 2019), not as rolling counters that land on odd numbers like 1970s→1980s.
   - Two people in a split are the same apparent size: zoom the smaller full-body cutout to match while keeping quality.
   - In a closing question scene, shrink the text rather than the people; both photos stay large and equal. Source: "jo shadows hain vo bhi hata do ... naam do mein divide karo: ami to upar karo aur shah neeche ... chhupna nahi chahiye ... modi ko bhi utna hi zoom kar do ... text beech ka chhota ho jaye vo chalega, par dono ki photo nahi chhoti karni" (amit-shah)
+- 2026-11-16 · owner · Faceless Editor: the owner does not like the current faceless skills; the videos come out wrong. More rules from more samples have not closed the gap. Next time, prove the look on a short test that copies one owner-chosen reference scene by scene, and show it before building a full video. Source: "suno tumhare skills mujhe pasand nahi aa rahe, tum galat bana rahe ho" (faceless-editor)
 
 ## Production
 - 2026-11-01 · owner · Music gets special attention at every stage: the music brief (hook motif, arc, sync points), a music sketch at the preview gate, recorded samples for lead instruments, every hit and drop checked against the cuts, no copied melodies. Source: "music wale part m specially dhyan rkho sb" (studio)
