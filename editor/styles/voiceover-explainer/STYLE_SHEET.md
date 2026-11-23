@@ -6,7 +6,9 @@ Long explainers on a voiceover, about 3, 4, 10 or 12 minutes. Started 2026-11-23
 
 Learned so far from **sample 1** (9:16, 90 s, English VO, "Is IMAX really bigger than your TV?"). The last 4 s (86–90 s) are the creator's end card and were trimmed before measuring. Never copy its illustration, brand name, end card or wording. A 90 s short is not the 3–12 min length the owner wants, so the long-video structure (§8) is still *not seen yet*.
 
-Name for this look: **look 1, navy blueprint line-art**. Later samples may add other looks; keep each one apart.
+Name for this look: **look 1, navy blueprint line-art**. The owner calls it **a separate format of its own** (2026-11-23): one theme, one colour world. Keep it apart; never mix its rules into look 2.
+
+**Look 2, colourful pictures and maps** (coming from the owner's next samples): pictures, many colours, lights, transitions and maps. Its rules go in the Look 2 section at the end of this sheet, learned only from those samples.
 
 ## Measured: sample 1
 - Source: 86.0 s after trimming, 720x1280, 30 fps, 9:16
@@ -78,3 +80,15 @@ Name for this look: **look 1, navy blueprint line-art**. Later samples may add o
 - Do keep the colour code fixed: the same thing has the same colour in text and drawing for the whole video.
 - Do explain by transforming one world (zoom, orbit, morph, pixelate) rather than cutting to new pictures.
 - Don't put the full transcript on screen; don't use more than three accent colours; don't change the theme mid-video (in sample 1).
+
+---
+
+# Look 2: colourful pictures and maps
+
+*not seen yet*: waiting for the owner's samples. For every map moment, note against the VO word:
+- **Boundary highlight:** when a country/state/region outline is highlighted, which one, the stroke colour and width, glow, how it draws on, how long it stays.
+- **Place highlight:** when a city or place is marked on which map, the marker (pin, dot, pulse, fill, spotlight), colour, and the zoom into it.
+- **Arrows and routes:** when an arrow appears, from where to where, its shape (straight, curved, dashed), colour, draw-on speed, head, and what it means (movement, trade, attack, flow).
+- **Map text:** which names and numbers appear on the map, font, colour, label carrier, and timing.
+- **The map itself:** style (satellite, flat colour, paper, 3D), colours, camera moves (zoom, pan, tilt), how the video goes into and out of the map.
+- Also: pictures (kind and treatment), the colour palette, lights (glows, light leaks, flares), transitions, text over pictures.
