@@ -5,7 +5,8 @@ Status: **not learned yet**. The owner has not shared any samples for this categ
 Products in this category: cars, bikes and scooters, EVs, car accessories.
 
 ## What the owner asked me to notice
-_Filled in from the owner's own words when they send the samples. Each point quotes them._
+_From the owner's own words (2026-11-23), before any sample. These are what to look for in the samples, not learned rules._
+- The owner will teach how automobile videos look from their own samples. Source: "digital automobile ki kaise lagti hain, sab products ki"
 
 ## Samples
 | # | File (in `projects/_product-train/automobile/`, git-ignored) | Brand or kind | What the owner likes in it |

@@ -5,7 +5,8 @@ Status: **not learned yet**. The owner has not shared any samples for this categ
 Products in this category: lipstick, foundation bottle, cream jar, serum, perfume, nail polish.
 
 ## What the owner asked me to notice
-_Filled in from the owner's own words when they send the samples. Each point quotes them._
+_From the owner's own words (2026-11-23), before any sample. These are what to look for in the samples, not learned rules._
+- **Face wash and personal care:** how the water splashes come, how the face wash comes out of the tube, how it is used, and every speciality of the product. Source: "even face wash mein: kaise usmein paani ke splash aate hain, kaise face wash nikalta hai, use kaise use karte hain, uske andar kya-kya speciality hoti hai"
 
 ## Samples
 | # | File (in `projects/_product-train/makeup-beauty/`, git-ignored) | Brand or kind | What the owner likes in it |
