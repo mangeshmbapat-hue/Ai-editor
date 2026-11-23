@@ -4,15 +4,17 @@ Every product category is animated differently, so each one has its own style sh
 
 | Category | Products | Status | Sheet |
 |---|---|---|---|
-| Makeup & beauty | lipstick, foundation bottle, cream jar, serum, perfume | not learned | `makeup-beauty/STYLE_SHEET.md` |
-| Food & drinks | snacks, chai and coffee, cold drinks, packaged food | not learned | `food-drinks/STYLE_SHEET.md` |
+| Makeup, beauty & personal care | lipstick, foundation, cream jar, serum, perfume, face wash | not learned | `makeup-beauty/STYLE_SHEET.md` |
+| Food & drinks | burgers, snacks, chai and coffee, shakes and cold drinks, packaged food | not learned (samples coming 2026-11-23) | `food-drinks/STYLE_SHEET.md` |
+| Electronics & gadgets | phones, headphones, watches, laptops | not learned | `electronics-gadgets/STYLE_SHEET.md` |
+| Home & furniture | tables, chairs, sofas, lamps | not learned | `home-furniture/STYLE_SHEET.md` |
 | Fashion & clothing | clothes, shoes, sportswear, bags | not learned | `fashion-clothing/STYLE_SHEET.md` |
 | Automobile | cars, bikes, EVs | not learned | `automobile/STYLE_SHEET.md` |
 | Animated explainer | corporate SaaS explainer with a VO, everything said appears on its word | breakdown done, waiting for approval | `animated-explainer/STYLE_SHEET.md` |
 | History cutout explainer | history to today: AI period scenes, giant words behind cutouts, parchment, documents, real footage | breakdown done, waiting for approval | `history-cutout/STYLE_SHEET.md` |
 | Apps & digital | apps, websites, software | learned 2026-11-10 (Chamosa result rejected) | `../styles/animation-product-promo/STYLE_SHEET.md` |
 
-`LIBRARY.json` is the registry the agent reads. A new category is added when the owner asks for one.
+`LIBRARY.json` is the registry the agents read. Physical-product hero videos (feature zooms, rotate, open, exploded layers, splashes) are made by the **Product Animator** (`.claude/agents/product-animator.md`, `/product-anim`); the Animation Editor keeps the explainers, app promos and history cutouts. A new category is added when the owner asks for one.
 
 ## How a category is learned
 1. The owner sends 3–4 ads of the category as files and says what to notice. The files stay in `projects/_product-train/<category>/` (git-ignored); only the sheet is committed.

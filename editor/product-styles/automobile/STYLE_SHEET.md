@@ -5,7 +5,8 @@ Status: **not learned yet**. The owner has not shared any samples for this categ
 Products in this category: cars, bikes and scooters, EVs, car accessories.
 
 ## What the owner asked me to notice
-_Filled in from the owner's own words when they send the samples. Each point quotes them._
+_From the owner's own words (2026-11-23), before any sample. These are what to look for in the samples, not learned rules._
+- The owner will teach how automobile videos look from their own samples. Source: "digital automobile ki kaise lagti hain, sab products ki"
 
 ## Samples
 | # | File (in `projects/_product-train/automobile/`, git-ignored) | Brand or kind | What the owner likes in it |
@@ -25,6 +26,12 @@ _Length, aspect, frame rate, cuts, colour of the background and the product, lou
 - **Pace:** shot lengths and the build to the hero shot.
 - **End card:** the logo, the CTA and how it lands.
 - **Sound:** music, SFX on the moves, and the ending.
+
+## Move library (pooled from all samples)
+_Every move seen in this category's samples, merged across all of them: what it is, how it is done, timing, which samples show it, and which kind of script line it suits. The Product Animator picks from this whole library for each script; the owner does not name a sample._
+
+| Move | How it is done | Timing | Seen in | Suits a line about |
+|---|---|---|---|---|
 
 ## Brand styles in this category
 _A brand the owner names, for example "Nike jaisa chahiye", gets its own sheet in `brands/<brand>/STYLE_SHEET.md` when the owner teaches it._

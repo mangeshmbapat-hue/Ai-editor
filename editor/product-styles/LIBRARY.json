@@ -2,17 +2,31 @@
   "about": "Product-animation styles, one per product category, taught by the owner one category at a time (owner rule 2026-11-13). A video is made in a category only after its sheet is learned and approved.",
   "categories": {
     "makeup-beauty": {
-      "name": "Makeup & beauty",
-      "products": "lipstick, foundation bottle, cream jar, serum, perfume, nail polish",
+      "name": "Makeup, beauty & personal care",
+      "products": "lipstick, foundation bottle, cream jar, serum, perfume, nail polish, face wash, shampoo, skincare tubes",
       "status": "not learned",
       "sheet": "editor/product-styles/makeup-beauty/STYLE_SHEET.md",
       "brands": {}
     },
     "food-drinks": {
       "name": "Food & drinks",
-      "products": "snacks, chai and coffee, cold drinks, packaged food, sweets, restaurant dishes",
+      "products": "burgers, sandwiches, pizza, snacks, chai and coffee, cold drinks, shakes and juices in bottles, packaged food, sweets, restaurant dishes",
       "status": "not learned",
       "sheet": "editor/product-styles/food-drinks/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "electronics-gadgets": {
+      "name": "Electronics & gadgets",
+      "products": "phones and mobiles, headphones and earbuds, smartwatches and watches, laptops, speakers",
+      "status": "not learned",
+      "sheet": "editor/product-styles/electronics-gadgets/STYLE_SHEET.md",
+      "brands": {}
+    },
+    "home-furniture": {
+      "name": "Home & furniture",
+      "products": "tables, chairs, sofas, beds, lamps, decor, kitchenware",
+      "status": "not learned",
+      "sheet": "editor/product-styles/home-furniture/STYLE_SHEET.md",
       "brands": {}
     },
     "fashion-clothing": {
@@ -50,5 +64,6 @@
       "sheet": "editor/product-styles/history-cutout/STYLE_SHEET.md",
       "brands": {}
     }
-  }
+  },
+  "product_animator": "Physical-product hero animations (zoom on features, rotate, open, exploded layers, splashes) are made by the Product Animator agent (.claude/agents/product-animator.md, /product-anim) from these sheets (owner rule 2026-11-23)."
 }
