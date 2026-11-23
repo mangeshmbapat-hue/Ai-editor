@@ -6,7 +6,7 @@ Long explainers on a voiceover, about 3, 4, 10 or 12 minutes. Started 2026-11-23
 
 Learned so far from **sample 1** (9:16, 90 s, English VO, "Is IMAX really bigger than your TV?"). The last 4 s (86–90 s) are the creator's end card and were trimmed before measuring. Never copy its illustration, brand name, end card or wording. A 90 s short is not the 3–12 min length the owner wants, so the long-video structure (§8) is still *not seen yet*.
 
-Name for this look: **look 1, navy blueprint line-art**. The owner calls it **a separate format of its own** (2026-11-23): one theme, one colour world. Keep it apart; never mix its rules into look 2.
+Name for this look: **look 1, navy blueprint line-art** (variant 1b, dark documentary, is below). The owner calls it **a separate format of its own** (2026-11-23): one theme, one colour world. Keep it apart; never mix its rules into look 2.
 
 **Look 2, colourful pictures and maps** (coming from the owner's next samples): pictures, many colours, lights, transitions and maps. Its rules go in the Look 2 section at the end of this sheet, learned only from those samples.
 
@@ -83,12 +83,76 @@ Name for this look: **look 1, navy blueprint line-art**. The owner calls it **a 
 
 ---
 
+# Look 1b: dark documentary with archival paper (sample 4)
+
+Sample 4 (9:16, 98 s, English VO, the story of Claude Shannon and the bit). The owner called it "like the first one": **one dark theme and one accent colour**, so it belongs with look 1, as its own variant. Last ~12 s are the creator's end card and "next episode" card; never copy them.
+
+- **Ground:** near-black navy with a soft centre glow and vignette (one theme for the whole video). Accent **amber #E8B04A**; line drawings in thin cyan-teal; old paper cream for documents.
+- **Pictures:** real **archival documents** as paper cards (thesis title page, an 1854 book page, a journal cover), slightly tilted, with a soft shadow; a small **black-and-white portrait** in a thin frame with a tiny caption under it ("age 20 · graduate student"). Circuits, relay grids, switches, waveforms, a phone and a maze are drawn as thin glowing line-art.
+- **Captions:** one line at ~65% of the frame height, centred, a bold rounded sans. **Karaoke by word:** the line is shown, words not yet spoken are dim grey, each word turns white on its spoken word, and the key word of the line is amber (21-year-old's, 1854, 1948, same, AND, OR, bit). New line on each phrase.
+- **Chapters:** a full-screen chapter card on black, "01 / THE PROBLEM", "02 / THE IDEA", "03 / THE TWIST", "04 / THE ECHO" in a classic serif with a thin amber rule, ~1 s, then the chapter name stays as a small breadcrumb top-left ("02 · THE IDEA") in amber mono for the whole chapter. **This is how a long video is split into chapters.**
+- **Years:** a big serif year (1936, 1946, 1948) in amber inside a thin circle or over the document, as a date stamp.
+- **Infographics:** a circuit drawn live (switch closes, bulb lights; two in a row = AND, side by side = OR), a formula written in serif (bits = log₂ 1/p, C = B log₂(1+S/N)), a binary row 1 0 1 1 0 0 1 0 with a square wave, a guess-the-number bar.
+- **Transitions:** cross-dissolves and slow push-ins; line-art builds stroke by stroke; the document card slides and tilts in.
+- **Ending:** returns to the hook line ("And that's the story behind the bit").
+
+---
+
 # Look 2: colourful pictures and maps
 
-*not seen yet*: waiting for the owner's samples. For every map moment, note against the VO word:
-- **Boundary highlight:** when a country/state/region outline is highlighted, which one, the stroke colour and width, glow, how it draws on, how long it stays.
-- **Place highlight:** when a city or place is marked on which map, the marker (pin, dot, pulse, fill, spotlight), colour, and the zoom into it.
-- **Arrows and routes:** when an arrow appears, from where to where, its shape (straight, curved, dashed), colour, draw-on speed, head, and what it means (movement, trade, attack, flow).
-- **Map text:** which names and numbers appear on the map, font, colour, label carrier, and timing.
-- **The map itself:** style (satellite, flat colour, paper, 3D), colours, camera moves (zoom, pan, tilt), how the video goes into and out of the map.
-- Also: pictures (kind and treatment), the colour palette, lights (glows, light leaks, flares), transitions, text over pictures.
+The owner's colourful look (2026-11-23): pictures, many colours, lights, transitions and maps. Learned from **sample 2** (women's work and roti vs rice in Indian states, 9:16, 63 s, Hindi VO) and **sample 3** (Kashi Tamil Sangamam, "why is a Tamil Nadu town called Dakshin Kashi", 9:16, 77 s, Hindi VO). They are two map variants: **2a** (grey relief map, coloured state fills, photo cutouts, illustrated clips) and **2b** (saffron India, glowing routes, counters, parchment chapters). Both creators' end cards and logos are trimmed and never copied. Word times are from Whisper on Hindi audio and are good to about ±0.3 s.
+
+## Map grammar (both variants): what gets highlighted, when, how
+
+**Rule 1: the map shows exactly what the VO names, on the word.** A state, city or region gets its colour or label when it is spoken (within ~0.3 s). Nothing on the map is coloured that the VO has not named yet. Measured: "Punjab and Haryana" said at 9.1 s → Rajasthan, Punjab, Haryana fill at 9.5 s; "Chhattisgarh, Andhra, Tamil Nadu" said at 16.7–17.9 s → those five states fill at ~16.5 s; "Kanchipuram" said at 51.9 s → its label and glowing dot at 52.0 s; "7 groups" at 61.5 s → "7 GROUPS" tag at ~61.5 s.
+
+**Rule 2: one colour per idea, kept for the whole video (a colour code, like look 1).**
+- 2a: the whole of India in **dark maroon #5A0A18** = "the country we are talking about"; the **wheat / north group in cyan #00C0F0**; the **rice / south group in lime yellow #D8F000**; Rajasthan **magenta #780078**, Punjab and Haryana **deep purple**; the south states each in their own mid-tone (green, brown-orange, purple, blue, olive) so they are told apart while the names are read.
+- 2b: India is **flat saffron #F06000**, the place the story is about (Tamil Nadu) is **mint green #18C078** with a thin glowing yellow outline. Neighbours stay brown relief; the sea is black.
+- Everything not named stays **neutral** (2a: black-and-white satellite relief; 2b: brown relief and black sea). Colour only marks what matters.
+
+**Rule 3: boundaries.** State boundaries are thin white lines (2a) on the relief. A highlighted region is a flat fill clipped exactly to its boundary with a 1–2 px white or glowing outline; in 2b the highlighted state also gets a soft outer glow. Fills pop in (fade + slight scale) in ~0.25 s; several states named together fill one after another, ~0.1 s apart, in the order spoken.
+
+**Rule 4: place names.** 2a: state names in white bold sans with a dark drop shadow, sitting on the state, tilted with the map. 2b: small uppercase place names in gold, with a glowing gold dot on the exact spot; the main place gets a **label box** (white bold uppercase on dark brown, thin gold border: "DAKSHIN KASHI"), and a small icon of what is there (a temple tower) stands on the spot.
+
+**Rule 5: arrows and routes (2b).** A connection between two places is a **thin glowing curved line** drawn from where the story starts to where it goes (Tamil Nadu → Kashi, Tenkasi → Varanasi), drawn on in ~0.8–1 s with a glowing head, while the VO says the link. A second, different link gets its own colour (pink for Kanchipuram's silk). Many groups travelling = several thin lines fanning from one point (7 groups → Varanasi, Prayagraj, Ayodhya, each with a small coloured blob). A "?" or "WHY?" box appears at the end of the line when the VO asks why.
+
+**Rule 6: the camera on the map.** Opens wide on the subcontinent, then **zooms fast (~0.75 s) into the area named**; pans down the map to the next named region (north → south at 14.5–16.5 s); in 2a the map also **rolls and tilts** a little (up to ~30°) while it zooms, so it never feels flat. It comes back to the whole of India for summary lines ("because of this").
+
+**Rule 7: what goes on the map besides colour.**
+- 2a: **group photos of the people talked about, cut out and placed inside India's shape** (women workers standing across India when the VO talks about women working); a **tilted photo card with a white border** dropped on the region it is about (men with ploughs and tractors on the cyan wheat belt for "heavy machinery … dominated by men").
+- 2b: **counters with a tilde** on the highlighted state (~929 → ~1,400, big white bold, ticking up on the number spoken) with a small label pill under it (PARTICIPANTS); the whole of India filled with fine dots for "1,000 higher education institutions" while the counter runs 569 → 999 → 1,000; a small locator icon of India top-right; a tiny source line at the bottom.
+
+**Rule 8: a light line.** 2a has a thin white **light streak** (a diagonal line with a soft glow) crossing the frame continuously and slowly turning on every map shot; it ties all the map shots together.
+
+## Text
+
+- **2a, on maps and photos: big kinetic captions.** Condensed bold uppercase (a Bebas-like face), white, with the **key words in yellow #F5E600 with a yellow glow** (the number "20 TO 25 PERCENT", "45 TO 60 PERCENT", "WORKING", "HEAVY MACHINERY", "MEN", "KITCHEN TIME", "YOUR FAMILY OR STATE?"). **Word by word on the spoken word** (each word pops in with a quick scale); 1–2 lines centred at ~45–55% of the frame height, over the map. Only the claim of the sentence is written, not every word.
+- **2a, on illustrated clips: small subtitles.** A rounded sans, white, ~2.5% of frame height, two lines centred at ~65% height on a soft dark gradient, phrase by phrase, with the key phrase in yellow ("three hours", "served hot", "hands-free process", "time is saved", "paddy (rice) farming", "house to work").
+- **Hook (2a):** an AI photo (a woman holding a jar of rice in a kitchen) with a **white circle** drawn round the object and a **red curved arrow** pointing to it; huge text "SIMPLE GRAIN HIDDEN IN YOUR KITCHEN" (yellow + white) zooms out from full screen to a caption in ~1 s.
+- **2b:** labels and pills only (no running captions): gold rounded **pill headers** ("THEME", "ANCIENT TAMIL CLASSIC") above a big gold pill with the name in the native script (திருக்குறள்) and the English name in a dark box below; counters; place labels.
+
+## Pictures and themes
+
+- **2a, two picture kinds, cut between:** (1) the map (B&W relief + colour fills); (2) **warm 2D illustrated animated clips** (a woman kneading and rolling roti, roti puffing on the gas with steam, rice cooking, farming in paddy fields, a girl walking out to work) in ochre, terracotta and green, each moving (hands, steam, walking). Plus a few warm AI photos (the hook; a family; someone on a phone). The **map is the "chapter home"**: every new reason starts on the map, then cuts to illustrations to show it, then returns to the map.
+- **2b, two themes:** (1) the saffron map world; (2) **chapter scenes on textured brown parchment** with gold ornaments (the Thirukkural theme, a book of the Brahmanda Purana opening, a goddess in a temple arch) and a **night scene** (deep blue, a moon, a big Roman-numeral clock "XV" for "15th century") with flat-illustrated historical characters (a Pandya king, Shiva behind him with a glow). Icons in gold circles for values (ethics, virtue, life values) appear one by one on the words.
+- **Lights:** glowing outlines on highlighted states, glowing dots on cities, sun-ray bursts behind portraits and logos, a bright sun flare that wipes the frame to white between chapters (2b, ~9 s).
+
+## Transitions
+- 2a: hard cuts between map and illustration, on the start of a new phrase; the map shots join through the moving light streak and the camera roll.
+- 2b: a **torn parchment edge wipes down** over the map to enter a chapter (15 s); a **paper band** slides across the map carrying walking characters (5 s); a flash/sun-flare to white; zoom-throughs from the map into the next place.
+
+## Infographics seen (look 2)
+State fills as categories, place labels, glowing routes, fan-out routes, counters with labels, dot-fill for counts, timelines on the map (2022 → 5th edition, with glowing points joined by a line), icon rows, a coloured "split" of the country (north vs south).
+
+## Measured (look 2)
+- 2a palette: relief greys, maroon #5A0A18, cyan #00C0F0, lime #D8F000, magenta #780078, caption yellow #F5E600, warm illustration ochres #C08040–#E0B070.
+- 2b palette: saffron #F06000, mint #18C078, relief browns #603000–#A87830, black sea, gold labels.
+- Picture changes: 2a ≈ one every 2–3 s (map zooms count as changes); 2b ≈ one every 3–4 s.
+
+## Do / don't (look 2)
+- Do colour only what the VO has named, on the word, and keep each colour's meaning for the whole video.
+- Do zoom to the region named and come back wide for summaries.
+- Do put the people the VO talks about on the map (cutouts inside the country, a photo card on the region).
+- Don't colour a state the VO has not named; don't change a colour's meaning mid-video; don't leave the map static (always a zoom, pan, roll or light streak).
+- Use only maps from public-domain or licensed data with correct boundaries for India; check every boundary before showing.
