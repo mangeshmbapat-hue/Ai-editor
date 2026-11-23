@@ -26,6 +26,12 @@ _Length, aspect, frame rate, cuts, colour of the background and the product, lou
 - **End card:** the logo, the CTA and how it lands.
 - **Sound:** music, SFX on the moves, and the ending.
 
+## Move library (pooled from all samples)
+_Every move seen in this category's samples, merged across all of them: what it is, how it is done, timing, which samples show it, and which kind of script line it suits. The Product Animator picks from this whole library for each script; the owner does not name a sample._
+
+| Move | How it is done | Timing | Seen in | Suits a line about |
+|---|---|---|---|---|
+
 ## Brand styles in this category
 _A brand the owner names, for example "Nike jaisa chahiye", gets its own sheet in `brands/<brand>/STYLE_SHEET.md` when the owner teaches it._
 

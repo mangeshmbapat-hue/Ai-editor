@@ -16,10 +16,12 @@ Run the **product-animator** agent (`.claude/agents/product-animator.md`) with t
 - Save it in `projects/_product-train/<category>/s<N>/` (git-ignored).
 - Measure it, then go frame by frame: reveal, camera, feature moves (open, layers, zooms, splashes), light, colours, text, transitions, pace, end card, sound.
 - Say how each move can be made with our pipeline, and which needs a tool we do not have.
+- Merge its moves into the category's **move library** (pooled across all samples; the owner sends many ads and never names one to copy).
 - Fill the category sheet, show the owner the breakdown with key frames, and wait for their approval before the status changes.
 
 ## 3. Make
 - Collect the product photos (every side, open, inside, each feature), the logo, the script or VO, the size (9:16 or 16:9) and the CTA.
+- Pick the moves for each script line yourself from the whole move library; never ask which sample to follow.
 - Plan, cut out, compose, self-check, then the **storyboard**. Send it and **stop** until the owner approves; record their words with `anim-approve`.
 - `anim-render`, check loudness and frames, and send exactly 2 files: the video and one zip.
 
