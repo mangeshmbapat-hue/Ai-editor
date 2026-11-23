@@ -151,6 +151,7 @@ State fills as categories, place labels, glowing routes, fan-out routes, counter
 - Picture changes: 2a ≈ one every 2–3 s (map zooms count as changes); 2b ≈ one every 3–4 s.
 
 ## Do / don't (look 2)
+- **Owner rule (2026-11-23): never a whole video of maps.** A map is an occasional moment, used only while the VO is about places. Everything else gets its own picture: people get their own cutout, and cities, buildings, labour, the economy and numbers get images and infographics. Main words go on screen as text, and the theme varies scene to scene. Build the video the way sample 1 was explained.
 - Do colour only what the VO has named, on the word, and keep each colour's meaning for the whole video.
 - Do zoom to the region named and come back wide for summaries.
 - Do put the people the VO talks about on the map (cutouts inside the country, a photo card on the region).
