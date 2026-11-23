@@ -1,6 +1,31 @@
 {
   "slug": "voiceover-explainer",
-  "measured": false,
-  "targets": {},
-  "note": "No owner sample learned yet (2026-11-23). Targets are filled from samples in TEACH mode."
+  "measured": true,
+  "looks": {
+    "1": "navy blueprint line-art"
+  },
+  "targets_9x16": {
+    "aspect": "9:16",
+    "hard_cuts": 0,
+    "setup_seconds": 4.8,
+    "caption_seconds": 3.2,
+    "caption_in_after_word_s": 0.15,
+    "caption_out_s": 0.3,
+    "caption_gap_s": 0.2,
+    "palette": [
+      "#08192c",
+      "#505859",
+      "#25364b",
+      "#0f213a"
+    ],
+    "accents": {
+      "text": "#f2f2f0",
+      "measured_idea": "#f4c430",
+      "big_side": "#2fb4f2",
+      "small_side": "#f26450"
+    },
+    "loudness_lufs": -14.07,
+    "speech_wps": 2.7
+  },
+  "note": "From sample 1 only (2026-11-23); 16:9 and long-form targets not seen yet."
 }
