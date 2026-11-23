@@ -1,0 +1,58 @@
+{
+  "slug": "voiceover-explainer",
+  "measured": true,
+  "looks": {
+    "1": "navy blueprint line-art (s1)",
+    "1b": "dark documentary with archival paper (s4)",
+    "2a": "grey relief map, colour state fills, photo cutouts, illustrated clips (s2)",
+    "2b": "saffron India map, glowing routes, counters, parchment chapters (s3)"
+  },
+  "targets_9x16": {
+    "aspect": "9:16",
+    "hard_cuts": 0,
+    "setup_seconds": 4.8,
+    "caption_seconds": 3.2,
+    "caption_in_after_word_s": 0.15,
+    "caption_out_s": 0.3,
+    "caption_gap_s": 0.2,
+    "palette": [
+      "#08192c",
+      "#505859",
+      "#25364b",
+      "#0f213a"
+    ],
+    "accents": {
+      "text": "#f2f2f0",
+      "measured_idea": "#f4c430",
+      "big_side": "#2fb4f2",
+      "small_side": "#f26450"
+    },
+    "loudness_lufs": -14.07,
+    "speech_wps": 2.7
+  },
+  "note": "From samples 1-4 (2026-11-23).",
+  "map_rules": {
+    "highlight_after_name_s": 0.3,
+    "fill_pop_s": 0.25,
+    "stagger_s": 0.1,
+    "zoom_in_s": 0.75,
+    "route_draw_s": 0.9
+  },
+  "palette_2a": [
+    "#5a0a18",
+    "#00c0f0",
+    "#d8f000",
+    "#780078",
+    "#f5e600"
+  ],
+  "palette_2b": [
+    "#f06000",
+    "#18c078",
+    "#a87830",
+    "#000000"
+  ],
+  "palette_1b": [
+    "#0d1520",
+    "#e8b04a"
+  ]
+}
