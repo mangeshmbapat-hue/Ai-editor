@@ -178,3 +178,6 @@ Format: `- YYYY-MM-DD · kind · rule. Why: … Source: "<owner's words>" (proje
 
 ## Project: media-watchdog
 - 2026-11-09 · owner · Visual order for this reel: dramatic newsroom with a journalist facing camera → independent YouTube studios, digital creators, podcasts, social feeds → contrasting political narratives, fact-checking → many microphones pointed at people in power. Closing on-screen text: "More voices. More accountability. Better democracy." Source: owner's cues "Start with a dramatic newsroom and a journalist facing the camera ... On-screen closing text: More voices. More accountability. Better democracy." (media-watchdog)
+
+## Project: up-business-hub-explainer
+- 2026-11-24 · owner · Animation Editor explainer on the owner's VO "Delhi/Mumbai vs UP business hub, entrepreneur growth story": no CTA, no handle, no end card. The video ends exactly where the audio ends, on the VO's last words. Why: the owner wants the piece to finish with the voiceover itself. Source: "koio cta nhi h jese audio m wese m end klrdo" (up-business-hub-explainer)
