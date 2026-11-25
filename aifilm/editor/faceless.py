@@ -718,7 +718,8 @@ def fit_text(edl, max_width=0.70, max_lines=2):
                     it["position"] = "glass-top"
             elif it.get("position") in ("bottom", "lower"):
                 it["position"] = "lower" if "\n" in it["value"] else "bottom"
-            if it.get("position") == "center" and len(lines) > 3:
+            # count the item's final lines: `lines` above is unset when no font resolves, and stale from the previous item
+            if it.get("position") == "center" and len(it["value"].split("\n")) > 3:
                 it["role"] = "headline"
     return edl
 
