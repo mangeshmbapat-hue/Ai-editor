@@ -264,7 +264,10 @@ def prepare_audio(src, duration, out, end_silence=END_SILENCE):
     """The audio at the house level: -14 LUFS, -1 dBTP ceiling, faded out so the sound stops `end_silence` s before the end
     (a VO-led explainer passes the gap its own VO leaves, so the last word is never faded)."""
     stop = max(1.0, duration - end_silence)
-    chain = "loudnorm=I=-14:TP=-1.5:LRA=7,afade=t=in:d=0.05,afade=t=out:st={:.3f}:d=1.0,apad,atrim=0:{:.3f}".format(stop - 1.0, duration)
+    # With no silence after the VO (the owner's "end with the audio" rule) a 1 s fade would eat the last word, so the
+    # fade shrinks to the gap the VO leaves (at least 50 ms, at most 1 s).
+    fade = min(1.0, max(0.05, end_silence))
+    chain = "loudnorm=I=-14:TP=-1.5:LRA=7,afade=t=in:d=0.05,afade=t=out:st={:.3f}:d={:.3f},apad,atrim=0:{:.3f}".format(stop - fade, fade, duration)
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-af", chain, "-ar", "48000", "-ac", "2", str(out)], capture_output=True, text=True)
     require(r.returncode == 0, "audio prep failed: " + r.stderr[-400:])
     return out
