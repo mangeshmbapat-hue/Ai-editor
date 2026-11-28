@@ -177,6 +177,15 @@ Don't:
 - No frozen stills; no hard cut that lands mid-word.
 - Never reuse the Vox logo, other creators' handles, watermarks or end cards.
 
+## Owner rules (2026-11-28, SP Guide Publications video)
+
+- Keep the paper base and the red + yellow accent; do not change colours much. Briefs that ask for 3D wireframes, exploded engines or dashboards are rebuilt in the paper look: ink line drawings on grid paper, paper-card devices, paper charts.
+- Every image and text lands on its spoken word (forced-aligned word times); nothing overlaps.
+- Not too fast: entrances about 0.6-0.9 s; text stays until its scene changes (aim for at least 2 s on screen).
+- No empty screen for long and never a blank first frame.
+- Everything arrives with motion (rise, scale from a point, draw-on, rotated slide, blur dissolve, iris).
+- Owner-supplied logos are used exactly as given (white background cut out, no recolouring) on a cream torn-paper card.
+
 ## Frames studied
 
 - Sample 1: 100 frames at 10 fps (0–10 s), full-resolution frames at 0.0, 2.4, 3.5, 4.2, 5.9 s, crops of label, sticker and edges, a 15 fps sticker-flip strip, and a 4.8 vs 6.0 s difference image.
