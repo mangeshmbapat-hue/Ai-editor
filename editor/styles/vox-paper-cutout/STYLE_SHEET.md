@@ -184,7 +184,8 @@ Don't:
 - Not too fast: entrances about 0.6-0.9 s; text stays until its scene changes (aim for at least 2 s on screen).
 - No empty screen for long and never a blank first frame.
 - Everything arrives with motion (rise, scale from a point, draw-on, rotated slide, blur dissolve, iris).
-- Owner-supplied logos are used exactly as given (white background cut out, no recolouring) on a cream torn-paper card.
+- Owner-supplied logos are used exactly as given: a transparent PNG straight on the paper (outer white flood-filled away, no halo, no recolouring), never on a white card. One logo per slide.
+- A closing slide is clean, centred and balanced: one hero logo, the closing line, one carrier; connected ideas as one aligned composition, not scattered cards.
 
 ## Frames studied
 
