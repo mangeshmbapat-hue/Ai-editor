@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* Vox kit QC: text over text and text over image, sampled over the whole timeline.
  *   node overlap_all.cjs <page.html> [--size 1920x1080] [--step 0.2]
- * Text = visible .tag boxes; images = img, svg.im, .cardx, .tablet, .cover. Nested boxes are ignored. */
+ * Text = visible .tag boxes; images = img, svg.im, .cardx, .tablet, .cover. Nested boxes are ignored.
+ * Lines = strokes inside svg.ln (strings, connectors, ellipses): sampled every 4 px; a point inside a word's box is a hit. */
 'use strict';
 const { chromium } = require('playwright'); const path = require('path');
 const opt = { size: '1920x1080', step: '0.2' }, pos = [];
@@ -14,7 +15,7 @@ const [W, H] = opt.size.split('x').map(Number);
   for (let t = 0; t <= dur; t += +opt.step) {
     const r = await p.evaluate(([t, W, H]) => {
       window.__timelines.main.seek(t, false);
-      const vis = n => { let o = 1; for (let e = n; e && e !== document.body; e = e.parentElement) { const c = getComputedStyle(e); if (c.visibility === 'hidden' || c.display === 'none') return 0; o *= +c.opacity; } return o; };
+      const vis = n => { let o = 1; for (let e = n; e && e !== document.body; e = e.parentElement) { const c = getComputedStyle(e); if (c.visibility === 'hidden' || c.display === 'none' || /inset\((100%|0% 100%|0px 100%)/.test(c.clipPath)) return 0; o *= +c.opacity; } return o; };
       const box = n => n.getBoundingClientRect();
       const on = r => r.right > 0 && r.left < W && r.bottom > 0 && r.top < H && r.width > 2 && r.height > 2;
       const texts = [...document.querySelectorAll('.tag')].filter(n => vis(n) > 0.3 && n.textContent.trim() && on(box(n)));
@@ -28,14 +29,25 @@ const [W, H] = opt.size.split('x').map(Number);
         const rg = document.createRange(); rg.selectNodeContents(n); const r = rg.getBoundingClientRect(); return r.width ? r : box(n); };
       // skip anything covered by a later scene (its own opaque ground): the top element at its centre must share its scene
       const sceneOf = n => n.closest('.scene');
-      const shown = (n, r) => { const e = document.elementFromPoint(Math.min(W - 1, Math.max(0, (r.left + r.right) / 2)), Math.min(H - 1, Math.max(0, (r.top + r.bottom) / 2))); return !e || sceneOf(e) === sceneOf(n); };
+      const paints = x => { if (x === n0) return true; const tg = x.tagName.toLowerCase(); if (tg === 'img' || ['path', 'line', 'circle', 'rect', 'text'].includes(tg)) return true;
+        if ([...x.childNodes].some(c => c.nodeType === 3 && c.textContent.trim())) return true; const c = getComputedStyle(x);
+        const bg = c.backgroundColor.match(/[\d.]+/g); return c.backgroundImage !== 'none' || (bg && (bg.length < 4 ? true : +bg[3] > 0.5) && c.backgroundColor !== 'rgba(0, 0, 0, 0)'); };
+      const n0 = null;
+      const shown = (n, r) => { const es = document.elementsFromPoint(Math.min(W - 1, Math.max(0, (r.left + r.right) / 2)), Math.min(H - 1, Math.max(0, (r.top + r.bottom) / 2)));
+        const e = es.find(x => x.closest('.scene') && !x.classList.contains('scene') && vis(x) > 0.5 && paints(x)); return !e || sceneOf(e) === sceneOf(n); };
       const TB = texts.map(tb);
       for (let i = 0; i < texts.length; i++) { const A = TB[i]; if (!A || !shown(texts[i], A)) continue; const area = A.width * A.height;
         for (let j = i + 1; j < texts.length; j++) { if (texts[i].contains(texts[j]) || texts[j].contains(texts[i])) continue; const B = TB[j]; if (!B || !shown(texts[j], B)) continue;
           if (ov(A, B) > Math.min(area, B.width * B.height) * 0.03) out.push('TEXT ' + texts[i].textContent.trim().slice(0, 24) + ' x ' + texts[j].textContent.trim().slice(0, 24)); }
         for (const im of imgs) { if (im.contains(texts[i]) || texts[i].contains(im) || !shown(im, box(im))) continue;
           if (ov(A, box(im)) > area * 0.04) out.push('IMG  ' + texts[i].textContent.trim().slice(0, 24) + ' on ' + (im.getAttribute('src') || im.className.baseVal || im.className)); } }
-      return out; }, [t, W, H]);
+      for (const sv of document.querySelectorAll('svg.ln')) { if (vis(sv) < 0.3 || !shown(sv, box(sv))) continue; const SB = box(sv);
+        for (const g of sv.querySelectorAll('path, line, circle')) { if (vis(g) < 0.3) continue; const gb = g.getBoundingClientRect(); if (gb.width < 1 && gb.height < 1) continue; const L = g.getTotalLength ? g.getTotalLength() : 0; const m = g.getScreenCTM(); if (!L || !m) continue;
+          const off = parseFloat(getComputedStyle(g).strokeDashoffset) || 0; const pl = g.getAttribute("pathLength"); const drawn = pl ? Math.max(0, 1 - off / +pl) : 1; if (drawn <= 0.001) continue;
+          for (let d = 0; d <= L * drawn; d += 4) { const q = g.getPointAtLength(d); const x = m.a * q.x + m.c * q.y + m.e, y = m.b * q.x + m.d * q.y + m.f; if (getComputedStyle(sv).overflow !== 'visible' && (x < SB.left || x > SB.right || y < SB.top || y > SB.bottom)) continue;
+            for (let i = 0; i < texts.length; i++) { const A = TB[i]; if (!A || !shown(texts[i], A)) continue;
+              if (x > A.left + 2 && x < A.right - 2 && y > A.top + 4 && y < A.bottom - 4) { out.push('LINE through ' + texts[i].textContent.trim().slice(0, 24)); break; } } } } }
+      return [...new Set(out)]; }, [t, W, H]);
     r.forEach(k => { (hits[k] = hits[k] || []).push(+t.toFixed(2)); });
   }
   const keys = Object.keys(hits);
